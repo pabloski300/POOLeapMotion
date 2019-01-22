@@ -14,7 +14,7 @@ using UnityEngine;
 
 namespace Leap.Unity.Examples {
 
-  [AddComponentMenu("")]
+
   public class SimpleMatchAnchorScaleAndState : MonoBehaviour {
 
     public AnchorableBehaviour anchObj;
