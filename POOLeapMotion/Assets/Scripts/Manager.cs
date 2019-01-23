@@ -3,20 +3,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using Leap.Unity.Examples;
 
 public class Manager : MonoBehaviour {
+
+    public static Manager Instance;
 
     public GameObject anchorablePref;
 
     public GameObject[] grid;
 
-    List<AnchorableBehaviour> objects;
+    List<CustomAnchorable> objects;
 
     int activeAnchors;
 
 	// Use this for initialization
 	void Start () {
-        objects = FindObjectsOfType<AnchorableBehaviour>().ToList();
+        DontDestroyOnLoad(this.gameObject);
+
+        if(Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
+
+        objects = FindObjectsOfType<CustomAnchorable>().ToList();
         for(int i=0; i<10; i++)
         {
             grid[i].SetActive(false);
@@ -32,16 +46,18 @@ public class Manager : MonoBehaviour {
         }
     }
 
-    public void ReturnToAnchor(AnchorableBehaviour emmisor)
+    public void ReturnToAnchor(CustomAnchorable emmisor)
     {
-        foreach(AnchorableBehaviour target in objects)
+        foreach(CustomAnchorable target in objects)
         {
             if(target != emmisor)
             {
-                target.isAttached = true;
-                if (target.anchor != null)
+                if (!target.Anchorable.isAttached && target.Anchorable.anchor != null)
                 {
-                    target.anchor.NotifyAttached(target);
+                    target.Anchorable.isAttached = true;
+                    target.WorkStation.DeactivateWorkstation();
+                    target.Anchorable.anchor.NotifyAttached(target.Anchorable);
+
                 }
             }
         }
@@ -52,9 +68,10 @@ public class Manager : MonoBehaviour {
         if (activeAnchors < 10) {
             Anchor anchor = grid[activeAnchors].GetComponent<Anchor>();
             GameObject newObject = Instantiate(anchorablePref, anchor.gameObject.transform.position, anchor.gameObject.transform.rotation);
-            AnchorableBehaviour newAnchorable = newObject.GetComponent<AnchorableBehaviour>();
+            CustomAnchorable newAnchorable = newObject.GetComponent<CustomAnchorable>();
             anchor.gameObject.SetActive(true);
-            newAnchorable.anchor = anchor;
+            newAnchorable.Init();
+            newAnchorable.Anchorable.anchor = anchor;
             objects.Add(newAnchorable);
             activeAnchors++;
             ReturnToAnchor(null);
@@ -70,10 +87,10 @@ public class Manager : MonoBehaviour {
         if (activeAnchors > 0)
         {
             Anchor anchor = grid[activeAnchors-1].GetComponent<Anchor>();
-            AnchorableBehaviour anchorable = objects[activeAnchors-1];
+            CustomAnchorable oldObject = objects[activeAnchors-1];
             objects.RemoveAt(activeAnchors-1);
-            anchor.NotifyDetached(anchorable);
-            Destroy(anchorable.gameObject);
+            anchor.NotifyDetached(oldObject.Anchorable);
+            Destroy(oldObject.gameObject);
             anchor.gameObject.SetActive(false);
             activeAnchors--;
             ReturnToAnchor(null);
