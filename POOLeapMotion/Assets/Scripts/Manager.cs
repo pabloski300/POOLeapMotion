@@ -7,13 +7,21 @@ using Leap.Unity.Examples;
 
 public class Manager : MonoBehaviour {
 
+    [HideInInspector]
     public static Manager Instance;
 
-    public GameObject anchorablePref;
+    [SerializeField]
+    GameObject anchorablePref;
 
-    public GameObject[] grid;
+    GameObject gridParent;
+
+    List<CustomAnchor> grid;
 
     List<CustomAnchorable> objects;
+
+    CustomAnchor centralAnchor;
+
+    Transform objectsPivot;
 
     int activeAnchors;
 
@@ -30,10 +38,18 @@ public class Manager : MonoBehaviour {
             Destroy(this.gameObject);
         }
 
+        objectsPivot = GameObject.FindGameObjectWithTag("ObjectsPivot").transform;
         objects = FindObjectsOfType<CustomAnchorable>().ToList();
-        for(int i=0; i<10; i++)
+        gridParent = GameObject.FindGameObjectWithTag("GridParent");
+        grid = gridParent.GetComponentsInChildren<CustomAnchor>().ToList();
+        centralAnchor = GameObject.FindGameObjectWithTag("CentralAnchor").GetComponent<CustomAnchor>();
+        grid.Sort();
+
+        Debug.Log(grid.Count);
+
+        for(int i=0; i<grid.Count; i++)
         {
-            grid[i].SetActive(false);
+            grid[i].gameObject.SetActive(false);
         }
         activeAnchors = 0;
 	}
@@ -48,16 +64,17 @@ public class Manager : MonoBehaviour {
 
     public void ReturnToAnchor(CustomAnchorable emmisor)
     {
+        if (emmisor != null)
+        {
+            emmisor.Anchorable.anchor = null;
+        }
         foreach(CustomAnchorable target in objects)
         {
             if(target != emmisor)
             {
-                if (!target.Anchorable.isAttached && target.Anchorable.anchor != null)
+                if (target.Anchorable.anchor == target.CentralAnchor)
                 {
-                    target.Anchorable.isAttached = true;
-                    target.WorkStation.DeactivateWorkstation();
-                    target.Anchorable.anchor.NotifyAttached(target.Anchorable);
-
+                    target.ReturnToStart();
                 }
             }
         }
@@ -65,16 +82,18 @@ public class Manager : MonoBehaviour {
 
     public void SpawnObject()
     {
-        if (activeAnchors < 10) {
-            Anchor anchor = grid[activeAnchors].GetComponent<Anchor>();
-            GameObject newObject = Instantiate(anchorablePref, anchor.gameObject.transform.position, anchor.gameObject.transform.rotation);
+        if (activeAnchors < grid.Count) {
+            CustomAnchor anchor = grid[activeAnchors].GetComponent<CustomAnchor>();
+            GameObject newObject = Instantiate(anchorablePref, anchor.gameObject.transform.position, anchor.gameObject.transform.rotation,objectsPivot);
             CustomAnchorable newAnchorable = newObject.GetComponent<CustomAnchorable>();
             anchor.gameObject.SetActive(true);
             newAnchorable.Init();
             newAnchorable.Anchorable.anchor = anchor;
+            newAnchorable.GridAnchor = anchor;
+            newAnchorable.CentralAnchor = centralAnchor;
             objects.Add(newAnchorable);
             activeAnchors++;
-            ReturnToAnchor(null);
+            newAnchorable.ReturnToStart();
         }
         else
         {

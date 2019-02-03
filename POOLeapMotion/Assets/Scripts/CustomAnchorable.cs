@@ -12,17 +12,43 @@ public class CustomAnchorable : MonoBehaviour {
     public AnchorableBehaviour Anchorable { get { return anchorable; } }
     WorkstationBehaviourExample workStation;
     public WorkstationBehaviourExample WorkStation { get { return workStation; } }
+    CustomAnchor gridAnchor;
+    public CustomAnchor GridAnchor { get { return gridAnchor; } set { gridAnchor = value; } }
+    CustomAnchor centralAnchor;
+    public CustomAnchor CentralAnchor { get { return centralAnchor; } set { centralAnchor = value; } }
 
-	// Use this for initialization
-	public void Init () {
+    // Use this for initialization
+    public void Init () {
         interaction = GetComponent<InteractionBehaviour>();
         anchorable = GetComponent<AnchorableBehaviour>();
         workStation = GetComponent<WorkstationBehaviourExample>();
         interaction.OnGraspBegin += (()=>Manager.Instance.ReturnToAnchor(this));
+        interaction.OnGraspEnd += (() => GraspEnd());
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
+    void GraspEnd()
+    {
+        if(anchorable.anchor != gridAnchor)
+        {
+            anchorable.anchorLerpCoeffPerSec = centralAnchor.LerpCoeficient;
+            anchorable.anchor = centralAnchor;
+            anchorable.isAttached = true;
+            anchorable.anchor.NotifyAttached(anchorable);
+            workStation.ActivateWorkstation();
+        }
+    }
+
+    public void ReturnToStart()
+    {
+        anchorable.anchorLerpCoeffPerSec = gridAnchor.LerpCoeficient;
+        anchorable.anchor = gridAnchor;
+        anchorable.isAttached = true;
+        workStation.DeactivateWorkstation();
+        anchorable.anchor.NotifyAttached(anchorable);
+    }
+
+    public void ShowVariables()
+    {
+        this.transform.localScale = new Vector3(1, 1, 1);
+    }
 }
