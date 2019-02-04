@@ -1362,7 +1362,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 764deba2e6e55d6498d3cdb36ed09223, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  anchorablePref: {fileID: 1643786986999926, guid: a6aae557d82cfc94d9eeb2241c836c6a,
+  anchorablePref: {fileID: 1560568930782692, guid: a6aae557d82cfc94d9eeb2241c836c6a,
     type: 2}
 --- !u!1001 &1058109147
 Prefab:
