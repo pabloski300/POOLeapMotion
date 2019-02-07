@@ -50,7 +50,6 @@ namespace Leap.Unity.Examples {
         private void OnDisable()
         {
             scaleTarget.transform.localScale = 1.0f * _initScaleVector;
-            Debug.Log(_initScaleVector);
         }
 
     }

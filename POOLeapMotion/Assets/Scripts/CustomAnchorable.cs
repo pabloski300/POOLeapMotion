@@ -3,8 +3,9 @@ using Leap.Unity.Interaction;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class CustomAnchorable : MonoBehaviour {
+public class CustomAnchorable : MonoBehaviour, IPointerClickHandler {
 
     InteractionBehaviour interaction;
     public InteractionBehaviour Interaction { get { return interaction; } }
@@ -50,5 +51,17 @@ public class CustomAnchorable : MonoBehaviour {
     public void ShowVariables()
     {
         this.transform.localScale = new Vector3(1, 1, 1);
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if(anchorable.anchor == gridAnchor)
+        {
+            anchorable.anchorLerpCoeffPerSec = centralAnchor.LerpCoeficient;
+            anchorable.anchor = centralAnchor;
+            anchorable.isAttached = true;
+            anchorable.anchor.NotifyAttached(anchorable);
+            workStation.ActivateWorkstation();
+        }
     }
 }

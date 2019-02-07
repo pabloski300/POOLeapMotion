@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using Leap.Unity.Examples;
+using System.IO;
 
 public class Manager : MonoBehaviour {
 
@@ -11,7 +12,7 @@ public class Manager : MonoBehaviour {
     public static Manager Instance;
 
     [SerializeField]
-    GameObject anchorablePref;
+    GameObject[] anchorablePrefs;
 
     GameObject gridParent;
 
@@ -39,19 +40,22 @@ public class Manager : MonoBehaviour {
         }
 
         objectsPivot = GameObject.FindGameObjectWithTag("ObjectsPivot").transform;
-        objects = FindObjectsOfType<CustomAnchorable>().ToList();
+        //objects = FindObjectsOfType<CustomAnchorable>().ToList();
+        objects = new List<CustomAnchorable>();
         gridParent = GameObject.FindGameObjectWithTag("GridParent");
         grid = gridParent.GetComponentsInChildren<CustomAnchor>().ToList();
         centralAnchor = GameObject.FindGameObjectWithTag("CentralAnchor").GetComponent<CustomAnchor>();
         grid.Sort();
-
-        Debug.Log(grid.Count);
 
         for(int i=0; i<grid.Count; i++)
         {
             grid[i].gameObject.SetActive(false);
         }
         activeAnchors = 0;
+        Debug.Log(Application.streamingAssetsPath);
+        AssetBundle bundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, "objetos"));
+        anchorablePrefs = bundle.LoadAllAssets<GameObject>();
+        Debug.Log(anchorablePrefs.Length);
 	}
 
     private void Update()
@@ -84,7 +88,7 @@ public class Manager : MonoBehaviour {
     {
         if (activeAnchors < grid.Count) {
             CustomAnchor anchor = grid[activeAnchors].GetComponent<CustomAnchor>();
-            GameObject newObject = Instantiate(anchorablePref, anchor.gameObject.transform.position, anchor.gameObject.transform.rotation,objectsPivot);
+            GameObject newObject = Instantiate(anchorablePrefs[0], anchor.gameObject.transform.position, anchor.gameObject.transform.rotation,objectsPivot);
             CustomAnchorable newAnchorable = newObject.GetComponent<CustomAnchorable>();
             anchor.gameObject.SetActive(true);
             newAnchorable.Init();
