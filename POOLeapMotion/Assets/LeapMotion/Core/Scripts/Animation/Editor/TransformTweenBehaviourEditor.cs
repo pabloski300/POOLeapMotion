@@ -43,7 +43,8 @@ namespace Leap.Unity.Animation {
 
       EditorGUI.BeginDisabledGroup(target.targetTransform == null
                                   || target.startTransform == null
-                                  || PrefabUtility.GetPrefabType(target.gameObject) == PrefabType.Prefab);
+                                  || PrefabUtility.GetPrefabAssetType(target.gameObject) == PrefabAssetType.Regular 
+                                  || PrefabUtility.GetPrefabAssetType(target.gameObject) == PrefabAssetType.Variant);
       
       EditorGUILayout.BeginHorizontal();
 
@@ -62,7 +63,8 @@ namespace Leap.Unity.Animation {
 
       EditorGUI.BeginDisabledGroup(target.targetTransform == null
                                   || target.endTransform == null
-                                  || PrefabUtility.GetPrefabType(target.gameObject) == PrefabType.Prefab);
+                                  || PrefabUtility.GetPrefabAssetType(target.gameObject) == PrefabAssetType.Regular 
+                                  || PrefabUtility.GetPrefabAssetType(target.gameObject) == PrefabAssetType.Variant);
 
       if (GUILayout.Button(new GUIContent("Set Target" + (targets.Length > 1 ? "s" : "") + " To End",
                                           "If this TransformTweenBehaviour has a valid target and end transform, "

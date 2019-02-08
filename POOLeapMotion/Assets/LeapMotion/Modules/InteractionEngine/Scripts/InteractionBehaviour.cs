@@ -43,7 +43,7 @@ namespace Leap.Unity.Interaction {
     #region Hovering API
 
     /// <summary> Gets whether any interaction controller is nearby. </summary>
-    public bool isHovered { get { return _hoveringControllers.Count > 0; } }
+    public bool isHovered { get { return _hoveringControllers.Count > 0 || _hoveringMouse; } }
 
     /// <summary>
     /// Gets the closest interaction controller to this object, or null if no controller is nearby.
@@ -831,6 +831,7 @@ namespace Leap.Unity.Interaction {
     #region Hovering
 
     private HashSet<InteractionController> _hoveringControllers = new HashSet<InteractionController>();
+    protected bool _hoveringMouse = false;
 
     private InteractionController _closestHoveringController = null;
     private float _closestHoveringControllerDistance = float.PositiveInfinity;

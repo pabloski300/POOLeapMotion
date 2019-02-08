@@ -9,6 +9,9 @@ public class CustomAnchor : Anchor, IComparable
     [Range(0.1f,100)]
     public float LerpCoeficient;
 
+    [HideInInspector]
+    public CustomAnchorable objectAnchored;
+
     public int CompareTo(object obj)
     {
         if (obj == null) return 1;

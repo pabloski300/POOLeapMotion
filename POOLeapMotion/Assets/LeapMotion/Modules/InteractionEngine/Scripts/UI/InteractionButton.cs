@@ -391,7 +391,7 @@ namespace Leap.Unity.Interaction {
           _unpressedThisFrame = true;
           OnUnpress();
 
-          if (!(isGrasped && graspingController == _lockedInteractingController)) {
+          if (!(isGrasped && graspingController == _lockedInteractingController) && _lockedInteractingController!= null) {
             _lockedInteractingController.primaryHoverLocked = false;
           }
 

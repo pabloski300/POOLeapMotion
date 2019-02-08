@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CustomAnchorable : MonoBehaviour, IPointerClickHandler {
+public class CustomAnchorable : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler,IPointerExitHandler {
 
     InteractionBehaviour interaction;
     public InteractionBehaviour Interaction { get { return interaction; } }
@@ -63,5 +63,15 @@ public class CustomAnchorable : MonoBehaviour, IPointerClickHandler {
             anchorable.anchor.NotifyAttached(anchorable);
             workStation.ActivateWorkstation();
         }
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        Interaction.OnHoverBegin();
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        Interaction.OnHoverEnd();
     }
 }
