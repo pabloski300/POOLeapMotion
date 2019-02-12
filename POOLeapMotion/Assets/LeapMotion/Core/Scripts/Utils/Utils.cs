@@ -632,9 +632,10 @@ namespace Leap.Unity {
         .Where(o => {
 #if UNITY_EDITOR
           // Exclude prefabs.
-          var prefabType = UnityEditor.PrefabUtility.GetPrefabType(o);
-          if (prefabType == UnityEditor.PrefabType.ModelPrefab
-          || prefabType == UnityEditor.PrefabType.Prefab) {
+          var prefabType = UnityEditor.PrefabUtility.GetPrefabAssetType(o);
+          if (prefabType == UnityEditor.PrefabAssetType.Model
+          || prefabType == UnityEditor.PrefabAssetType.Regular
+          || prefabType == UnityEditor.PrefabAssetType.Variant) {
             return false;
           }
 #endif
@@ -1347,8 +1348,6 @@ namespace Leap.Unity {
       TextureFormat.EAC_R_SIGNED,
       TextureFormat.EAC_RG,
       TextureFormat.EAC_RG_SIGNED,
-      TextureFormat.ETC_RGB4_3DS,
-      TextureFormat.ETC_RGBA8_3DS
     };
 
     /// <summary>

@@ -12,7 +12,7 @@ public class Manager : MonoBehaviour {
     public static Manager Instance;
 
     [SerializeField]
-    GameObject[] anchorablePrefs;
+    public List<GameObject> anchorablePrefs;
 
     GameObject gridParent;
 
@@ -55,16 +55,8 @@ public class Manager : MonoBehaviour {
         Debug.Log(Application.streamingAssetsPath);
         /* AssetBundle bundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, "objetos"));
         anchorablePrefs = bundle.LoadAllAssets<GameObject>();*/
-        Debug.Log(anchorablePrefs.Length);
+        Debug.Log(anchorablePrefs.Count);
 	}
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            SpawnObject();
-        }
-    }
 
     public void ReturnToAnchor(CustomAnchorable emmisor)
     {

@@ -1,0 +1,38 @@
+ManifestFileVersion: 0
+CRC: 3216881816
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 0bfde822551c1e2d3de6cbdfbf56f09a
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: fa6dba614dfec37ba975748562f1f99f
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 28f5218448c31b04ead4a1ef4de63ab9, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: db2710eea5fc817439ee4d5c5ceaee24, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 32ecd7eeddafefa40a5ec173d866a16b, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+Assets:
+- Assets/Prefabs/BoolVariable.prefab
+- Assets/Prefabs/FloatVariable.prefab
+- Assets/Prefabs/IntVariable.prefab
+Dependencies: []

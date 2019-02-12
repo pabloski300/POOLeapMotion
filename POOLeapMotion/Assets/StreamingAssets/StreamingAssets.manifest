@@ -1,0 +1,10 @@
+ManifestFileVersion: 0
+CRC: 196293640
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: variables
+      Dependencies: {}
+    Info_1:
+      Name: objeto
+      Dependencies: {}
