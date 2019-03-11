@@ -92,17 +92,19 @@ public class CreadorVariable : MonoBehaviour
 
     public void TrimString()
     {
-        if (nombreInput.text.Length > nombreInput.characterLimit)
-        {
-            nombreInput.text = nombreInput.text.Remove(nombreInput.characterLimit,1);
-            return;
-        }
 
         nombreInput.text = nombreInput.text.Trim();
-        if (nombreInput.text.Equals(CreadorObjetos.Instance.nombre.text, StringComparison.InvariantCultureIgnoreCase))
+        Debug.Log(CreadorObjetos.Instance.cabecera.text);
+        if (nombreInput.text.Equals(CreadorObjetos.Instance.nombreInput.text, StringComparison.InvariantCultureIgnoreCase))
         {
             Debug.Log("nombre mal");
             textoError.SetActive(true);
+            return;
+        }
+
+        if (nombreInput.text.Length > nombreInput.characterLimit)
+        {
+            nombreInput.text = nombreInput.text.Remove(nombreInput.characterLimit,1);
             return;
         }
 
@@ -110,16 +112,6 @@ public class CreadorVariable : MonoBehaviour
         textoError.SetActive(false);
         cabecera.text = proteccionString + " " + tipoString + " " + nombreInput.text;
 
-    }
-
-    void CambiarProteccion(ProteccionVar s)
-    {
-        NivelDeProteccion = s;
-    }
-
-    void CambiarTipo(TipoVar s)
-    {
-        tipo = s;
     }
 
     public void Restart()

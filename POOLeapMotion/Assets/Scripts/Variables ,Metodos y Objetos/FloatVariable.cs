@@ -4,13 +4,8 @@ using UnityEngine;
 
 public class FloatVariable : Variable<float>
 {
-    public override void Init(ObjetoBase objeto)
+    public override string WriteFile()
     {
-        throw new System.NotImplementedException();
-    }
-
-    public override void WriteFile()
-    {
-        throw new System.NotImplementedException();
+        return "    float "+ nombre +";";
     }
 }

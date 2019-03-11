@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class Variable<T> : MonoBehaviour
 {
-	string nombre;
+	protected string nombre;
 	public string Nombre{get{return nombre;}set{nombre = value;}}
 	T valor;
 	public T Valor {get{return valor;} set{valor = value;}}
@@ -14,7 +14,7 @@ public abstract class Variable<T> : MonoBehaviour
 	ObjetoBase objeto;
 
 	
-	public abstract void WriteFile();
+	public abstract string WriteFile();
 	public virtual void Init(ObjetoBase objeto){
 		this.objeto = objeto;
 	}

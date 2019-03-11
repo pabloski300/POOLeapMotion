@@ -1,0 +1,47 @@
+ManifestFileVersion: 0
+CRC: 181029263
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 785f1c700d2085f381cde32cfe5b4363
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: a3f8fd9d978d227d3959a928cf641cad
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 9a9c09606ab5a004b91fba6b5151bd06, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 52aa3e5334287fb42bed316120668ed2, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 68806ad5c739e054ab41f9a65c458aea, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 71086bbde2a83d741b375797e184d8e5, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 2f84db7e5ded87b41bdfd03c9f9d93a1, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 200d685ff8a9956408eb2cac7bc04971, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+Assets:
+- Assets/Prefabs/MetodoDiv.prefab
+- Assets/Prefabs/MetodoRead.prefab
+- Assets/Prefabs/MetodoSub.prefab
+- Assets/Prefabs/MetodoMul.prefab
+- Assets/Prefabs/MetodoAdd.prefab
+- Assets/Prefabs/MetodoPrint.prefab
+Dependencies: []

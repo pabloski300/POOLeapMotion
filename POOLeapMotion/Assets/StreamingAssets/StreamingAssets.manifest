@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 196293640
+CRC: 2221178948
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -7,4 +7,7 @@ AssetBundleManifest:
       Dependencies: {}
     Info_1:
       Name: objeto
+      Dependencies: {}
+    Info_2:
+      Name: metodos
       Dependencies: {}

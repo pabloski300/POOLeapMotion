@@ -4,13 +4,8 @@ using UnityEngine;
 
 public class IntVariable : Variable<int>
 {
-    public override void Init(ObjetoBase objeto)
+    public override string WriteFile()
     {
-        //this.objeto = objeto;
-    }
-
-    public override void WriteFile()
-    {
-        throw new System.NotImplementedException();
+        return "    int "+ nombre +";";
     }
 }

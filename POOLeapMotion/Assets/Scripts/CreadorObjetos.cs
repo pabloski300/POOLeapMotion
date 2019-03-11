@@ -7,14 +7,13 @@ using System.IO;
 public class CreadorObjetos : MonoBehaviour
 {
     public TMP_InputField nombreInput;
-    public TextMeshPro nombre;
-
-    public GameObject menuVariables;
-    public GameObject menuObjeto;
+    public TextMeshPro cabecera;
 
     public List<IntVariable> variablesInt;
     public List<FloatVariable> variablesFloat;
     public List<BoolVariable> variablesBoolean;
+
+    public Dictionary<string, MetodoBase> metodos = new Dictionary<string, MetodoBase>();
 
     public static CreadorObjetos Instance;
 
@@ -39,7 +38,15 @@ public class CreadorObjetos : MonoBehaviour
         }
 
         nombreInput.text = nombreInput.text.Trim();
-        nombre.text = "public class "+nombreInput.text;
+        cabecera.text = "public class " + nombreInput.text;
+    }
+
+    public void Restart(){
+        variablesInt.Clear();
+        variablesFloat.Clear();
+        variablesBoolean.Clear();
+        metodos.Clear();
+        nombreInput.text = "";
     }
 
     public void Create()
@@ -50,22 +57,41 @@ public class CreadorObjetos : MonoBehaviour
 
         objetoScript.nombre = nombreInput.text;
 
+        string s = cabecera.text +" {\n";
+
         foreach(IntVariable var in variablesInt){
             Debug.Log(var.Nombre);
             Debug.Log(objetoScript.variablesInt.Count);
             objetoScript.variablesInt.Add(var.Nombre,var);
-            var.gameObject.transform.parent = objeto.transform;
+            var.gameObject.transform.parent = objetoScript.variablesParent;
+            var.gameObject.transform.localScale = Vector3.one;
+            s += var.WriteFile();
         }
         foreach(FloatVariable var in variablesFloat){
             objetoScript.variablesFloat.Add(var.Nombre,var);
-            var.gameObject.transform.parent = objeto.transform;
+            var.gameObject.transform.parent = objetoScript.variablesParent;
+            var.gameObject.transform.localScale = Vector3.one;
+            s += var.WriteFile();
         }
         foreach(BoolVariable var in variablesBoolean){
             objetoScript.variablesBool.Add(var.Nombre,var);
-            var.gameObject.transform.parent = objeto.transform;
+            var.gameObject.transform.parent = objetoScript.variablesParent;
+            var.gameObject.transform.localScale = Vector3.one;
+            s += var.WriteFile();
+        }
+        foreach(MetodoBase var in metodos.Values){
+            objetoScript.metodos.Add(var.Nombre,var);
+            var.gameObject.transform.parent = objetoScript.metodoParent;
+            var.gameObject.transform.localScale = Vector3.one;
+            s += var.WriteFile();
         }
 
-        Manager.Instance.anchorablePrefs.Add(objeto);
+        s += "}";
 
+        //Debug.Log(s);
+        
+        objetoScript.codigo += s;
+
+        Manager.Instance.anchorablePrefs.Add(objeto.GetComponent<ObjetoBase>());
     }
 }

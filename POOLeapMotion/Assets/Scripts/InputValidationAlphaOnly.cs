@@ -15,16 +15,4 @@ public class InputValidationAlphaOnly : TMP_InputValidator
         text += ch;
         return ch;
     }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

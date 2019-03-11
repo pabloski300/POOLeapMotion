@@ -8,14 +8,14 @@ public class ButtonAssignEvent : MonoBehaviour
 {
     InteractionButton button3D;
 
-    CustomAnchorable parent;
+    ObjetoBase parent;
     // Start is called before the first frame update
     void Awake()
     {
         button3D = GetComponent<InteractionButton>();
-        parent = GetComponentInParent<CustomAnchorable>();
+        parent = GetComponentInParent<ObjetoBase>();
 
-        Debug.Log(parent.gameObject);
+        //Debug.Log(parent.gameObject);
 
         button3D.OnPress += (()=>Manager.Instance.RemoveOne(parent));
     }

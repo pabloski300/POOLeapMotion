@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class BoolVariable : Variable<bool>
 {
-    public override void WriteFile()
+    public override string WriteFile()
     {
-        throw new System.NotImplementedException();
+        return "    boolean "+ nombre +";";
     }
 }

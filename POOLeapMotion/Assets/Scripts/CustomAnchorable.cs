@@ -23,7 +23,7 @@ public class CustomAnchorable : MonoBehaviour, IPointerClickHandler, IPointerEnt
         interaction = GetComponent<InteractionBehaviour>();
         anchorable = GetComponent<AnchorableBehaviour>();
         workStation = GetComponent<WorkstationBehaviourExample>();
-        interaction.OnGraspBegin += (()=>Manager.Instance.ReturnToAnchor(this));
+        interaction.OnGraspBegin += (()=> Manager.Instance.ReturnToAnchor(this));
         interaction.OnGraspEnd += (() => GraspEnd());
 	}
 
@@ -41,6 +41,7 @@ public class CustomAnchorable : MonoBehaviour, IPointerClickHandler, IPointerEnt
 
     public void ReturnToStart()
     {
+        Debug.Log(gridAnchor);
         anchorable.anchorLerpCoeffPerSec = gridAnchor.LerpCoeficient;
         anchorable.anchor = gridAnchor;
         anchorable.isAttached = true;
@@ -57,11 +58,12 @@ public class CustomAnchorable : MonoBehaviour, IPointerClickHandler, IPointerEnt
     {
         if(anchorable.anchor == gridAnchor)
         {
+            Manager.Instance.ReturnToAnchor(this as ObjetoBase ,centralAnchor);
             anchorable.anchorLerpCoeffPerSec = centralAnchor.LerpCoeficient;
-            anchorable.anchor = centralAnchor;
             anchorable.isAttached = true;
             anchorable.anchor.NotifyAttached(anchorable);
             workStation.ActivateWorkstation();
+            Manager.Instance.ReturnToAnchor(this as ObjetoBase ,centralAnchor);
         }
     }
 
