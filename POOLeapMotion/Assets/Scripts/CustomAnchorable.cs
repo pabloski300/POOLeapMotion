@@ -41,7 +41,6 @@ public class CustomAnchorable : MonoBehaviour, IPointerClickHandler, IPointerEnt
 
     public void ReturnToStart()
     {
-        Debug.Log(gridAnchor);
         anchorable.anchorLerpCoeffPerSec = gridAnchor.LerpCoeficient;
         anchorable.anchor = gridAnchor;
         anchorable.isAttached = true;

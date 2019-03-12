@@ -9,7 +9,6 @@ public class CustomButton : InteractionButton, IPointerUpHandler, IPointerDownHa
 
     bool locked = false;
     public bool Locked { get { return locked; } set { locked = value; ignoreContact = value; } }
-    public GameObject body;
 
     public void OnPointerDown(PointerEventData eventData)
     {

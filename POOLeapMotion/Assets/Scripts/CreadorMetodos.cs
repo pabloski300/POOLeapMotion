@@ -16,22 +16,26 @@ public class CreadorMetodos : MonoBehaviour
     
     AssetBundle bundle;
 
-    Dictionary<string, MetodoBase> metodos = new Dictionary<string, MetodoBase>();
+    public Dictionary<string, MetodoBase> metodos = new Dictionary<string, MetodoBase>();
 
     bool valid;
 
+    public static CreadorMetodos Instance;
+
     private void Start()
     {
-        Debug.Log("Metodos");
         bundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, "metodos"));
         List<GameObject> m = bundle.LoadAllAssets<GameObject>().ToList();
-        Debug.Log(m.Count);
         foreach(GameObject x in m) {
             MetodoBase mb = x.GetComponent<MetodoBase>();
-            Debug.Log(mb.Nombre);
             metodos.Add(mb.Nombre, mb);
         }
         bundle.Unload(false);
+        if(Instance == null){
+            Instance = this;
+        }else{
+            Destroy(this.gameObject);
+        }
     }
 
     public void ChangeMethod(string name){

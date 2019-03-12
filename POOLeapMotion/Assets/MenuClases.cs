@@ -17,6 +17,7 @@ public class MenuClases : MonoBehaviour
         buttons[2].crear.OnPress += (()=>Create(2));
         buttons[2].eliminar.OnPress += (()=>DeleteClass(2));
     }
+    
     public void Init()
     {
         int n = Manager.Instance.anchorablePrefs.Count;

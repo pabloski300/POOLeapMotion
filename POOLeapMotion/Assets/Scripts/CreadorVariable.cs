@@ -6,7 +6,7 @@ using System.IO;
 using Leap.Unity.Interaction;
 using System;
 
-public class CreadorVariable : MonoBehaviour
+public class CreadorVariable : CustomMenu
 {
     public enum TipoVar
     {
@@ -22,11 +22,14 @@ public class CreadorVariable : MonoBehaviour
         PROTECTED
     }
 
+    [Header("Strings")]
     public TMP_InputField nombreInput;
     public TextMeshPro cabecera;
-    public GameObject textoError;
-    public InteractionButton[] botonesProteccion;
-    public InteractionButton[] botonesTipo;
+    public TextMeshPro textoError;
+
+    [Header("Buttons2")]
+    public CustomButton[] botonesProteccion;
+    public CustomButton[] botonesTipo;
 
     ProteccionVar nivelDeProteccion = ProteccionVar.PUBLIC;
     string proteccionString = "";
@@ -75,9 +78,11 @@ public class CreadorVariable : MonoBehaviour
             TrimString();
         }
     }
-
     AssetBundle bundle;
 
+    public static CreadorVariable Instance;
+
+#region Inicializacion
     private void Start()
     {
         bundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, "variables"));
@@ -88,34 +93,16 @@ public class CreadorVariable : MonoBehaviour
         botonesTipo[0].OnPress += (() => { Tipo = TipoVar.INT; });
         botonesTipo[1].OnPress += (() => { Tipo = TipoVar.FLOAT; });
         botonesTipo[2].OnPress += (() => { Tipo = TipoVar.BOOLEAN; });
-    }
-
-    public void TrimString()
-    {
-
-        nombreInput.text = nombreInput.text.Trim();
-        Debug.Log(CreadorObjetos.Instance.cabecera.text);
-        if (nombreInput.text.Equals(CreadorObjetos.Instance.nombreInput.text, StringComparison.InvariantCultureIgnoreCase))
-        {
-            Debug.Log("nombre mal");
-            textoError.SetActive(true);
-            return;
+        if(Instance == null){
+            Instance = this;
+        }else{
+            Destroy(this.gameObject);
         }
-
-        if (nombreInput.text.Length > nombreInput.characterLimit)
-        {
-            nombreInput.text = nombreInput.text.Remove(nombreInput.characterLimit,1);
-            return;
-        }
-
-        Debug.Log("nombre bien");
-        textoError.SetActive(false);
-        cabecera.text = proteccionString + " " + tipoString + " " + nombreInput.text;
-
     }
 
     public void Restart()
     {
+        buttons[7].gameObject.SetActive(false);
         tipo = TipoVar.INT;
         nivelDeProteccion = ProteccionVar.PUBLIC;
         cabecera.text = "";
@@ -123,6 +110,78 @@ public class CreadorVariable : MonoBehaviour
         proteccionString = "public";
         tipoString = "int";
         TrimString();
+    }
+#endregion
+
+#region MetodosTween
+    public void OpenNew(){
+        Open();
+        Restart();
+    }
+
+    public void End(){
+        Create();
+        Close();
+    }
+#endregion
+
+#region Metodos
+    public void TrimString()
+    {
+
+        nombreInput.text = nombreInput.text.Trim();
+        buttons[7].gameObject.SetActive(true);
+        textoError.gameObject.SetActive(false);
+        cabecera.text = proteccionString + " " + tipoString + " " + nombreInput.text;
+
+        bool repeat = false;
+
+        if(!repeat){
+            textoError.text = "Este nombre esta reservado";
+        }
+
+        foreach(string i in CreadorMetodos.Instance.metodos.Keys){
+            repeat = nombreInput.text.Equals(i, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        if(!repeat){
+            textoError.text = "Este nombre esta en uso por otra variable";
+        }
+
+        Debug.Log(CreadorObjetos.Instance.variablesInt.Count);
+        for(int i=0; i<CreadorObjetos.Instance.variablesInt.Count && !repeat; i++){
+            repeat = nombreInput.text.Equals(CreadorObjetos.Instance.variablesInt[i].Nombre, StringComparison.InvariantCultureIgnoreCase);
+        }
+        for(int i=0; i<CreadorObjetos.Instance.variablesFloat.Count && !repeat; i++){
+            repeat = nombreInput.text.Equals(CreadorObjetos.Instance.variablesFloat[i].Nombre, StringComparison.InvariantCultureIgnoreCase);
+        }
+        for(int i=0; i<CreadorObjetos.Instance.variablesBoolean.Count && !repeat; i++){
+            repeat = nombreInput.text.Equals(CreadorObjetos.Instance.variablesBoolean[i].Nombre, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        if(!repeat){
+            textoError.text = "Este nombre esta en uso por la clase";
+        }
+
+        if(!repeat){
+            repeat = nombreInput.text.Equals(CreadorObjetos.Instance.nombreInput.text, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        if (repeat)
+        {
+            buttons[7].gameObject.SetActive(false);
+            textoError.gameObject.SetActive(true);
+        }
+
+        if (nombreInput.text.Length > nombreInput.characterLimit)
+        {
+            nombreInput.text = nombreInput.text.Remove(nombreInput.characterLimit,1);
+        }
+
+        if(nombreInput.text.Length == 0){
+            buttons[7].gameObject.SetActive(false); 
+        }
+
     }
 
     public void Create()
@@ -152,4 +211,5 @@ public class CreadorVariable : MonoBehaviour
                 break;
         }
     }
+#endregion
 }

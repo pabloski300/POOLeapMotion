@@ -3,14 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System.IO;
+using Leap.Unity.Animation;
+using System;
 
-public class CreadorObjetos : MonoBehaviour
+public class CreadorObjetos : CustomMenu
 {
+    [Header("Strings")]
     public TMP_InputField nombreInput;
     public TextMeshPro cabecera;
+    public TextMeshPro textoError;
 
+    [HideInInspector]
     public List<IntVariable> variablesInt;
+    [HideInInspector]
     public List<FloatVariable> variablesFloat;
+    [HideInInspector]
     public List<BoolVariable> variablesBoolean;
 
     public Dictionary<string, MetodoBase> metodos = new Dictionary<string, MetodoBase>();
@@ -19,26 +26,16 @@ public class CreadorObjetos : MonoBehaviour
 
     AssetBundle bundle;
 
+#region Inicializacion
     private void Start() {
         nombreInput.inputValidator = InputValidationAlphaOnly.CreateInstance<InputValidationAlphaOnly>();
         bundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, "objeto"));
+
         if(Instance == null){
             Instance = this;
         }else{
             Destroy(this.gameObject);
         }
-    }
-
-    public void TrimString(){
-
-        if (nombreInput.text.Length > nombreInput.characterLimit)
-        {
-            nombreInput.text = nombreInput.text.Remove(nombreInput.characterLimit,1);
-            return;
-        }
-
-        nombreInput.text = nombreInput.text.Trim();
-        cabecera.text = "public class " + nombreInput.text;
     }
 
     public void Restart(){
@@ -47,6 +44,85 @@ public class CreadorObjetos : MonoBehaviour
         variablesBoolean.Clear();
         metodos.Clear();
         nombreInput.text = "";
+        buttons[0].gameObject.SetActive(false);
+        buttons[1].gameObject.SetActive(false);
+        buttons[3].gameObject.SetActive(false);
+    }
+#endregion
+    
+#region MetodosTween
+
+    public void OpenNew(){
+        Restart();
+        Open();
+    }
+
+    public void End(){
+        Create();
+        Close();
+    }
+    
+#endregion
+
+#region Metodos
+    public void TrimString(){
+
+        
+        textoError.gameObject.SetActive(false);
+        buttons[0].gameObject.SetActive(true);
+        buttons[1].gameObject.SetActive(true);
+        buttons[3].gameObject.SetActive(true);
+        nombreInput.text = nombreInput.text.Trim();
+        cabecera.text = "public class " + nombreInput.text;
+
+        bool repeat = false;
+
+        if(!repeat){
+            textoError.text = "Este nombre esta reservado";
+        }
+
+        foreach(string i in CreadorMetodos.Instance.metodos.Keys){
+            repeat = nombreInput.text.Equals(i, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        if(!repeat){
+            textoError.text = "Este nombre esta en uso por una variable";
+        }
+
+        for(int i=0; i<variablesInt.Count && !repeat; i++){
+            repeat = nombreInput.text.Equals(variablesInt[i].Nombre, StringComparison.InvariantCultureIgnoreCase);
+        }
+        for(int i=0; i<variablesFloat.Count && !repeat; i++){
+            repeat = nombreInput.text.Equals(variablesFloat[i].Nombre, StringComparison.InvariantCultureIgnoreCase);
+        }
+        for(int i=0; i<variablesBoolean.Count && !repeat; i++){
+            repeat = nombreInput.text.Equals(variablesBoolean[i].Nombre, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        if(!repeat){
+            textoError.text = "Este nombre esta en uso por otra clase";
+        }
+
+        for(int i=0; i<Manager.Instance.anchorablePrefs.Count && !repeat; i++){
+            repeat = nombreInput.text.Equals(Manager.Instance.anchorablePrefs[i].nombre, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        if (repeat)
+        {
+            buttons[3].gameObject.SetActive(false);
+            textoError.gameObject.SetActive(true);
+        }
+
+        if (nombreInput.text.Length > nombreInput.characterLimit)
+        {
+            nombreInput.text = nombreInput.text.Remove(nombreInput.characterLimit, 1);
+        }
+
+        if(nombreInput.text.Length == 0){
+            buttons[0].gameObject.SetActive(false);
+            buttons[1].gameObject.SetActive(false);
+            buttons[3].gameObject.SetActive(false); 
+        }  
     }
 
     public void Create()
@@ -94,4 +170,6 @@ public class CreadorObjetos : MonoBehaviour
 
         Manager.Instance.anchorablePrefs.Add(objeto.GetComponent<ObjetoBase>());
     }
+#endregion
+
 }
