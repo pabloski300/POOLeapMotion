@@ -3,32 +3,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MenuClases : MonoBehaviour
+public class MenuClases : CustomMenu
 {
-    public LineaClase[] buttons;
+    public LineaClase[] lines;
 
 
     // Start is called before the first frame update
     void Start(){
-        buttons[0].crear.OnPress += (()=>Create(0));
-        buttons[0].eliminar.OnPress += (()=>DeleteClass(0));
-        buttons[1].crear.OnPress += (()=>Create(1));
-        buttons[1].eliminar.OnPress += (()=>DeleteClass(1));
-        buttons[2].crear.OnPress += (()=>Create(2));
-        buttons[2].eliminar.OnPress += (()=>DeleteClass(2));
+        lines[0].crear.OnPress += (()=>Create(0));
+        lines[0].eliminar.OnPress += (()=>DeleteClass(0));
+        lines[1].crear.OnPress += (()=>Create(1));
+        lines[1].eliminar.OnPress += (()=>DeleteClass(1));
+        lines[2].crear.OnPress += (()=>Create(2));
+        lines[2].eliminar.OnPress += (()=>DeleteClass(2));
     }
     
     public void Init()
     {
         int n = Manager.Instance.anchorablePrefs.Count;
 
-        for(int i=0; i<buttons.Length; i++){
+        for(int i=0; i<lines.Length; i++){
             bool active = i < n;
             if(active){
-                buttons[i].nombre.text = Manager.Instance.anchorablePrefs[i].nombre;
+                lines[i].nombre.text = Manager.Instance.anchorablePrefs[i].nombre;
             }
-            buttons[i].gameObject.SetActive(active);
+            lines[i].gameObject.SetActive(active);
         }
+    }
+
+    public void OpenNew(){
+        Open();
+        Init();
     }
 
     public void DeleteClass(int i){

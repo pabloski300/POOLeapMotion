@@ -98,7 +98,6 @@ public class Manager : MonoBehaviour {
     {
         if (activeAnchors < grid.Count) {  
             CustomAnchor anchor = grid.FirstOrDefault(x=>!x.gameObject.activeSelf);
-            Debug.Log(i);
             GameObject newObject = Instantiate(anchorablePrefs[i], anchor.gameObject.transform.position, anchor.gameObject.transform.rotation,objectsPivot).gameObject;
             ObjetoBase newAnchorable = newObject.GetComponent<ObjetoBase>();
             anchor.gameObject.SetActive(true);

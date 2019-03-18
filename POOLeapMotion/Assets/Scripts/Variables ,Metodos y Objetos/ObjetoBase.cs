@@ -8,16 +8,31 @@ public class ObjetoBase : CustomAnchorable {
 
 	public string codigo = "";
 
-	public Dictionary<string,IntVariable> variablesInt = new Dictionary<string, IntVariable>();
-	public Dictionary<string,FloatVariable> variablesFloat = new Dictionary<string, FloatVariable>();
-	public Dictionary<string,BoolVariable> variablesBool = new Dictionary<string, BoolVariable>();
 
-	public Dictionary<string,MetodoBase> metodos = new Dictionary<string, MetodoBase>();
+	public List<IntVariable> variablesInt;
+	public List<FloatVariable> variablesFloat;
+	public List<BoolVariable> variablesBool;
+
+	public List<MetodoBase> metodos;
 
 	public Transform variablesParent;
 	public Transform metodoParent;
 
 	private void Start(){
+		IntVariable[] intVariables = GetComponentsInChildren<IntVariable>();
+
+		foreach(IntVariable k in variablesInt){
+			k.Init(this);
+		}
+		foreach(FloatVariable k in variablesFloat){
+			k.Init(this);
+		}
+		foreach(BoolVariable k in variablesBool){
+			k.Init(this);
+		}
+		foreach(MetodoBase k in metodos){
+			k.Init(this);
+		}
 	}
 
 	

@@ -13,7 +13,6 @@ public class CustomButton : InteractionButton, IPointerUpHandler, IPointerDownHa
     public void OnPointerDown(PointerEventData eventData)
     {
         _isPressed = true;
-        Debug.Log(isPressed);
     }
 
     public void OnPointerEnter(PointerEventData eventData)

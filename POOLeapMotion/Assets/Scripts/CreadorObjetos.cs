@@ -24,12 +24,18 @@ public class CreadorObjetos : CustomMenu
 
     public static CreadorObjetos Instance;
 
+    int numberVariables;
+    int numberMethods;
+
     AssetBundle bundle;
 
 #region Inicializacion
     private void Start() {
         nombreInput.inputValidator = InputValidationAlphaOnly.CreateInstance<InputValidationAlphaOnly>();
         bundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, "objeto"));
+        
+        numberVariables = 0;
+        numberMethods = 0;
 
         if(Instance == null){
             Instance = this;
@@ -44,9 +50,9 @@ public class CreadorObjetos : CustomMenu
         variablesBoolean.Clear();
         metodos.Clear();
         nombreInput.text = "";
-        buttons[0].gameObject.SetActive(false);
-        buttons[1].gameObject.SetActive(false);
         buttons[3].gameObject.SetActive(false);
+        numberVariables = 0;
+        numberMethods = 0;
     }
 #endregion
     
@@ -55,6 +61,22 @@ public class CreadorObjetos : CustomMenu
     public void OpenNew(){
         Restart();
         Open();
+    }
+
+    public new void Open(){
+        if(numberVariables > 3){
+            buttons[0].gameObject.SetActive(false);
+        }else{
+            buttons[0].gameObject.SetActive(true);
+        }
+
+        if(numberMethods > 3){
+            buttons[1].gameObject.SetActive(false);
+        }else{
+            buttons[1].gameObject.SetActive(true);
+        }
+
+        base.Open();
     }
 
     public void End(){
@@ -66,8 +88,6 @@ public class CreadorObjetos : CustomMenu
 
 #region Metodos
     public void TrimString(){
-
-        
         textoError.gameObject.SetActive(false);
         buttons[0].gameObject.SetActive(true);
         buttons[1].gameObject.SetActive(true);
@@ -78,25 +98,17 @@ public class CreadorObjetos : CustomMenu
         bool repeat = false;
 
         if(!repeat){
-            textoError.text = "Este nombre esta reservado";
-        }
-
-        foreach(string i in CreadorMetodos.Instance.metodos.Keys){
-            repeat = nombreInput.text.Equals(i, StringComparison.InvariantCultureIgnoreCase);
-        }
-
-        if(!repeat){
             textoError.text = "Este nombre esta en uso por una variable";
         }
 
         for(int i=0; i<variablesInt.Count && !repeat; i++){
-            repeat = nombreInput.text.Equals(variablesInt[i].Nombre, StringComparison.InvariantCultureIgnoreCase);
+            repeat = nombreInput.text.Equals(variablesInt[i].nombre, StringComparison.InvariantCultureIgnoreCase);
         }
         for(int i=0; i<variablesFloat.Count && !repeat; i++){
-            repeat = nombreInput.text.Equals(variablesFloat[i].Nombre, StringComparison.InvariantCultureIgnoreCase);
+            repeat = nombreInput.text.Equals(variablesFloat[i].nombre, StringComparison.InvariantCultureIgnoreCase);
         }
         for(int i=0; i<variablesBoolean.Count && !repeat; i++){
-            repeat = nombreInput.text.Equals(variablesBoolean[i].Nombre, StringComparison.InvariantCultureIgnoreCase);
+            repeat = nombreInput.text.Equals(variablesBoolean[i].nombre, StringComparison.InvariantCultureIgnoreCase);
         }
 
         if(!repeat){
@@ -119,8 +131,6 @@ public class CreadorObjetos : CustomMenu
         }
 
         if(nombreInput.text.Length == 0){
-            buttons[0].gameObject.SetActive(false);
-            buttons[1].gameObject.SetActive(false);
             buttons[3].gameObject.SetActive(false); 
         }  
     }
@@ -136,27 +146,25 @@ public class CreadorObjetos : CustomMenu
         string s = cabecera.text +" {\n";
 
         foreach(IntVariable var in variablesInt){
-            Debug.Log(var.Nombre);
-            Debug.Log(objetoScript.variablesInt.Count);
-            objetoScript.variablesInt.Add(var.Nombre,var);
+            objetoScript.variablesInt.Add(var);
             var.gameObject.transform.parent = objetoScript.variablesParent;
             var.gameObject.transform.localScale = Vector3.one;
             s += var.WriteFile();
         }
         foreach(FloatVariable var in variablesFloat){
-            objetoScript.variablesFloat.Add(var.Nombre,var);
+            objetoScript.variablesFloat.Add(var);
             var.gameObject.transform.parent = objetoScript.variablesParent;
             var.gameObject.transform.localScale = Vector3.one;
             s += var.WriteFile();
         }
         foreach(BoolVariable var in variablesBoolean){
-            objetoScript.variablesBool.Add(var.Nombre,var);
+            objetoScript.variablesBool.Add(var);
             var.gameObject.transform.parent = objetoScript.variablesParent;
             var.gameObject.transform.localScale = Vector3.one;
             s += var.WriteFile();
         }
         foreach(MetodoBase var in metodos.Values){
-            objetoScript.metodos.Add(var.Nombre,var);
+            objetoScript.metodos.Add(var);
             var.gameObject.transform.parent = objetoScript.metodoParent;
             var.gameObject.transform.localScale = Vector3.one;
             s += var.WriteFile();

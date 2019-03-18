@@ -4,12 +4,9 @@ using UnityEngine;
 
 public abstract class Variable<T> : MonoBehaviour
 {
-	protected string nombre;
-	public string Nombre{get{return nombre;}set{nombre = value;}}
-	T valor;
-	public T Valor {get{return valor;} set{valor = value;}}
-	CreadorVariable.ProteccionVar proteccion;
-	public CreadorVariable.ProteccionVar Proteccion{get{return proteccion;}set{proteccion=value;}}
+	public string nombre;
+	public T valor;
+	public CreadorVariable.ProteccionVar proteccion;
 
 	ObjetoBase objeto;
 
