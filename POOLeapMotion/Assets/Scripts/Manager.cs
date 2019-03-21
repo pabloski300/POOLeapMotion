@@ -6,7 +6,8 @@ using System.Linq;
 using Leap.Unity.Examples;
 using System.IO;
 
-public class Manager : MonoBehaviour {
+public class Manager : MonoBehaviour
+{
 
     [HideInInspector]
     public static Manager Instance;
@@ -16,7 +17,7 @@ public class Manager : MonoBehaviour {
 
     GameObject gridParent;
 
-    List<CustomAnchor> grid;
+    public List<CustomAnchor> grid;
 
     List<ObjetoBase> objects;
 
@@ -26,11 +27,12 @@ public class Manager : MonoBehaviour {
 
     int activeAnchors;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
         DontDestroyOnLoad(this.gameObject);
 
-        if(Instance == null)
+        if (Instance == null)
         {
             Instance = this;
         }
@@ -47,7 +49,7 @@ public class Manager : MonoBehaviour {
         centralAnchor = GameObject.FindGameObjectWithTag("CentralAnchor").GetComponent<CustomAnchor>();
         grid.Sort();
 
-        for(int i=0; i<grid.Count; i++)
+        for (int i = 0; i < grid.Count; i++)
         {
             grid[i].gameObject.SetActive(false);
         }
@@ -56,7 +58,7 @@ public class Manager : MonoBehaviour {
         /* AssetBundle bundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, "objetos"));
         anchorablePrefs = bundle.LoadAllAssets<GameObject>();*/
         //Debug.Log(anchorablePrefs.Count);
-	}
+    }
 
     public void ReturnToAnchor(CustomAnchorable emmisor)
     {
@@ -64,9 +66,9 @@ public class Manager : MonoBehaviour {
         {
             emmisor.Anchorable.anchor = null;
         }
-        foreach(CustomAnchorable target in objects)
+        foreach (CustomAnchorable target in objects)
         {
-            if(target != emmisor)
+            if (target != emmisor)
             {
                 if (target.Anchorable.anchor == target.CentralAnchor)
                 {
@@ -82,9 +84,9 @@ public class Manager : MonoBehaviour {
         {
             emmisor.Anchorable.anchor = final;
         }
-        foreach(CustomAnchorable target in objects)
+        foreach (CustomAnchorable target in objects)
         {
-            if(target != emmisor)
+            if (target != emmisor)
             {
                 if (target.Anchorable.anchor == target.CentralAnchor)
                 {
@@ -96,9 +98,10 @@ public class Manager : MonoBehaviour {
 
     public void SpawnObject(int i)
     {
-        if (activeAnchors < grid.Count) {  
-            CustomAnchor anchor = grid.FirstOrDefault(x=>!x.gameObject.activeSelf);
-            GameObject newObject = Instantiate(anchorablePrefs[i], anchor.gameObject.transform.position, anchor.gameObject.transform.rotation,objectsPivot).gameObject;
+        if (activeAnchors < grid.Count)
+        {
+            CustomAnchor anchor = grid.FirstOrDefault(x => !x.gameObject.activeSelf);
+            GameObject newObject = Instantiate(anchorablePrefs[i], anchor.gameObject.transform.position, anchor.gameObject.transform.rotation, objectsPivot).gameObject;
             ObjetoBase newAnchorable = newObject.GetComponent<ObjetoBase>();
             anchor.gameObject.SetActive(true);
             anchor.objectAnchored = newAnchorable;
@@ -117,11 +120,11 @@ public class Manager : MonoBehaviour {
         }
     }
 
-    public void Remove()
+    public void RemoveLast()
     {
         if (activeAnchors > 0)
         {
-            CustomAnchor anchor = grid.LastOrDefault(x=>x.gameObject.activeSelf);
+            CustomAnchor anchor = grid.LastOrDefault(x => x.gameObject.activeSelf);
             ObjetoBase oldObject = anchor.objectAnchored as ObjetoBase;
             objects.Remove(oldObject);
             anchor.NotifyDetached(oldObject.Anchorable);
@@ -141,7 +144,7 @@ public class Manager : MonoBehaviour {
     {
         if (activeAnchors > 0)
         {
-            CustomAnchor anchor = grid.FirstOrDefault(x=>x.objectAnchored == c);
+            CustomAnchor anchor = grid.FirstOrDefault(x => x.objectAnchored == c);
             ObjetoBase oldObject = anchor.objectAnchored as ObjetoBase;
             objects.Remove(oldObject);
             anchor.NotifyDetached(oldObject.Anchorable);
@@ -157,11 +160,11 @@ public class Manager : MonoBehaviour {
         }
     }
 
-    public void RemoveAll(){
-        Debug.Log("RemoveAll "+objects.Count);
-        for(int i = 0; i<objects.Count; i++){
-            
-            CustomAnchor anchor = grid.FirstOrDefault(x=>x.objectAnchored == objects[i]);
+    public void RemoveAll()
+    {
+        for (int i = 0; i < objects.Count; i++)
+        {
+            CustomAnchor anchor = grid.FirstOrDefault(x => x.objectAnchored == objects[i]);
             ObjetoBase oldObject = anchor.objectAnchored as ObjetoBase;
             objects.Remove(oldObject);
             anchor.NotifyDetached(oldObject.Anchorable);
@@ -170,6 +173,25 @@ public class Manager : MonoBehaviour {
             activeAnchors--;
             ReturnToAnchor(null);
             i--;
+        }
+    }
+
+    public void RemoveOfType(ObjetoBase o)
+    {
+        for (int i = 0; i < objects.Count; i++)
+        {
+            CustomAnchor anchor = grid.FirstOrDefault(x => x.objectAnchored == objects[i]);
+            ObjetoBase oldObject = anchor.objectAnchored as ObjetoBase;
+            if (oldObject.nombre == o.nombre)
+            {
+                objects.Remove(oldObject);
+                anchor.NotifyDetached(oldObject.Anchorable);
+                Destroy(oldObject.gameObject);
+                anchor.gameObject.SetActive(false);
+                activeAnchors--;
+                ReturnToAnchor(null);
+                i--;
+            }
         }
     }
 }

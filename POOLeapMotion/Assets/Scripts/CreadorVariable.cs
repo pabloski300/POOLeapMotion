@@ -129,6 +129,11 @@ public class CreadorVariable : CustomMenu
     #endregion
 
     #region MetodosTween
+    public new void Open(){
+        nombreInput.gameObject.SetActive(true);
+        base.Open();
+    }
+
     public void OpenNew()
     {
         Open();
@@ -174,6 +179,11 @@ public class CreadorVariable : CustomMenu
         TrimString();
     }
 
+    public new void Close(){
+        base.Close();
+        nombreInput.gameObject.SetActive(false);
+    }
+
     public void End()
     {
         Create();
@@ -197,17 +207,29 @@ public class CreadorVariable : CustomMenu
             textoError.text = "Este nombre esta en uso por otra variable";
         }
 
-        for (int i = 0; i < CreadorObjetos.Instance.variablesInt.Count && !repeat && intVarToModify == null; i++)
+        for (int i = 0; i < CreadorObjetos.Instance.variablesInt.Count && !repeat; i++)
         {
             repeat = nombreInput.text.Equals(CreadorObjetos.Instance.variablesInt[i].nombre, StringComparison.InvariantCultureIgnoreCase);
         }
-        for (int i = 0; i < CreadorObjetos.Instance.variablesFloat.Count && !repeat && floatVarToModify == null; i++)
+        for (int i = 0; i < CreadorObjetos.Instance.variablesFloat.Count && !repeat; i++)
         {
             repeat = nombreInput.text.Equals(CreadorObjetos.Instance.variablesFloat[i].nombre, StringComparison.InvariantCultureIgnoreCase);
         }
-        for (int i = 0; i < CreadorObjetos.Instance.variablesBoolean.Count && !repeat && boolVarToModify == null; i++)
+        for (int i = 0; i < CreadorObjetos.Instance.variablesBoolean.Count && !repeat; i++)
         {
             repeat = nombreInput.text.Equals(CreadorObjetos.Instance.variablesBoolean[i].nombre, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        if(modify && repeat && intVarToModify != null){
+            repeat = !(nombreInput.text == intVarToModify.nombre);
+        }
+
+        if(modify && repeat && floatVarToModify != null){
+            repeat = !(nombreInput.text == floatVarToModify.nombre);
+        }
+
+        if(modify && repeat && boolVarToModify != null){
+            repeat = !(nombreInput.text == boolVarToModify.nombre);
         }
 
         if (!repeat)
@@ -279,6 +301,7 @@ public class CreadorVariable : CustomMenu
                 PanelIzquierdo.Instance.AddVariable("bool");
                 break;
         }
+        CreadorObjetos.Instance.NumberVariables ++;
     }
 
     public void CreateModify()

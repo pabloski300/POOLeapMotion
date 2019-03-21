@@ -6,6 +6,6 @@ public class BoolVariable : Variable<bool>
 {
     public override string WriteFile()
     {
-        return "    boolean "+ nombre +";";
+        return "    boolean "+ nombre +";\n";
     }
 }

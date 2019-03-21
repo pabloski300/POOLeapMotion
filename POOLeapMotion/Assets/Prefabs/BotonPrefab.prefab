@@ -223,7 +223,6 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  body: {fileID: 0}
 --- !u!1 &1988016010200490
 GameObject:
   m_ObjectHideFlags: 0

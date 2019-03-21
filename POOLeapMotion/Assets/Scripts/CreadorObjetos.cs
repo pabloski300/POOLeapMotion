@@ -25,26 +25,72 @@ public class CreadorObjetos : CustomMenu
     public static CreadorObjetos Instance;
 
     int numberVariables;
+    public int NumberVariables
+    {
+        get { return numberVariables; }
+        set
+        {
+            numberVariables = value;
+
+            if (numberVariables > 2)
+            {
+                buttons[0].gameObject.SetActive(false);
+            }
+            else
+            {
+                buttons[0].gameObject.SetActive(true);
+            }
+        }
+    }
+
     int numberMethods;
+    public int NumberMethods
+    {
+        get { return numberMethods; }
+        set
+        {
+            numberMethods = value;
+
+            if (numberMethods > 2)
+            {
+                buttons[1].gameObject.SetActive(false);
+            }
+            else
+            {
+                buttons[1].gameObject.SetActive(true);
+            }
+
+        }
+    }
 
     AssetBundle bundle;
 
-#region Inicializacion
-    private void Start() {
+    ObjetoBase objectToModify;
+    int indiceLinea;
+
+    bool modify;
+
+    #region Inicializacion
+    private void Start()
+    {
         nombreInput.inputValidator = InputValidationAlphaOnly.CreateInstance<InputValidationAlphaOnly>();
         bundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, "objeto"));
-        
+
         numberVariables = 0;
         numberMethods = 0;
 
-        if(Instance == null){
+        if (Instance == null)
+        {
             Instance = this;
-        }else{
+        }
+        else
+        {
             Destroy(this.gameObject);
         }
     }
 
-    public void Restart(){
+    public void Restart()
+    {
         variablesInt.Clear();
         variablesFloat.Clear();
         variablesBoolean.Clear();
@@ -53,41 +99,70 @@ public class CreadorObjetos : CustomMenu
         buttons[3].gameObject.SetActive(false);
         numberVariables = 0;
         numberMethods = 0;
+        objectToModify = null;
+        indiceLinea = 0;
+        modify = false;
     }
-#endregion
-    
-#region MetodosTween
+    #endregion
 
-    public void OpenNew(){
+    #region MetodosTween
+
+    public void OpenNew()
+    {
         Restart();
         Open();
     }
 
-    public new void Open(){
-        if(numberVariables > 3){
-            buttons[0].gameObject.SetActive(false);
-        }else{
-            buttons[0].gameObject.SetActive(true);
+    public void OpenModify(ObjetoBase objeto)
+    {
+        Restart();
+        Open();
+        PanelIzquierdo.Instance.OpenNew();
+        objectToModify = objeto;
+        for(int i=0; i<objectToModify.variablesInt.Count; i++){
+            variablesInt.Add(objectToModify.variablesInt[i]);
+            PanelIzquierdo.Instance.AddVariable("int");
         }
-
-        if(numberMethods > 3){
-            buttons[1].gameObject.SetActive(false);
-        }else{
-            buttons[1].gameObject.SetActive(true);
+        for(int i=0; i<objectToModify.variablesFloat.Count; i++){
+            variablesFloat.Add(objectToModify.variablesFloat[i]);
+            PanelIzquierdo.Instance.AddVariable("float");
         }
+        for(int i=0; i<objectToModify.variablesBool.Count; i++){
+            variablesBoolean.Add(objectToModify.variablesBool[i]);
+            PanelIzquierdo.Instance.AddVariable("bool");
+        }
+        for(int i=0; i<objectToModify.metodos.Count; i++){
+            metodos.Add(objectToModify.metodos[i].nombre,objectToModify.metodos[i]);
+            PanelIzquierdo.Instance.AddMetodo(objectToModify.metodos[i].nombre);
+        }
+        nombreInput.text = objectToModify.nombre;
+        modify = true;
+        TrimString();
+    }
 
+    public new void Open()
+    {
+        nombreInput.gameObject.SetActive(true);
         base.Open();
     }
 
-    public void End(){
+    public void End()
+    {
         Create();
         Close();
     }
-    
-#endregion
 
-#region Metodos
-    public void TrimString(){
+    public new void Close()
+    {
+        base.Close();
+        nombreInput.gameObject.SetActive(false);
+    }
+
+    #endregion
+
+    #region Metodos
+    public void TrimString()
+    {
         textoError.gameObject.SetActive(false);
         buttons[0].gameObject.SetActive(true);
         buttons[1].gameObject.SetActive(true);
@@ -97,26 +172,36 @@ public class CreadorObjetos : CustomMenu
 
         bool repeat = false;
 
-        if(!repeat){
+        if (!repeat)
+        {
             textoError.text = "Este nombre esta en uso por una variable";
         }
 
-        for(int i=0; i<variablesInt.Count && !repeat; i++){
+        for (int i = 0; i < variablesInt.Count && !repeat; i++)
+        {
             repeat = nombreInput.text.Equals(variablesInt[i].nombre, StringComparison.InvariantCultureIgnoreCase);
         }
-        for(int i=0; i<variablesFloat.Count && !repeat; i++){
+        for (int i = 0; i < variablesFloat.Count && !repeat; i++)
+        {
             repeat = nombreInput.text.Equals(variablesFloat[i].nombre, StringComparison.InvariantCultureIgnoreCase);
         }
-        for(int i=0; i<variablesBoolean.Count && !repeat; i++){
+        for (int i = 0; i < variablesBoolean.Count && !repeat; i++)
+        {
             repeat = nombreInput.text.Equals(variablesBoolean[i].nombre, StringComparison.InvariantCultureIgnoreCase);
         }
 
-        if(!repeat){
+        if (!repeat)
+        {
             textoError.text = "Este nombre esta en uso por otra clase";
         }
 
-        for(int i=0; i<Manager.Instance.anchorablePrefs.Count && !repeat; i++){
+        for (int i = 0; i < Manager.Instance.anchorablePrefs.Count && !repeat; i++)
+        {
             repeat = nombreInput.text.Equals(Manager.Instance.anchorablePrefs[i].nombre, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        if(modify && repeat){
+            repeat = !(nombreInput.text == objectToModify.nombre);
         }
 
         if (repeat)
@@ -130,40 +215,51 @@ public class CreadorObjetos : CustomMenu
             nombreInput.text = nombreInput.text.Remove(nombreInput.characterLimit, 1);
         }
 
-        if(nombreInput.text.Length == 0){
-            buttons[3].gameObject.SetActive(false); 
-        }  
+        if (nombreInput.text.Length == 0)
+        {
+            buttons[3].gameObject.SetActive(false);
+        }
     }
 
     public void Create()
     {
-        
+
+        if(modify)
+        {
+            Manager.Instance.anchorablePrefs.Remove(objectToModify);
+            Destroy(objectToModify.gameObject);
+        }
+
         GameObject objeto = Instantiate(bundle.LoadAsset<GameObject>("ObjetoBasico"), Vector3.zero, Quaternion.identity);
         ObjetoBase objetoScript = objeto.GetComponent<ObjetoBase>();
 
         objetoScript.nombre = nombreInput.text;
 
-        string s = cabecera.text +" {\n";
+        string s = cabecera.text + " {\n";
 
-        foreach(IntVariable var in variablesInt){
+        foreach (IntVariable var in variablesInt)
+        {
             objetoScript.variablesInt.Add(var);
             var.gameObject.transform.parent = objetoScript.variablesParent;
             var.gameObject.transform.localScale = Vector3.one;
             s += var.WriteFile();
         }
-        foreach(FloatVariable var in variablesFloat){
+        foreach (FloatVariable var in variablesFloat)
+        {
             objetoScript.variablesFloat.Add(var);
             var.gameObject.transform.parent = objetoScript.variablesParent;
             var.gameObject.transform.localScale = Vector3.one;
             s += var.WriteFile();
         }
-        foreach(BoolVariable var in variablesBoolean){
+        foreach (BoolVariable var in variablesBoolean)
+        {
             objetoScript.variablesBool.Add(var);
             var.gameObject.transform.parent = objetoScript.variablesParent;
             var.gameObject.transform.localScale = Vector3.one;
             s += var.WriteFile();
         }
-        foreach(MetodoBase var in metodos.Values){
+        foreach (MetodoBase var in metodos.Values)
+        {
             objetoScript.metodos.Add(var);
             var.gameObject.transform.parent = objetoScript.metodoParent;
             var.gameObject.transform.localScale = Vector3.one;
@@ -173,11 +269,59 @@ public class CreadorObjetos : CustomMenu
         s += "}";
 
         //Debug.Log(s);
-        
+
         objetoScript.codigo += s;
 
         Manager.Instance.anchorablePrefs.Add(objeto.GetComponent<ObjetoBase>());
     }
-#endregion
+
+    void CreateNew(){
+        GameObject objeto = Instantiate(bundle.LoadAsset<GameObject>("ObjetoBasico"), Vector3.zero, Quaternion.identity);
+        ObjetoBase objetoScript = objeto.GetComponent<ObjetoBase>();
+
+        objetoScript.nombre = nombreInput.text;
+
+        string s = cabecera.text + " {\n";
+
+        foreach (IntVariable var in variablesInt)
+        {
+            objetoScript.variablesInt.Add(var);
+            var.gameObject.transform.parent = objetoScript.variablesParent;
+            var.gameObject.transform.localScale = Vector3.one;
+            s += var.WriteFile();
+        }
+        foreach (FloatVariable var in variablesFloat)
+        {
+            objetoScript.variablesFloat.Add(var);
+            var.gameObject.transform.parent = objetoScript.variablesParent;
+            var.gameObject.transform.localScale = Vector3.one;
+            s += var.WriteFile();
+        }
+        foreach (BoolVariable var in variablesBoolean)
+        {
+            objetoScript.variablesBool.Add(var);
+            var.gameObject.transform.parent = objetoScript.variablesParent;
+            var.gameObject.transform.localScale = Vector3.one;
+            s += var.WriteFile();
+        }
+        foreach (MetodoBase var in metodos.Values)
+        {
+            objetoScript.metodos.Add(var);
+            var.gameObject.transform.parent = objetoScript.metodoParent;
+            var.gameObject.transform.localScale = Vector3.one;
+            s += var.WriteFile();
+        }
+
+        s += "}";
+
+        //Debug.Log(s);
+
+        objetoScript.codigo += s;
+
+        Manager.Instance.anchorablePrefs.Add(objeto.GetComponent<ObjetoBase>());
+    }
+
+    void CreateModify(){}
+    #endregion
 
 }

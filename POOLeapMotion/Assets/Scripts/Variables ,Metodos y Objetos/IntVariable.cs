@@ -6,6 +6,6 @@ public class IntVariable : Variable<int>
 {
     public override string WriteFile()
     {
-        return "    int "+ nombre +";";
+        return "    int "+ nombre +";\n";
     }
 }

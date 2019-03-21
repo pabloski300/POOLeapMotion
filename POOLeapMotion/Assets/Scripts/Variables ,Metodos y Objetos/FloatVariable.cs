@@ -6,6 +6,6 @@ public class FloatVariable : Variable<float>
 {
     public override string WriteFile()
     {
-        return "    float "+ nombre +";";
+        return "    float "+ nombre +";\n";
     }
 }
