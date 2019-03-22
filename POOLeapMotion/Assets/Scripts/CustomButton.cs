@@ -28,8 +28,12 @@ public class CustomButton : InteractionButton, IPointerUpHandler, IPointerDownHa
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        _hoveringMouse = false;
         OnPress();
+    }
+
+    private new void OnDisable() {
+        base.OnDisable();
+        _hoveringMouse = false;
     }
 
     public new void Update()

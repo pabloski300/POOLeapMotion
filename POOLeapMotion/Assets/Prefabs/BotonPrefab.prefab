@@ -201,7 +201,7 @@ MonoBehaviour:
   startingPositionMode: 0
   minMaxHeight: {x: 0, y: 0.2}
   restingHeight: 0.5
-  _springForce: 0.005
+  _springForce: 0.001
   _OnPress:
     m_PersistentCalls:
       m_Calls:

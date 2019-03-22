@@ -30,8 +30,8 @@ public class LineaClase : MonoBehaviour
 
     public void Eliminar()
     {
-        Manager.Instance.RemoveOfType(objeto);
-        Manager.Instance.anchorablePrefs.Remove(objeto);
+        MenuGrid.Instance.RemoveOfType(objeto);
+        MenuGrid.Instance.anchorablePrefs.Remove(objeto);
         Destroy(objeto.gameObject);
         objeto = null;
         MenuClases.Instance.Init();
@@ -43,7 +43,7 @@ public class LineaClase : MonoBehaviour
     }
 
     public void CrearObjeto(){
-        Manager.Instance.SpawnObject(indice);
+        MenuGrid.Instance.SpawnObject(indice);
         MenuClases.Instance.NumberObjetos++;
     }
 

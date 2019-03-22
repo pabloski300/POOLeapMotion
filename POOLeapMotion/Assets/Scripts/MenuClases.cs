@@ -22,7 +22,7 @@ public class MenuClases : CustomMenu
     int numberObjetos;
 
     public int NumberObjetos{get{return numberObjetos;}set{numberObjetos = value;
-        if(numberObjetos > Manager.Instance.grid.Count-1){
+        if(numberObjetos > MenuGrid.Instance.grid.Count-1){
             buttons[1].gameObject.SetActive(false);
             buttons[2].gameObject.SetActive(false);
             buttons[3].gameObject.SetActive(false);
@@ -53,13 +53,13 @@ public class MenuClases : CustomMenu
 
     public void Init()
     {
-        int n = Manager.Instance.anchorablePrefs.Count;
+        int n = MenuGrid.Instance.anchorablePrefs.Count;
         for (int i = 0; i < lines.Length; i++)
         {
             bool active = i < n;
             if (active)
             {
-                lines[i].objeto = Manager.Instance.anchorablePrefs[i];
+                lines[i].objeto = MenuGrid.Instance.anchorablePrefs[i];
                 lines[i].nombre.text = lines[i].objeto.nombre;
             }
             lines[i].gameObject.SetActive(active);

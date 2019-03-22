@@ -23,7 +23,7 @@ public class CustomAnchorable : MonoBehaviour, IPointerClickHandler, IPointerEnt
         interaction = GetComponent<InteractionBehaviour>();
         anchorable = GetComponent<AnchorableBehaviour>();
         workStation = GetComponent<WorkstationBehaviourExample>();
-        interaction.OnGraspBegin += (()=> Manager.Instance.ReturnToAnchor(this));
+        interaction.OnGraspBegin += (()=> MenuGrid.Instance.ReturnToAnchor(this));
         interaction.OnGraspEnd += (() => GraspEnd());
 	}
 
@@ -57,12 +57,12 @@ public class CustomAnchorable : MonoBehaviour, IPointerClickHandler, IPointerEnt
     {
         if(anchorable.anchor == gridAnchor)
         {
-            Manager.Instance.ReturnToAnchor(this as ObjetoBase ,centralAnchor);
+            MenuGrid.Instance.ReturnToAnchor(this as ObjetoBase ,centralAnchor);
             anchorable.anchorLerpCoeffPerSec = centralAnchor.LerpCoeficient;
             anchorable.isAttached = true;
             anchorable.anchor.NotifyAttached(anchorable);
             workStation.ActivateWorkstation();
-            Manager.Instance.ReturnToAnchor(this as ObjetoBase ,centralAnchor);
+            MenuGrid.Instance.ReturnToAnchor(this as ObjetoBase ,centralAnchor);
         }
     }
 

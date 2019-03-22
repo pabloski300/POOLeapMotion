@@ -185,6 +185,11 @@ public class PanelIzquierdo : CustomMenu
         {
             lineasVariables[i].gameObject.SetActive(false);
         }
+
+        for (int i = 0; i < lineasMetodos.Length; i++)
+        {
+            lineasMetodos[i].gameObject.SetActive(false);
+        }
     }
 
     public void OpenNew()

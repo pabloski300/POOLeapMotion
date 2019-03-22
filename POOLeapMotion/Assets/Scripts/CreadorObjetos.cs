@@ -122,18 +122,22 @@ public class CreadorObjetos : CustomMenu
         for(int i=0; i<objectToModify.variablesInt.Count; i++){
             variablesInt.Add(objectToModify.variablesInt[i]);
             PanelIzquierdo.Instance.AddVariable("int");
+            numberVariables++;
         }
         for(int i=0; i<objectToModify.variablesFloat.Count; i++){
             variablesFloat.Add(objectToModify.variablesFloat[i]);
             PanelIzquierdo.Instance.AddVariable("float");
+            numberVariables++;
         }
         for(int i=0; i<objectToModify.variablesBool.Count; i++){
             variablesBoolean.Add(objectToModify.variablesBool[i]);
             PanelIzquierdo.Instance.AddVariable("bool");
+            numberVariables++;
         }
         for(int i=0; i<objectToModify.metodos.Count; i++){
             metodos.Add(objectToModify.metodos[i].nombre,objectToModify.metodos[i]);
             PanelIzquierdo.Instance.AddMetodo(objectToModify.metodos[i].nombre);
+            numberMethods++;
         }
         nombreInput.text = objectToModify.nombre;
         modify = true;
@@ -164,8 +168,6 @@ public class CreadorObjetos : CustomMenu
     public void TrimString()
     {
         textoError.gameObject.SetActive(false);
-        buttons[0].gameObject.SetActive(true);
-        buttons[1].gameObject.SetActive(true);
         buttons[3].gameObject.SetActive(true);
         nombreInput.text = nombreInput.text.Trim();
         cabecera.text = "public class " + nombreInput.text;
@@ -195,9 +197,9 @@ public class CreadorObjetos : CustomMenu
             textoError.text = "Este nombre esta en uso por otra clase";
         }
 
-        for (int i = 0; i < Manager.Instance.anchorablePrefs.Count && !repeat; i++)
+        for (int i = 0; i < MenuGrid.Instance.anchorablePrefs.Count && !repeat; i++)
         {
-            repeat = nombreInput.text.Equals(Manager.Instance.anchorablePrefs[i].nombre, StringComparison.InvariantCultureIgnoreCase);
+            repeat = nombreInput.text.Equals(MenuGrid.Instance.anchorablePrefs[i].nombre, StringComparison.InvariantCultureIgnoreCase);
         }
 
         if(modify && repeat){
@@ -226,7 +228,7 @@ public class CreadorObjetos : CustomMenu
 
         if(modify)
         {
-            Manager.Instance.anchorablePrefs.Remove(objectToModify);
+            MenuGrid.Instance.anchorablePrefs.Remove(objectToModify);
             Destroy(objectToModify.gameObject);
         }
 
@@ -272,7 +274,7 @@ public class CreadorObjetos : CustomMenu
 
         objetoScript.codigo += s;
 
-        Manager.Instance.anchorablePrefs.Add(objeto.GetComponent<ObjetoBase>());
+        MenuGrid.Instance.anchorablePrefs.Add(objeto.GetComponent<ObjetoBase>());
     }
 
     void CreateNew(){
@@ -318,7 +320,7 @@ public class CreadorObjetos : CustomMenu
 
         objetoScript.codigo += s;
 
-        Manager.Instance.anchorablePrefs.Add(objeto.GetComponent<ObjetoBase>());
+        MenuGrid.Instance.anchorablePrefs.Add(objeto.GetComponent<ObjetoBase>());
     }
 
     void CreateModify(){}
