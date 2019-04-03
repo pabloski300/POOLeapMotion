@@ -1,28 +1,30 @@
-﻿using Leap.Unity.Examples;
+﻿using Leap.Unity.Animation;
+using Leap.Unity.Examples;
 using Leap.Unity.Interaction;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CustomAnchorable : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler,IPointerExitHandler {
+public class CustomAnchorable : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler,IPointerExitHandler, IPointerUpHandler {
 
     InteractionBehaviour interaction;
     public InteractionBehaviour Interaction { get { return interaction; } }
     AnchorableBehaviour anchorable;
     public AnchorableBehaviour Anchorable { get { return anchorable; } }
-    WorkstationBehaviourExample workStation;
-    public WorkstationBehaviourExample WorkStation { get { return workStation; } }
     CustomAnchor gridAnchor;
     public CustomAnchor GridAnchor { get { return gridAnchor; } set { gridAnchor = value; } }
     CustomAnchor centralAnchor;
     public CustomAnchor CentralAnchor { get { return centralAnchor; } set { centralAnchor = value; } }
 
+    public GameObject panelSuperior;
+    public TextMeshPro textoPanelSuperior;
+
     // Use this for initialization
     public void Init () {
         interaction = GetComponent<InteractionBehaviour>();
         anchorable = GetComponent<AnchorableBehaviour>();
-        workStation = GetComponent<WorkstationBehaviourExample>();
         interaction.OnGraspBegin += (()=> MenuGrid.Instance.ReturnToAnchor(this));
         interaction.OnGraspEnd += (() => GraspEnd());
 	}
@@ -35,7 +37,6 @@ public class CustomAnchorable : MonoBehaviour, IPointerClickHandler, IPointerEnt
             anchorable.anchor = centralAnchor;
             anchorable.isAttached = true;
             anchorable.anchor.NotifyAttached(anchorable);
-            workStation.ActivateWorkstation();
         }
     }
 
@@ -44,7 +45,6 @@ public class CustomAnchorable : MonoBehaviour, IPointerClickHandler, IPointerEnt
         anchorable.anchorLerpCoeffPerSec = gridAnchor.LerpCoeficient;
         anchorable.anchor = gridAnchor;
         anchorable.isAttached = true;
-        workStation.DeactivateWorkstation();
         anchorable.anchor.NotifyAttached(anchorable);
     }
 
@@ -61,7 +61,6 @@ public class CustomAnchorable : MonoBehaviour, IPointerClickHandler, IPointerEnt
             anchorable.anchorLerpCoeffPerSec = centralAnchor.LerpCoeficient;
             anchorable.isAttached = true;
             anchorable.anchor.NotifyAttached(anchorable);
-            workStation.ActivateWorkstation();
             MenuGrid.Instance.ReturnToAnchor(this as ObjetoBase ,centralAnchor);
         }
     }
@@ -69,10 +68,21 @@ public class CustomAnchorable : MonoBehaviour, IPointerClickHandler, IPointerEnt
     public void OnPointerEnter(PointerEventData eventData)
     {
         Interaction.OnHoverBegin();
+        Debug.Log("hover begin");
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         Interaction.OnHoverEnd();
+        Debug.Log("hover end");
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void LookAtCamera(){
+        panelSuperior.transform.forward = -(Camera.current.transform.position - panelSuperior.transform.position);
     }
 }

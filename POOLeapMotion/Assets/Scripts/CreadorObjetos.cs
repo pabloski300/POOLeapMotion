@@ -71,8 +71,10 @@ public class CreadorObjetos : CustomMenu
     bool modify;
 
     #region Inicializacion
-    private void Start()
+    private new void Start()
     {
+        base.Start();
+
         nombreInput.inputValidator = InputValidationAlphaOnly.CreateInstance<InputValidationAlphaOnly>();
         bundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, "objeto"));
 
@@ -109,8 +111,8 @@ public class CreadorObjetos : CustomMenu
 
     public void OpenNew()
     {
-        Restart();
         Open();
+        Restart();
     }
 
     public void OpenModify(ObjetoBase objeto)
@@ -147,6 +149,7 @@ public class CreadorObjetos : CustomMenu
     public new void Open()
     {
         nombreInput.gameObject.SetActive(true);
+        nombreInput.Select();
         base.Open();
     }
 

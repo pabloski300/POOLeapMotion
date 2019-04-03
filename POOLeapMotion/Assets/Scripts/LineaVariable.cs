@@ -30,6 +30,7 @@ public class LineaVariable : MonoBehaviour
     }
 
     public void Modificar(){
+        PanelIzquierdo.Instance.HideButtons();
         switch(type){
             case "int":
                 CreadorVariable.Instance.OpenModifyInt(intVariable,indice);

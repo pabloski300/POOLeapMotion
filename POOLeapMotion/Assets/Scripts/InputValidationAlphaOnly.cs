@@ -11,8 +11,9 @@ public class InputValidationAlphaOnly : TMP_InputValidator
             return char.MinValue;
         }
 
-        pos++;
+        text = text.Remove(pos,text.Length-pos);
         text += ch;
+        pos++;
         return ch;
     }
 }

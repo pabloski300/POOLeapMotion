@@ -22,7 +22,7 @@ public class MenuClases : CustomMenu
     int numberObjetos;
 
     public int NumberObjetos{get{return numberObjetos;}set{numberObjetos = value;
-        if(numberObjetos > MenuGrid.Instance.grid.Count-1){
+        if(numberObjetos > MenuGrid.Instance.gridObjeto.Count-1){
             buttons[1].gameObject.SetActive(false);
             buttons[2].gameObject.SetActive(false);
             buttons[3].gameObject.SetActive(false);
@@ -33,10 +33,25 @@ public class MenuClases : CustomMenu
         }
     }}
 
+    int numberVariables;
+
+    public int NumberVariables{get{return numberVariables;}set{numberVariables = value;
+        if(numberVariables > MenuGrid.Instance.gridVariable.Count-1){
+            buttons[7].gameObject.SetActive(false);
+            buttons[8].gameObject.SetActive(false);
+            buttons[9].gameObject.SetActive(false);
+        }else{
+            buttons[7].gameObject.SetActive(true);
+            buttons[8].gameObject.SetActive(true);
+            buttons[9].gameObject.SetActive(true);
+        }
+    }}
+
 
     // Start is called before the first frame update
-    void Start()
+    new void Start()
     {
+        base.Start();
         for(int i=0; i<lines.Length; i++){
             lines[i].indice = i;
         }

@@ -17,6 +17,6 @@ public class ButtonAssignEvent : MonoBehaviour
 
         //Debug.Log(parent.gameObject);
 
-        button3D.OnPress += (()=>MenuGrid.Instance.RemoveOne(parent));
+        button3D.OnPress += (()=>MenuGrid.Instance.RemoveOneObject(parent));
     }
 }

@@ -91,8 +91,9 @@ public class CreadorVariable : CustomMenu
     int indiceLinea = 0;
 
     #region Inicializacion
-    private void Start()
+    private new void Start()
     {
+        base.Start();
         bundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, "variables"));
         nombreInput.inputValidator = InputValidationAlphaOnly.CreateInstance<InputValidationAlphaOnly>();
         botonesProteccion[0].OnPress += (() => { NivelDeProteccion = ProteccionVar.PUBLIC; });
@@ -131,6 +132,7 @@ public class CreadorVariable : CustomMenu
     #region MetodosTween
     public new void Open(){
         nombreInput.gameObject.SetActive(true);
+        nombreInput.Select();
         base.Open();
     }
 

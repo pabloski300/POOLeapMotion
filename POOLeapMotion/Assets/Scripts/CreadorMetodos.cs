@@ -30,8 +30,9 @@ public class CreadorMetodos : CustomMenu
     public static CreadorMetodos Instance;
 
     #region Inicializacion
-    private void Start()
+    private new void Start()
     {
+        base.Start();
         bundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, "metodos"));
         List<GameObject> m = bundle.LoadAllAssets<GameObject>().ToList();
         foreach (GameObject x in m)

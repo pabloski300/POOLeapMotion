@@ -16,7 +16,9 @@ public class ObjetoBase : CustomAnchorable {
 	public List<MetodoBase> metodos;
 
 	public Transform variablesParent;
+	public CustomAnchor[] anchorsVariables;
 	public Transform metodoParent;
+	public CustomAnchor[] anchorsMetodo;
 
 	private void Start(){
 		IntVariable[] intVariables = GetComponentsInChildren<IntVariable>();
@@ -33,6 +35,7 @@ public class ObjetoBase : CustomAnchorable {
 		foreach(MetodoBase k in metodos){
 			k.Init(this);
 		}
+		textoPanelSuperior.text = "new "+nombre+"();";
 	}
 
 	

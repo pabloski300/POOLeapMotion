@@ -10,8 +10,9 @@ public class PanelIzquierdo : CustomMenu
 
     public static PanelIzquierdo Instance;
 
-    public void Start()
+    public new void Start()
     {
+        base.Start();
         for (int i = 0; i < lineasVariables.Length; i++)
         {
             lineasVariables[i].indice = i;

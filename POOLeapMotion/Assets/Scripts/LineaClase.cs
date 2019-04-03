@@ -22,6 +22,7 @@ public class LineaClase : MonoBehaviour
     public void Start(){
         modificar.OnPress += (()=>Modificar());
         crearObjeto.OnPress += (()=>CrearObjeto());
+        crearVariable.OnPress += (()=>CrearVariable());
         eliminar.OnPress += (()=>Eliminar());
         explorar.OnPress += (()=>Explorar());
         this.gameObject.SetActive(false);
@@ -30,7 +31,7 @@ public class LineaClase : MonoBehaviour
 
     public void Eliminar()
     {
-        MenuGrid.Instance.RemoveOfType(objeto);
+        MenuGrid.Instance.RemoveOfTypeObject(objeto);
         MenuGrid.Instance.anchorablePrefs.Remove(objeto);
         Destroy(objeto.gameObject);
         objeto = null;
@@ -49,5 +50,9 @@ public class LineaClase : MonoBehaviour
 
     public void Explorar(){
         MenuExplorar.Instance.Open(objeto);
+    }
+
+    public void CrearVariable(){
+        MenuVariable.Instance.OpenNew(nombre.text);
     }
 }

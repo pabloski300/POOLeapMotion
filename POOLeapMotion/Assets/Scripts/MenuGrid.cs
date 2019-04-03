@@ -12,20 +12,29 @@ public class MenuGrid : MonoBehaviour
     [HideInInspector]
     public static MenuGrid Instance;
 
-    [SerializeField]
     public List<ObjetoBase> anchorablePrefs;
 
-    GameObject gridParent;
+    public GameObject gridObjectParent;
 
-    public List<CustomAnchor> grid;
+    public List<CustomAnchor> gridObjeto;
+
+    public GameObject gridVariableParent;
+
+    public List<CustomAnchor> gridVariable;
 
     List<ObjetoBase> objects;
+
+    [HideInInspector]
+    public List<VariableObjeto> variables;
 
     CustomAnchor centralAnchor;
 
     Transform objectsPivot;
 
-    int activeAnchors;
+    int activeObjectAnchors;
+    int activeVariableAnchors;
+
+    AssetBundle bundle;
 
     // Use this for initialization
     void Start()
@@ -41,22 +50,25 @@ public class MenuGrid : MonoBehaviour
         }
 
         objectsPivot = GameObject.FindGameObjectWithTag("ObjectsPivot").transform;
-        //objects = FindObjectsOfType<CustomAnchorable>().ToList();
         objects = new List<ObjetoBase>();
-        gridParent = GameObject.FindGameObjectWithTag("GridParent");
-        grid = gridParent.GetComponentsInChildren<CustomAnchor>().ToList();
+        gridObjeto = gridObjectParent.GetComponentsInChildren<CustomAnchor>().ToList();
+        gridVariable = gridVariableParent.GetComponentsInChildren<CustomAnchor>().ToList();
+        Debug.Log(gridVariable.Count);
         centralAnchor = GameObject.FindGameObjectWithTag("CentralAnchor").GetComponent<CustomAnchor>();
-        grid.Sort();
+        gridObjeto.Sort();
 
-        for (int i = 0; i < grid.Count; i++)
+        for (int i = 0; i < gridObjeto.Count; i++)
         {
-            grid[i].gameObject.SetActive(false);
+            gridObjeto[i].gameObject.SetActive(false);
         }
-        activeAnchors = 0;
-        //Debug.Log(Application.streamingAssetsPath);
-        /* AssetBundle bundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, "objetos"));
-        anchorablePrefs = bundle.LoadAllAssets<GameObject>();*/
-        //Debug.Log(anchorablePrefs.Count);
+        for (int i = 0; i < gridVariable.Count; i++)
+        {
+            gridVariable[i].gameObject.SetActive(false);
+        }
+        activeObjectAnchors = 0;
+        activeVariableAnchors = 0;
+
+        bundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, "variable_objeto"));
     }
 
     public void ReturnToAnchor(CustomAnchorable emmisor)
@@ -97,9 +109,9 @@ public class MenuGrid : MonoBehaviour
 
     public void SpawnObject(int i)
     {
-        if (activeAnchors < grid.Count)
+        if (activeObjectAnchors < gridObjeto.Count)
         {
-            CustomAnchor anchor = grid.FirstOrDefault(x => !x.gameObject.activeSelf);
+            CustomAnchor anchor = gridObjeto.FirstOrDefault(x => !x.gameObject.activeSelf);
             GameObject newObject = Instantiate(anchorablePrefs[i], anchor.gameObject.transform.position, anchor.gameObject.transform.rotation, objectsPivot).gameObject;
             ObjetoBase newAnchorable = newObject.GetComponent<ObjetoBase>();
             anchor.gameObject.SetActive(true);
@@ -109,10 +121,10 @@ public class MenuGrid : MonoBehaviour
             newAnchorable.GridAnchor = anchor;
             newAnchorable.CentralAnchor = centralAnchor;
             objects.Add(newAnchorable);
-            activeAnchors++;
+            activeObjectAnchors++;
             newAnchorable.ReturnToStart();
-            Consola.Instance.Write("new "+newAnchorable.nombre+"();");
-            //Debug.Log(activeAnchors);
+            Consola.Instance.Write("new " + newAnchorable.nombre + "();");
+
         }
         else
         {
@@ -120,19 +132,40 @@ public class MenuGrid : MonoBehaviour
         }
     }
 
-    public void RemoveLast()
+    public void SpawnVariable(string clase, string nombre)
     {
-        if (activeAnchors > 0)
+        if (activeVariableAnchors < gridVariable.Count)
         {
-            CustomAnchor anchor = grid.LastOrDefault(x => x.gameObject.activeSelf);
+            CustomAnchor anchor = gridVariable.FirstOrDefault(x => !x.gameObject.activeSelf);
+            GameObject objeto = Instantiate(bundle.LoadAsset<GameObject>("VariableObjeto"), anchor.transform.position, anchor.transform.rotation);
+            VariableObjeto variable = objeto.GetComponent<VariableObjeto>();
+            anchor.gameObject.SetActive(true);
+            anchor.objectAnchored = variable;
+            variable.Init();
+            variable.Anchorable.anchor = anchor;
+            variable.GridAnchor = anchor;
+            variable.CentralAnchor = centralAnchor;
+            variables.Add(variable);
+            activeVariableAnchors++;
+            variable.ReturnToStart();
+            variable.Init(nombre,clase);
+            Consola.Instance.Write(clase + " " + nombre + ";");
+        }
+    }
+
+    public void RemoveLastObject()
+    {
+        if (activeObjectAnchors > 0)
+        {
+            CustomAnchor anchor = gridObjeto.LastOrDefault(x => x.gameObject.activeSelf);
             ObjetoBase oldObject = anchor.objectAnchored as ObjetoBase;
             objects.Remove(oldObject);
             anchor.NotifyDetached(oldObject.Anchorable);
             Destroy(oldObject.gameObject);
             anchor.gameObject.SetActive(false);
-            activeAnchors--;
+            activeObjectAnchors--;
             ReturnToAnchor(null);
-            Debug.Log(activeAnchors);
+            Debug.Log(activeObjectAnchors);
             MenuClases.Instance.NumberObjetos--;
         }
         else
@@ -141,19 +174,19 @@ public class MenuGrid : MonoBehaviour
         }
     }
 
-    public void RemoveOne(CustomAnchorable c)
+    public void RemoveOneObject(CustomAnchorable c)
     {
-        if (activeAnchors > 0)
+        if (activeObjectAnchors > 0)
         {
-            CustomAnchor anchor = grid.FirstOrDefault(x => x.objectAnchored == c);
+            CustomAnchor anchor = gridObjeto.FirstOrDefault(x => x.objectAnchored == c);
             ObjetoBase oldObject = anchor.objectAnchored as ObjetoBase;
             objects.Remove(oldObject);
             anchor.NotifyDetached(oldObject.Anchorable);
             Destroy(oldObject.gameObject);
             anchor.gameObject.SetActive(false);
-            activeAnchors--;
+            activeObjectAnchors--;
             ReturnToAnchor(null);
-            Debug.Log(activeAnchors);
+            Debug.Log(activeObjectAnchors);
             MenuClases.Instance.NumberObjetos--;
         }
         else
@@ -162,28 +195,28 @@ public class MenuGrid : MonoBehaviour
         }
     }
 
-    public void RemoveAll()
+    public void RemoveAllObjects()
     {
         for (int i = 0; i < objects.Count; i++)
         {
-            CustomAnchor anchor = grid.FirstOrDefault(x => x.objectAnchored == objects[i]);
+            CustomAnchor anchor = gridObjeto.FirstOrDefault(x => x.objectAnchored == objects[i]);
             ObjetoBase oldObject = anchor.objectAnchored as ObjetoBase;
             objects.Remove(oldObject);
             anchor.NotifyDetached(oldObject.Anchorable);
             Destroy(oldObject.gameObject);
             anchor.gameObject.SetActive(false);
-            activeAnchors--;
+            activeObjectAnchors--;
             ReturnToAnchor(null);
             i--;
             MenuClases.Instance.NumberObjetos--;
         }
     }
 
-    public void RemoveOfType(ObjetoBase o)
+    public void RemoveOfTypeObject(ObjetoBase o)
     {
         for (int i = 0; i < objects.Count; i++)
         {
-            CustomAnchor anchor = grid.FirstOrDefault(x => x.objectAnchored == objects[i]);
+            CustomAnchor anchor = gridObjeto.FirstOrDefault(x => x.objectAnchored == objects[i]);
             ObjetoBase oldObject = anchor.objectAnchored as ObjetoBase;
             if (oldObject.nombre == o.nombre)
             {
@@ -191,11 +224,91 @@ public class MenuGrid : MonoBehaviour
                 anchor.NotifyDetached(oldObject.Anchorable);
                 Destroy(oldObject.gameObject);
                 anchor.gameObject.SetActive(false);
-                activeAnchors--;
+                activeObjectAnchors--;
                 ReturnToAnchor(null);
                 i--;
                 MenuClases.Instance.NumberObjetos--;
             }
         }
     }
+
+        public void RemoveLastVariable()
+    {
+        if (activeVariableAnchors > 0)
+        {
+            CustomAnchor anchor = gridObjeto.LastOrDefault(x => x.gameObject.activeSelf);
+            VariableObjeto oldObject = anchor.objectAnchored as VariableObjeto;
+            variables.Remove(oldObject);
+            anchor.NotifyDetached(oldObject.Anchorable);
+            Destroy(oldObject.gameObject);
+            anchor.gameObject.SetActive(false);
+            activeVariableAnchors--;
+            ReturnToAnchor(null);
+            Debug.Log(activeVariableAnchors);
+            MenuClases.Instance.NumberVariables--;
+        }
+        else
+        {
+            Debug.Log("No existen objetos creados");
+        }
+    }
+
+    public void RemoveOneVariable(CustomAnchorable c)
+    {
+        if (activeObjectAnchors > 0)
+        {
+            CustomAnchor anchor = gridObjeto.FirstOrDefault(x => x.objectAnchored == c);
+            VariableObjeto oldObject = anchor.objectAnchored as VariableObjeto;
+            variables.Remove(oldObject);
+            anchor.NotifyDetached(oldObject.Anchorable);
+            Destroy(oldObject.gameObject);
+            anchor.gameObject.SetActive(false);
+            activeVariableAnchors--;
+            ReturnToAnchor(null);
+            Debug.Log(activeObjectAnchors);
+            MenuClases.Instance.NumberVariables--;
+        }
+        else
+        {
+            Debug.Log("No existen objetos creados");
+        }
+    }
+
+    public void RemoveAllVariables()
+    {
+        for (int i = 0; i < variables.Count; i++)
+        {
+            CustomAnchor anchor = gridObjeto.FirstOrDefault(x => x.objectAnchored == variables[i]);
+            VariableObjeto oldObject = anchor.objectAnchored as VariableObjeto;
+            variables.Remove(oldObject);
+            anchor.NotifyDetached(oldObject.Anchorable);
+            Destroy(oldObject.gameObject);
+            anchor.gameObject.SetActive(false);
+            activeVariableAnchors--;
+            ReturnToAnchor(null);
+            i--;
+            MenuClases.Instance.NumberVariables--;
+        }
+    }
+
+    public void RemoveOfTypeVariable(ObjetoBase o)
+    {
+        for (int i = 0; i < variables.Count; i++)
+        {
+            CustomAnchor anchor = gridVariable.FirstOrDefault(x => x.objectAnchored == variables[i]);
+            VariableObjeto oldObject = anchor.objectAnchored as VariableObjeto;
+            if (oldObject.clase == o.nombre)
+            {
+                variables.Remove(oldObject);
+                anchor.NotifyDetached(oldObject.Anchorable);
+                Destroy(oldObject.gameObject);
+                anchor.gameObject.SetActive(false);
+                activeVariableAnchors--;
+                //ReturnToAnchor(null);
+                i--;
+                MenuClases.Instance.NumberVariables--;
+            }
+        }
+    }
+
 }

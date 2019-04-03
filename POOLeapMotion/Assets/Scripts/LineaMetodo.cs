@@ -24,6 +24,7 @@ public class LineaMetodo : MonoBehaviour
     }
 
     public void Modificar(){
+        PanelIzquierdo.Instance.HideButtons();
         CreadorMetodos.Instance.OpenModify(metodo,indice);
         CreadorObjetos.Instance.Close();
     }
