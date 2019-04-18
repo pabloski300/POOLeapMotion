@@ -10,9 +10,16 @@ public class CustomButton : InteractionButton, IPointerUpHandler, IPointerDownHa
     bool locked = false;
     public bool Locked { get { return locked; } set { locked = value; ignoreContact = value; } }
 
+    public new void Start() {
+        base.Start();
+        OnPress += (()=>LockPress());
+    }
+
     public void OnPointerDown(PointerEventData eventData)
     {
-        _isPressed = true;
+        if(!locked){
+            _isPressed = true;
+        }
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -28,12 +35,15 @@ public class CustomButton : InteractionButton, IPointerUpHandler, IPointerDownHa
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        OnPress();
+        if(!locked){
+            OnPress();
+        }
     }
 
     private new void OnDisable() {
         base.OnDisable();
         _hoveringMouse = false;
+        this.locked = false;
     }
 
     public new void Update()
@@ -42,6 +52,18 @@ public class CustomButton : InteractionButton, IPointerUpHandler, IPointerDownHa
         {
             base.Update();
         }
+    }
+
+    void LockPress(){
+        if(gameObject.activeSelf){
+            StartCoroutine(LockAfterPress());
+        }
+    }
+
+    IEnumerator LockAfterPress(){
+        this.locked = true;
+        yield return new WaitForSeconds(0.1f);
+        this.locked = false;
     }
 
 }

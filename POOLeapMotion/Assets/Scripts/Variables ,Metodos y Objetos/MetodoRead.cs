@@ -1,25 +1,24 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class MetodoRead : MetodoBase
 {
-    ObjetoBase objeto;
-    int param1;
-    public string param1string;
-
-    public override void Init(ObjetoBase objeto) {
-        this.objeto = objeto;
+    public override void Execute(List<TMP_InputField> inputs, TextMeshPro output)
+    {
+        StartCoroutine(Ejecutar(inputs, output));
     }
 
-    public override void Execute()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override IEnumerator WaitForParams()
-    {
-        throw new System.NotImplementedException();
+    public IEnumerator Ejecutar(List<TMP_InputField> inputs, TextMeshPro output){
+        inputs[0].gameObject.SetActive(true);
+        while(!inputsReady){
+            yield return null;
+        }
+        output.text = inputs[0].text;
+        inputs[0].gameObject.SetActive(false);
+        ExploracionMetodo.Instance.buttons[0].gameObject.SetActive(true);
+        inputsReady = false;
     }
 
     public override string WriteFile()

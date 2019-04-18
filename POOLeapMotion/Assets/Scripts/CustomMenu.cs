@@ -13,7 +13,7 @@ public class CustomMenu : MonoBehaviour {
 	[Header("Tweens")]
 	public TransformTweenBehaviour tween;
 
-	public void Start(){
+	public void Awake(){
 		for(int i=0; i<buttons.Count; i++){
 			rbs.Add(buttons[i].gameObject.GetComponent<Rigidbody>());
 		}

@@ -10,9 +10,9 @@ public class PanelIzquierdo : CustomMenu
 
     public static PanelIzquierdo Instance;
 
-    public new void Start()
+    public new void Awake()
     {
-        base.Start();
+        base.Awake();
         for (int i = 0; i < lineasVariables.Length; i++)
         {
             lineasVariables[i].indice = i;
@@ -68,7 +68,7 @@ public class PanelIzquierdo : CustomMenu
             {
                 finish = true;
                 lineasMetodos[i].metodo = CreadorObjetos.Instance.metodos[key];
-                lineasMetodos[i].nombre.text = "public " + lineasMetodos[i].metodo.nombre;
+                lineasMetodos[i].nombre.text = lineasMetodos[i].metodo.cabecera;
                 lineasMetodos[i].gameObject.SetActive(true);
             }
         }
@@ -103,7 +103,7 @@ public class PanelIzquierdo : CustomMenu
         lineasVariables[index].intVariable = CreadorObjetos.Instance.variablesInt[CreadorObjetos.Instance.variablesInt.Count - 1];
         lineasVariables[index].floatVariable = null;
         lineasVariables[index].boolVariable = null;
-        lineasVariables[index].nombre.text = "int " + lineasVariables[index].intVariable.nombre;
+        lineasVariables[index].nombre.text = lineasVariables[index].intVariable.proteccion.ToString().ToLower()+" int " + lineasVariables[index].intVariable.nombre;
 
     }
 
@@ -113,7 +113,7 @@ public class PanelIzquierdo : CustomMenu
         lineasVariables[index].intVariable = null;
         lineasVariables[index].floatVariable = CreadorObjetos.Instance.variablesFloat[CreadorObjetos.Instance.variablesFloat.Count - 1];
         lineasVariables[index].boolVariable = null;
-        lineasVariables[index].nombre.text = "float " + lineasVariables[index].floatVariable.nombre;
+        lineasVariables[index].nombre.text = lineasVariables[index].floatVariable.proteccion.ToString().ToLower()+" float " + lineasVariables[index].floatVariable.nombre;
     }
 
     public void AddBool(int index)
@@ -122,7 +122,7 @@ public class PanelIzquierdo : CustomMenu
         lineasVariables[index].intVariable = null;
         lineasVariables[index].floatVariable = null;
         lineasVariables[index].boolVariable = CreadorObjetos.Instance.variablesBoolean[CreadorObjetos.Instance.variablesBoolean.Count - 1];
-        lineasVariables[index].nombre.text = "boolean " + lineasVariables[index].boolVariable.nombre;
+        lineasVariables[index].nombre.text = lineasVariables[index].boolVariable.proteccion.ToString().ToLower()+" boolean " + lineasVariables[index].boolVariable.nombre;
     }
 
     public void ReOrderVariable(int j)

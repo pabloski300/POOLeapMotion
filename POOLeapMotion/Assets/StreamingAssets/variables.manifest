@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 946594133
+CRC: 4216811495
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 0bfde822551c1e2d3de6cbdfbf56f09a
+    Hash: e524b7ad1bf6f5d81008668d849c6144
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 9071263a6e75960e382fb452860501f0
+    Hash: ddbe4ecd877815b2bb2724c042eea909
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -17,19 +17,39 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 23
   Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
 - Class: 33
   Script: {instanceID: 0}
 - Class: 43
   Script: {instanceID: 0}
 - Class: 48
   Script: {instanceID: 0}
+- Class: 54
+  Script: {instanceID: 0}
+- Class: 65
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 2f10fa40360571247a7ca806d6859557, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 171097f00f497504da15cafb01f904f2, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 28f5218448c31b04ead4a1ef4de63ab9, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: db2710eea5fc817439ee4d5c5ceaee24, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 32ecd7eeddafefa40a5ec173d866a16b, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 1aceea2f5c70da64e893474302ff53e6, type: 3}
 - Class: 115
+  Script: {instanceID: 0}
+- Class: 222
+  Script: {instanceID: 0}
+- Class: 224
   Script: {instanceID: 0}
 Assets:
 - Assets/Prefabs/BoolVariable.prefab

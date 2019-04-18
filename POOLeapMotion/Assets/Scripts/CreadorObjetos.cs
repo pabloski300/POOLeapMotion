@@ -71,15 +71,16 @@ public class CreadorObjetos : CustomMenu
     bool modify;
 
     #region Inicializacion
-    private new void Start()
+    private new void Awake()
     {
-        base.Start();
+        base.Awake();
 
-        nombreInput.inputValidator = InputValidationAlphaOnly.CreateInstance<InputValidationAlphaOnly>();
         bundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, "objeto"));
 
         numberVariables = 0;
         numberMethods = 0;
+
+        nombreInput.gameObject.SetActive(true);
 
         if (Instance == null)
         {
@@ -142,6 +143,8 @@ public class CreadorObjetos : CustomMenu
             numberMethods++;
         }
         nombreInput.text = objectToModify.nombre;
+        nombreInput.Select();
+        nombreInput.stringPosition = nombreInput.text.Length;
         modify = true;
         TrimString();
     }
@@ -149,7 +152,6 @@ public class CreadorObjetos : CustomMenu
     public new void Open()
     {
         nombreInput.gameObject.SetActive(true);
-        nombreInput.Select();
         base.Open();
     }
 
@@ -162,6 +164,7 @@ public class CreadorObjetos : CustomMenu
     public new void Close()
     {
         base.Close();
+        nombreInput.DeactivateInputField();
         nombreInput.gameObject.SetActive(false);
     }
 
@@ -232,10 +235,11 @@ public class CreadorObjetos : CustomMenu
         if(modify)
         {
             MenuGrid.Instance.anchorablePrefs.Remove(objectToModify);
+            MenuGrid.Instance.RemoveOfTypeObject(objectToModify);
             Destroy(objectToModify.gameObject);
         }
 
-        GameObject objeto = Instantiate(bundle.LoadAsset<GameObject>("ObjetoBasico"), Vector3.zero, Quaternion.identity);
+        GameObject objeto = Instantiate(bundle.LoadAsset<GameObject>("ObjetoBasico"), new Vector3(999,999,999), Quaternion.identity);
         ObjetoBase objetoScript = objeto.GetComponent<ObjetoBase>();
 
         objetoScript.nombre = nombreInput.text;
@@ -277,56 +281,39 @@ public class CreadorObjetos : CustomMenu
 
         objetoScript.codigo += s;
 
-        MenuGrid.Instance.anchorablePrefs.Add(objeto.GetComponent<ObjetoBase>());
-    }
+        bool colorRepeat;
 
-    void CreateNew(){
-        GameObject objeto = Instantiate(bundle.LoadAsset<GameObject>("ObjetoBasico"), Vector3.zero, Quaternion.identity);
-        ObjetoBase objetoScript = objeto.GetComponent<ObjetoBase>();
+        float r;
+        float g;
+        float b;
 
-        objetoScript.nombre = nombreInput.text;
+        do{
+            colorRepeat = false;
+            System.Random random = new System.Random();
+            
+            r = UnityEngine.Random.Range(0f,1f);
+            g = UnityEngine.Random.Range(0f,1f);
+            b = UnityEngine.Random.Range(0f,1f);
 
-        string s = cabecera.text + " {\n";
+            for(int i=0; i<MenuGrid.Instance.anchorablePrefs.Count && !colorRepeat; i++){
+                colorRepeat = MenuGrid.Instance.anchorablePrefs[i].Material.color.r == r && 
+                MenuGrid.Instance.anchorablePrefs[i].Material.color.g == g &&
+                MenuGrid.Instance.anchorablePrefs[i].Material.color.b == b;
+            }
 
-        foreach (IntVariable var in variablesInt)
-        {
-            objetoScript.variablesInt.Add(var);
-            var.gameObject.transform.parent = objetoScript.variablesParent;
-            var.gameObject.transform.localScale = Vector3.one;
-            s += var.WriteFile();
-        }
-        foreach (FloatVariable var in variablesFloat)
-        {
-            objetoScript.variablesFloat.Add(var);
-            var.gameObject.transform.parent = objetoScript.variablesParent;
-            var.gameObject.transform.localScale = Vector3.one;
-            s += var.WriteFile();
-        }
-        foreach (BoolVariable var in variablesBoolean)
-        {
-            objetoScript.variablesBool.Add(var);
-            var.gameObject.transform.parent = objetoScript.variablesParent;
-            var.gameObject.transform.localScale = Vector3.one;
-            s += var.WriteFile();
-        }
-        foreach (MetodoBase var in metodos.Values)
-        {
-            objetoScript.metodos.Add(var);
-            var.gameObject.transform.parent = objetoScript.metodoParent;
-            var.gameObject.transform.localScale = Vector3.one;
-            s += var.WriteFile();
-        }
+            for(int i=0; i<MenuGrid.Instance.variables.Count && !colorRepeat; i++){
+                colorRepeat = MenuGrid.Instance.variables[i].ColorVariable.color.r == r && 
+                MenuGrid.Instance.variables[i].ColorVariable.color.g == g &&
+                MenuGrid.Instance.variables[i].ColorVariable.color.b == b;
+            }
 
-        s += "}";
+        } while(colorRepeat);
 
-        //Debug.Log(s);
-
-        objetoScript.codigo += s;
+        objetoScript.Material = new Material(Shader.Find("Standard"));
+        objetoScript.Material.color = new Color(r,g,b);
 
         MenuGrid.Instance.anchorablePrefs.Add(objeto.GetComponent<ObjetoBase>());
     }
-
-    void CreateModify(){}
     #endregion
 
 }

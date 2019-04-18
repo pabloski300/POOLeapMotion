@@ -10,7 +10,7 @@ public class Comenzar : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        tweenInicio.tweenDuration = 0.01f;
-        tweenInicio.PlayForward();
+        //tweenInicio.tweenDuration = 0.01f;
+        //tweenInicio.PlayForward();
     }
 }

@@ -16,6 +16,9 @@ public class LineaClase : MonoBehaviour
     [HideInInspector]
     public ObjetoBase objeto;
 
+    public MeshRenderer color;
+
+
     [HideInInspector]
     public int indice;
 
@@ -32,6 +35,7 @@ public class LineaClase : MonoBehaviour
     public void Eliminar()
     {
         MenuGrid.Instance.RemoveOfTypeObject(objeto);
+        MenuGrid.Instance.RemoveOfTypeVariable(objeto);
         MenuGrid.Instance.anchorablePrefs.Remove(objeto);
         Destroy(objeto.gameObject);
         objeto = null;
@@ -53,6 +57,6 @@ public class LineaClase : MonoBehaviour
     }
 
     public void CrearVariable(){
-        MenuVariable.Instance.OpenNew(nombre.text);
+        MenuVariable.Instance.OpenNew(nombre.text, objeto.Material);
     }
 }

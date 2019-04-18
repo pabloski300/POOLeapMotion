@@ -80,7 +80,7 @@ namespace Leap.Unity.Animation {
       }
     }
 
-    void Awake() {
+    void Start() {
       initUnityEvents();
 
       // Tween setup methods return the Tween object itself, so you can chain your setup
@@ -111,8 +111,8 @@ namespace Leap.Unity.Animation {
         _tween.Play(Direction.Forward);
       }
       else {
-        //_tween.progress = 0.0000001F;
-        //_tween.Play(Direction.Backward);
+        _tween.progress = 0.0000001F;
+        _tween.Play(Direction.Backward);
       }
     }
 

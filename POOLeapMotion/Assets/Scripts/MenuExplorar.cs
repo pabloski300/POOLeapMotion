@@ -9,8 +9,8 @@ public class MenuExplorar : CustomMenu
 
     public static MenuExplorar Instance;
 
-    private new void Start() {
-        base.Start();
+    private new void Awake() {
+        base.Awake();
         if(Instance == null){
             Instance = this;
         }else{

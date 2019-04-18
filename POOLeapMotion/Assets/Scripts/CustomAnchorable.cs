@@ -7,34 +7,73 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CustomAnchorable : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler,IPointerExitHandler, IPointerUpHandler {
+public class CustomAnchorable : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler
+{
 
     InteractionBehaviour interaction;
     public InteractionBehaviour Interaction { get { return interaction; } }
     AnchorableBehaviour anchorable;
     public AnchorableBehaviour Anchorable { get { return anchorable; } }
-    CustomAnchor gridAnchor;
-    public CustomAnchor GridAnchor { get { return gridAnchor; } set { gridAnchor = value; } }
-    CustomAnchor centralAnchor;
-    public CustomAnchor CentralAnchor { get { return centralAnchor; } set { centralAnchor = value; } }
+    CustomAnchor mainAnchor;
+    public CustomAnchor MainAnchor { get { return mainAnchor; } set { mainAnchor = value; } }
+    CustomAnchor subAnchor;
+    public CustomAnchor SubAnchor { get { return subAnchor; } set { subAnchor = value; } }
 
     public GameObject panelSuperior;
     public TextMeshPro textoPanelSuperior;
 
+    protected bool selected = false;
+    protected bool isOver = false;
+
+    Camera cam;
+
     // Use this for initialization
-    public void Init () {
+    public void Init(CustomAnchor main)
+    {
         interaction = GetComponent<InteractionBehaviour>();
         anchorable = GetComponent<AnchorableBehaviour>();
-        interaction.OnGraspBegin += (()=> MenuGrid.Instance.ReturnToAnchor(this));
-        interaction.OnGraspEnd += (() => GraspEnd());
-	}
+        MainAnchor = main;
+        cam = FindObjectOfType<Camera>();
+        ReturnToStart();
+    }
 
-    void GraspEnd()
+    public void Update()
     {
-        if(anchorable.anchor != gridAnchor)
+        if (selected)
         {
-            anchorable.anchorLerpCoeffPerSec = centralAnchor.LerpCoeficient;
-            anchorable.anchor = centralAnchor;
+            Vector3 pos = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, cam.transform.position.z * 1.25f));
+            transform.position = new Vector3(pos.x * -1, (pos.y * -1) + (cam.transform.position.y * 2), transform.position.z);
+            //transform.position += new
+        }
+
+
+        if (isOver && Input.GetMouseButtonDown(0) && !interaction.ignoreGrasping)
+        {
+            selected = true;
+            Interaction.OnHoverEnd();
+            anchorable.isAttached = false;
+            anchorable.anchor.NotifyDetached(anchorable);
+            anchorable.anchor = null;
+            //Debug.Log("clicked");
+        }
+
+        if (selected && isOver && Input.GetMouseButtonUp(0))
+        {
+            selected = false;
+            anchorable.anchor = mainAnchor as Anchor;
+            anchorable.anchorLerpCoeffPerSec = mainAnchor.LerpCoeficient;
+            anchorable.isAttached = true;
+            anchorable.anchor.NotifyAttached(anchorable);
+            Debug.Log("click end");
+        }
+    }
+
+    public void GraspEnd()
+    {
+        if (anchorable.anchor != mainAnchor)
+        {
+            anchorable.anchorLerpCoeffPerSec = subAnchor.LerpCoeficient;
+            anchorable.anchor = subAnchor;
             anchorable.isAttached = true;
             anchorable.anchor.NotifyAttached(anchorable);
         }
@@ -42,8 +81,8 @@ public class CustomAnchorable : MonoBehaviour, IPointerClickHandler, IPointerEnt
 
     public void ReturnToStart()
     {
-        anchorable.anchorLerpCoeffPerSec = gridAnchor.LerpCoeficient;
-        anchorable.anchor = gridAnchor;
+        anchorable.anchorLerpCoeffPerSec = mainAnchor.LerpCoeficient;
+        anchorable.anchor = mainAnchor;
         anchorable.isAttached = true;
         anchorable.anchor.NotifyAttached(anchorable);
     }
@@ -53,36 +92,47 @@ public class CustomAnchorable : MonoBehaviour, IPointerClickHandler, IPointerEnt
         this.transform.localScale = new Vector3(1, 1, 1);
     }
 
-    public void OnPointerClick(PointerEventData eventData)
+    /*public void OnPointerClick(PointerEventData eventData)
     {
-        if(anchorable.anchor == gridAnchor)
-        {
-            MenuGrid.Instance.ReturnToAnchor(this as ObjetoBase ,centralAnchor);
-            anchorable.anchorLerpCoeffPerSec = centralAnchor.LerpCoeficient;
-            anchorable.isAttached = true;
-            anchorable.anchor.NotifyAttached(anchorable);
-            MenuGrid.Instance.ReturnToAnchor(this as ObjetoBase ,centralAnchor);
-        }
-    }
+            Interaction.OnHoverEnd();
+            anchorable.isAttached = false;
+            anchorable.anchor.NotifyDetached(anchorable);
+            selected = true;
+            Debug.Log("click begin");  
+    }*/
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Interaction.OnHoverBegin();
-        Debug.Log("hover begin");
+        if (!selected && !interaction.ignoreGrasping)
+        {
+            Interaction.OnHoverBegin();
+            isOver = true;
+            //Debug.Log(isOver);
+        }
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        Interaction.OnHoverEnd();
-        Debug.Log("hover end");
+        if (!selected)
+        {
+            Interaction.OnHoverEnd();
+            isOver = false;
+        }
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        throw new System.NotImplementedException();
+        //selected = false;
+        //anchorable.anchor = gridAnchor as Anchor;
+        //anchorable.anchorLerpCoeffPerSec = gridAnchor.LerpCoeficient;
+        //anchorable.isAttached = true;
+        //anchorable.anchor.NotifyAttached(anchorable);
+        //Debug.Log("click end");
+        //MenuGrid.Instance.ReturnToAnchor(this as ObjetoBase ,centralAnchor);
     }
 
-    public void LookAtCamera(){
-        panelSuperior.transform.forward = -(Camera.current.transform.position - panelSuperior.transform.position);
+    public void LookAtCamera()
+    {
+        panelSuperior.transform.forward = -(cam.transform.position - panelSuperior.transform.position);
     }
 }

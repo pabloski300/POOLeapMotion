@@ -91,17 +91,19 @@ public class CreadorVariable : CustomMenu
     int indiceLinea = 0;
 
     #region Inicializacion
-    private new void Start()
+    private new void Awake()
     {
-        base.Start();
+        base.Awake();
         bundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, "variables"));
-        nombreInput.inputValidator = InputValidationAlphaOnly.CreateInstance<InputValidationAlphaOnly>();
         botonesProteccion[0].OnPress += (() => { NivelDeProteccion = ProteccionVar.PUBLIC; });
         botonesProteccion[1].OnPress += (() => { NivelDeProteccion = ProteccionVar.PRIVATE; });
         botonesProteccion[2].OnPress += (() => { NivelDeProteccion = ProteccionVar.PROTECTED; });
         botonesTipo[0].OnPress += (() => { Tipo = TipoVar.INT; });
         botonesTipo[1].OnPress += (() => { Tipo = TipoVar.FLOAT; });
         botonesTipo[2].OnPress += (() => { Tipo = TipoVar.BOOLEAN; });
+
+        nombreInput.gameObject.SetActive(false);
+
         if (Instance == null)
         {
             Instance = this;
@@ -132,7 +134,6 @@ public class CreadorVariable : CustomMenu
     #region MetodosTween
     public new void Open(){
         nombreInput.gameObject.SetActive(true);
-        nombreInput.Select();
         base.Open();
     }
 
@@ -150,6 +151,7 @@ public class CreadorVariable : CustomMenu
         tipo = TipoVar.INT;
         nivelDeProteccion = var.proteccion;
         nombreInput.text = var.nombre;
+        nombreInput.stringPosition = nombreInput.text.Length;
         indiceLinea = i;
         modify = true;
         TrimString();
@@ -163,6 +165,7 @@ public class CreadorVariable : CustomMenu
         tipo = TipoVar.BOOLEAN;
         nivelDeProteccion = var.proteccion;
         nombreInput.text = var.nombre;
+        nombreInput.stringPosition = nombreInput.text.Length;
         indiceLinea = i;
         modify = true;
         TrimString();
@@ -176,6 +179,7 @@ public class CreadorVariable : CustomMenu
         tipo = TipoVar.FLOAT;
         nivelDeProteccion = var.proteccion;
         nombreInput.text = var.nombre;
+        nombreInput.stringPosition = nombreInput.text.Length;
         indiceLinea = i;
         modify = true;
         TrimString();
@@ -183,7 +187,9 @@ public class CreadorVariable : CustomMenu
 
     public new void Close(){
         base.Close();
+        nombreInput.DeactivateInputField();
         nombreInput.gameObject.SetActive(false);
+
     }
 
     public void End()

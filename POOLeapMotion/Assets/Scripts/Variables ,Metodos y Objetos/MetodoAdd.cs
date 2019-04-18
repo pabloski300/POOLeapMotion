@@ -5,24 +5,13 @@ using UnityEngine;
 
 public class MetodoAdd : MetodoBase
 {
-    ObjetoBase objeto;
-    int param1;
-    int param2;
 
-    public TMP_InputField input2;
-
-    public override void Init(ObjetoBase objeto) {
-        this.objeto = objeto;
-    }
-
-    public override void Execute()
+    public override void Execute(List<TMP_InputField> inputs, TextMeshPro output)
     {
-        throw new System.NotImplementedException();
-    }
-
-    public override IEnumerator WaitForParams()
-    {
-        throw new System.NotImplementedException();
+        int x = int.Parse(inputs[0].text);
+        int y = int.Parse(inputs[1].text);
+        output.text = (x+y).ToString();
+        ExploracionMetodo.Instance.buttons[0].gameObject.SetActive(true);
     }
 
     public override string WriteFile()

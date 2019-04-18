@@ -6,7 +6,7 @@ using System.Linq;
 using Leap.Unity.Examples;
 using System.IO;
 
-public class MenuGrid : MonoBehaviour
+public class MenuGrid : CustomMenu
 {
 
     [HideInInspector]
@@ -37,9 +37,9 @@ public class MenuGrid : MonoBehaviour
     AssetBundle bundle;
 
     // Use this for initialization
-    void Start()
+    new void Awake()
     {
-
+        base.Awake();
         if (Instance == null)
         {
             Instance = this;
@@ -53,7 +53,6 @@ public class MenuGrid : MonoBehaviour
         objects = new List<ObjetoBase>();
         gridObjeto = gridObjectParent.GetComponentsInChildren<CustomAnchor>().ToList();
         gridVariable = gridVariableParent.GetComponentsInChildren<CustomAnchor>().ToList();
-        Debug.Log(gridVariable.Count);
         centralAnchor = GameObject.FindGameObjectWithTag("CentralAnchor").GetComponent<CustomAnchor>();
         gridObjeto.Sort();
 
@@ -81,7 +80,7 @@ public class MenuGrid : MonoBehaviour
         {
             if (target != emmisor)
             {
-                if (target.Anchorable.anchor == target.CentralAnchor)
+                if (target.Anchorable.anchor == target.SubAnchor)
                 {
                     target.ReturnToStart();
                 }
@@ -99,7 +98,7 @@ public class MenuGrid : MonoBehaviour
         {
             if (target != emmisor)
             {
-                if (target.Anchorable.anchor == target.CentralAnchor)
+                if (target.Anchorable.anchor == target.SubAnchor)
                 {
                     target.ReturnToStart();
                 }
@@ -116,14 +115,11 @@ public class MenuGrid : MonoBehaviour
             ObjetoBase newAnchorable = newObject.GetComponent<ObjetoBase>();
             anchor.gameObject.SetActive(true);
             anchor.objectAnchored = newAnchorable;
-            newAnchorable.Init();
-            newAnchorable.Anchorable.anchor = anchor;
-            newAnchorable.GridAnchor = anchor;
-            newAnchorable.CentralAnchor = centralAnchor;
+            newAnchorable.Init(anchor);
             objects.Add(newAnchorable);
             activeObjectAnchors++;
             newAnchorable.ReturnToStart();
-            Consola.Instance.Write("new " + newAnchorable.nombre + "();");
+            Consola.Instance.Write("new "+"<#"+ColorUtility.ToHtmlStringRGB(newAnchorable.Material.color)+">"+ newAnchorable.nombre + "</color>();");
 
         }
         else
@@ -132,7 +128,7 @@ public class MenuGrid : MonoBehaviour
         }
     }
 
-    public void SpawnVariable(string clase, string nombre)
+    public void SpawnVariable(string clase, string nombre, Material colorVariable, Material colorClase)
     {
         if (activeVariableAnchors < gridVariable.Count)
         {
@@ -141,15 +137,12 @@ public class MenuGrid : MonoBehaviour
             VariableObjeto variable = objeto.GetComponent<VariableObjeto>();
             anchor.gameObject.SetActive(true);
             anchor.objectAnchored = variable;
-            variable.Init();
-            variable.Anchorable.anchor = anchor;
-            variable.GridAnchor = anchor;
-            variable.CentralAnchor = centralAnchor;
             variables.Add(variable);
             activeVariableAnchors++;
-            variable.ReturnToStart();
-            variable.Init(nombre,clase);
-            Consola.Instance.Write(clase + " " + nombre + ";");
+            variable.ColorClase = colorClase;
+            variable.ColorVariable = colorVariable;
+            variable.Init(nombre, clase, anchor, colorVariable, colorClase);
+            Consola.Instance.Write("<#"+ColorUtility.ToHtmlStringRGB(colorClase.color)+">"+clase +"</color>"+" " + "<#"+ColorUtility.ToHtmlStringRGB(colorVariable.color)+">"+nombre +"</color>"+ ";");
         }
     }
 
@@ -236,7 +229,7 @@ public class MenuGrid : MonoBehaviour
     {
         if (activeVariableAnchors > 0)
         {
-            CustomAnchor anchor = gridObjeto.LastOrDefault(x => x.gameObject.activeSelf);
+            CustomAnchor anchor = gridVariable.LastOrDefault(x => x.gameObject.activeSelf);
             VariableObjeto oldObject = anchor.objectAnchored as VariableObjeto;
             variables.Remove(oldObject);
             anchor.NotifyDetached(oldObject.Anchorable);
@@ -257,7 +250,7 @@ public class MenuGrid : MonoBehaviour
     {
         if (activeObjectAnchors > 0)
         {
-            CustomAnchor anchor = gridObjeto.FirstOrDefault(x => x.objectAnchored == c);
+            CustomAnchor anchor = gridVariable.FirstOrDefault(x => x.objectAnchored == c);
             VariableObjeto oldObject = anchor.objectAnchored as VariableObjeto;
             variables.Remove(oldObject);
             anchor.NotifyDetached(oldObject.Anchorable);
@@ -278,7 +271,7 @@ public class MenuGrid : MonoBehaviour
     {
         for (int i = 0; i < variables.Count; i++)
         {
-            CustomAnchor anchor = gridObjeto.FirstOrDefault(x => x.objectAnchored == variables[i]);
+            CustomAnchor anchor = gridVariable.FirstOrDefault(x => x.objectAnchored == variables[i]);
             VariableObjeto oldObject = anchor.objectAnchored as VariableObjeto;
             variables.Remove(oldObject);
             anchor.NotifyDetached(oldObject.Anchorable);

@@ -1,25 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class MetodoMul : MetodoBase
 {
-    ObjetoBase objeto;
-    int param1;
-    public string param1string;
 
-    public override void Init(ObjetoBase objeto) {
-        this.objeto = objeto;
-    }
-
-    public override void Execute()
+    public override void Execute(List<TMP_InputField> inputs, TextMeshPro output)
     {
-        throw new System.NotImplementedException();
-    }
-
-    public override IEnumerator WaitForParams()
-    {
-        throw new System.NotImplementedException();
+        int x = int.Parse(inputs[0].text);
+        int y = int.Parse(inputs[1].text);
+        output.text = (x*y).ToString();
+        ExploracionMetodo.Instance.buttons[0].gameObject.SetActive(true);
     }
 
     public override string WriteFile()

@@ -15,9 +15,9 @@ public class Consola : CustomMenu
 
     public static Consola Instance;
 
-    private new void Start()
+    private new void Awake()
     {
-        base.Start();
+        base.Awake();
         if (Instance == null)
         {
             Instance = this;

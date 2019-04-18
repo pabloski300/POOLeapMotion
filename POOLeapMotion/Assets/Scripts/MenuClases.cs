@@ -49,9 +49,9 @@ public class MenuClases : CustomMenu
 
 
     // Start is called before the first frame update
-    new void Start()
+    new void Awake()
     {
-        base.Start();
+        base.Awake();
         for(int i=0; i<lines.Length; i++){
             lines[i].indice = i;
         }
@@ -76,6 +76,7 @@ public class MenuClases : CustomMenu
             {
                 lines[i].objeto = MenuGrid.Instance.anchorablePrefs[i];
                 lines[i].nombre.text = lines[i].objeto.nombre;
+                lines[i].color.material = lines[i].objeto.Material;
             }
             lines[i].gameObject.SetActive(active);
         }
