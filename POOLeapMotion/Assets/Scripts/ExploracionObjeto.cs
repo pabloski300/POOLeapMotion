@@ -32,6 +32,7 @@ public class ExploracionObjeto : CustomMenu
         GetButton("EliminarObjeto").OnPress += (()=>EliminarObjeto());
         GetButton("EliminarReferencia").OnPress += (()=>EliminarReferencia());
         GetButton("EliminarVariable").OnPress += (()=>EliminarVariable());
+        GetButton("Contraer").gameObject.SetActive(false);
     }
 
     public void Open(VariableObjeto _variable)
@@ -96,6 +97,7 @@ public class ExploracionObjeto : CustomMenu
         variable.Interaction.ignoreGrasping = true;
         anchorMetodo.gameObject.SetActive(true);
         objeto.Expandir();
+        UnlockButtonsDelayed(0.5f);
     }
 
     public void Contraer()
@@ -106,6 +108,7 @@ public class ExploracionObjeto : CustomMenu
         }
         anchorMetodo.gameObject.SetActive(false);
         objeto.Contraer();
+        UnlockButtonsDelayed(0.5f);
     }
 
     public void EliminarObjeto()

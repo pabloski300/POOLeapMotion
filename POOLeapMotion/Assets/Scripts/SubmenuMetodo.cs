@@ -27,6 +27,13 @@ public class SubmenuMetodo : MonoBehaviour
     void Start()
     {
         Clear();
+        if (name == "MenuDiv")
+        {
+            foreach (TMP_InputField t in inputs)
+            {
+                t.gameObject.SetActive(false);
+            }
+        }
     }
 
     public void Clear()
@@ -53,18 +60,22 @@ public class SubmenuMetodo : MonoBehaviour
         }
     }
 
-    public void TrimString(int i){
-        if(inputs[i].text.Trim() == ""){
+    public void TrimString(int i)
+    {
+        if (inputs[i].text.Trim() == "")
+        {
             ExploracionMetodo.Instance.GetButton("Ejecutar").gameObject.SetActive(false);
             return;
         }
 
-        if(!midExecution){
+        if (!midExecution)
+        {
             ExploracionMetodo.Instance.GetButton("Ejecutar").gameObject.SetActive(true);
         }
 
 
-        if(defaultType != DefaultType.String){
+        if (defaultType != DefaultType.String)
+        {
             inputs[i].text = inputs[i].text.Trim();
         }
 
@@ -73,12 +84,13 @@ public class SubmenuMetodo : MonoBehaviour
             inputs[i].text = inputs[i].text.Remove(inputs[i].characterLimit, 1);
         }
 
-        
+
     }
     public void InputsReady()
     {
         Debug.Log(inputs[0].text);
-        if(inputs[0].text != ""){
+        if (inputs[0].text != "")
+        {
             ExploracionMetodo.Instance.metodoActual.inputsReady = true;
         }
     }

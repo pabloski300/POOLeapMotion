@@ -21,9 +21,6 @@ public class ExploracionMetodo : CustomMenu
         {
             Destroy(this.gameObject);
         }
-        foreach(SubmenuMetodo m in menus){
-            m.gameObject.SetActive(true);
-        }
     }
 
     public void OpenNew(MetodoBase metodo)

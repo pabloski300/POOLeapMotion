@@ -218,6 +218,7 @@ public class MenuGrid : CustomMenu
                 MenuClases.Instance.NumberObjetos--;
             }
         }
+        RemoveOfTypeVariable(o);
     }
 
         public void RemoveLastVariable()

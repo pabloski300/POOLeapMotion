@@ -32,7 +32,6 @@ public class MenuVariable : CustomMenu
     new void Awake()
     {
         base.Awake();
-        nombreInput.inputValidator = InputValidationAlphaOnly.CreateInstance<InputValidationAlphaOnly>();
 
         nombreInput.gameObject.SetActive(false);
 
