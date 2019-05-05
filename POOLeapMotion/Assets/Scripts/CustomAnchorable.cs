@@ -34,7 +34,7 @@ public class CustomAnchorable : MonoBehaviour, IPointerEnterHandler, IPointerExi
         anchorable = GetComponent<AnchorableBehaviour>();
         MainAnchor = main;
         cam = FindObjectOfType<Camera>();
-        ReturnToStart();
+        GraspEnd();
     }
 
     public void Update()
@@ -70,21 +70,11 @@ public class CustomAnchorable : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
     public void GraspEnd()
     {
-        if (anchorable.anchor != mainAnchor)
-        {
-            anchorable.anchorLerpCoeffPerSec = subAnchor.LerpCoeficient;
-            anchorable.anchor = subAnchor;
-            anchorable.isAttached = true;
-            anchorable.anchor.NotifyAttached(anchorable);
-        }
-    }
-
-    public void ReturnToStart()
-    {
         anchorable.anchorLerpCoeffPerSec = mainAnchor.LerpCoeficient;
         anchorable.anchor = mainAnchor;
         anchorable.isAttached = true;
         anchorable.anchor.NotifyAttached(anchorable);
+
     }
 
     public void ShowVariables()

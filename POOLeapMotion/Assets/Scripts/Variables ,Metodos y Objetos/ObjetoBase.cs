@@ -43,6 +43,8 @@ public class ObjetoBase : CustomAnchorable
 
     public new void Init(CustomAnchor main)
     {
+		base.Init(main);
+        Interaction.OnGraspEnd += (()=>GraspEnd());
         material = cuerpo.material;
         IntVariable[] intVariables = GetComponentsInChildren<IntVariable>();
 
@@ -72,7 +74,7 @@ public class ObjetoBase : CustomAnchorable
         }
         foreach (MetodoBase k in metodos)
         {
-            anchorsMetodo[indexVar].gameObject.SetActive(true);
+            anchorsMetodo[indexMet].gameObject.SetActive(true);
             k.Init(this,anchorsMetodo[indexMet]);
             k.transform.position = anchorsMetodo[indexMet].transform.position;
             indexMet++;

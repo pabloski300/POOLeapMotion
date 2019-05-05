@@ -29,6 +29,9 @@ public class ExploracionObjeto : CustomMenu
         {
             Destroy(this.gameObject);
         }
+        GetButton("EliminarObjeto").OnPress += (()=>EliminarObjeto());
+        GetButton("EliminarReferencia").OnPress += (()=>EliminarReferencia());
+        GetButton("EliminarVariable").OnPress += (()=>EliminarVariable());
     }
 
     public void Open(VariableObjeto _variable)
@@ -50,15 +53,15 @@ public class ExploracionObjeto : CustomMenu
             objeto.Anchorable.anchor = anchorObjeto;
             objeto.Anchorable.isAttached = true;
             objeto.Anchorable.anchor.NotifyAttached(objeto.Anchorable);
-            buttons[0].gameObject.SetActive(true);
-            buttons[2].gameObject.SetActive(true);
-            buttons[4].gameObject.SetActive(true);
+            GetButton("Expandir").gameObject.SetActive(true);
+            GetButton("EliminarObjeto").gameObject.SetActive(true);
+            GetButton("EliminarReferencia").gameObject.SetActive(true);
         }
         else
         {
-            buttons[0].gameObject.SetActive(false);
-            buttons[2].gameObject.SetActive(false);
-            buttons[4].gameObject.SetActive(false);
+            GetButton("Expandir").gameObject.SetActive(false);
+            GetButton("EliminarObjeto").gameObject.SetActive(false);
+            GetButton("EliminarReferencia").gameObject.SetActive(false);
         }
     }
 
@@ -73,6 +76,7 @@ public class ExploracionObjeto : CustomMenu
             variable.Anchorable.anchor = variable.MainAnchor;
             variable.Anchorable.isAttached = true;
             variable.Anchorable.anchor.NotifyAttached(variable.Anchorable);
+            variable = null;
         }
         if (objeto != null)
         {
@@ -83,41 +87,51 @@ public class ExploracionObjeto : CustomMenu
             objeto.Anchorable.anchor = objeto.MainAnchor;
             objeto.Anchorable.isAttached = true;
             objeto.Anchorable.anchor.NotifyAttached(objeto.Anchorable);
+            objeto = null;
         }
     }
 
-    public void Expandir(){
+    public void Expandir()
+    {
         variable.Interaction.ignoreGrasping = true;
         anchorMetodo.gameObject.SetActive(true);
         objeto.Expandir();
     }
 
-    public void Contraer(){
-        if(variable){
+    public void Contraer()
+    {
+        if (variable)
+        {
             variable.Interaction.ignoreGrasping = false;
         }
         anchorMetodo.gameObject.SetActive(false);
         objeto.Contraer();
     }
 
-    public void EliminarObjeto(){
+    public void EliminarObjeto()
+    {
         variable.objetoReferenciado = null;
         MenuGrid.Instance.RemoveOneObject(objeto);
         objeto = null;
-        buttons[0].gameObject.SetActive(false);
-        buttons[2].gameObject.SetActive(false);
-        buttons[4].gameObject.SetActive(false);
+        GetButton("Expandir").gameObject.SetActive(false);
+        GetButton("EliminarObjeto").gameObject.SetActive(false);
+        GetButton("EliminarReferencia").gameObject.SetActive(false);
     }
 
-    public void EliminarVariable(){
-        variable.objetoReferenciado = null;
+    public void EliminarVariable()
+    {
+        if (variable.objetoReferenciado != null)
+        {
+            variable.objetoReferenciado = null;
+        }
         MenuGrid.Instance.RemoveOneVariable(variable);
         variable = null;
         End();
         MenuGrid.Instance.Open();
     }
 
-    public void EliminarReferencia(){
+    public void EliminarReferencia()
+    {
         variable.objetoReferenciado = null;
         objeto.MainAnchor = objeto.SubAnchor;
         objeto.SubAnchor = null;
@@ -126,8 +140,8 @@ public class ExploracionObjeto : CustomMenu
         objeto.Anchorable.isAttached = true;
         objeto.Anchorable.anchor.NotifyAttached(objeto.Anchorable);
         objeto = null;
-        buttons[0].gameObject.SetActive(false);
-        buttons[2].gameObject.SetActive(false);
-        buttons[4].gameObject.SetActive(false);
+        GetButton("Expandir").gameObject.SetActive(false);
+        GetButton("EliminarObjeto").gameObject.SetActive(false);
+        GetButton("EliminarReferencia").gameObject.SetActive(false);
     }
 }

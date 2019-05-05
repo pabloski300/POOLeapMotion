@@ -34,8 +34,6 @@ public class MenuGrid : CustomMenu
     int activeObjectAnchors;
     int activeVariableAnchors;
 
-    AssetBundle bundle;
-
     // Use this for initialization
     new void Awake()
     {
@@ -66,8 +64,6 @@ public class MenuGrid : CustomMenu
         }
         activeObjectAnchors = 0;
         activeVariableAnchors = 0;
-
-        bundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, "variable_objeto"));
     }
 
     public void ReturnToAnchor(CustomAnchorable emmisor)
@@ -82,7 +78,7 @@ public class MenuGrid : CustomMenu
             {
                 if (target.Anchorable.anchor == target.SubAnchor)
                 {
-                    target.ReturnToStart();
+                    target.GraspEnd();
                 }
             }
         }
@@ -100,7 +96,7 @@ public class MenuGrid : CustomMenu
             {
                 if (target.Anchorable.anchor == target.SubAnchor)
                 {
-                    target.ReturnToStart();
+                    target.GraspEnd();
                 }
             }
         }
@@ -118,7 +114,7 @@ public class MenuGrid : CustomMenu
             newAnchorable.Init(anchor);
             objects.Add(newAnchorable);
             activeObjectAnchors++;
-            newAnchorable.ReturnToStart();
+            newAnchorable.GraspEnd();
             Consola.Instance.Write("new "+"<#"+ColorUtility.ToHtmlStringRGB(newAnchorable.Material.color)+">"+ newAnchorable.nombre + "</color>();");
 
         }
@@ -133,8 +129,7 @@ public class MenuGrid : CustomMenu
         if (activeVariableAnchors < gridVariable.Count)
         {
             CustomAnchor anchor = gridVariable.FirstOrDefault(x => !x.gameObject.activeSelf);
-            GameObject objeto = Instantiate(bundle.LoadAsset<GameObject>("VariableObjeto"), anchor.transform.position, anchor.transform.rotation);
-            VariableObjeto variable = objeto.GetComponent<VariableObjeto>();
+            VariableObjeto variable = Instantiate(Manager.Instance.variableObjetoPrefab, anchor.transform.position, anchor.transform.rotation);
             anchor.gameObject.SetActive(true);
             anchor.objectAnchored = variable;
             variables.Add(variable);
@@ -248,7 +243,7 @@ public class MenuGrid : CustomMenu
 
     public void RemoveOneVariable(CustomAnchorable c)
     {
-        if (activeObjectAnchors > 0)
+        if (activeVariableAnchors > 0)
         {
             CustomAnchor anchor = gridVariable.FirstOrDefault(x => x.objectAnchored == c);
             VariableObjeto oldObject = anchor.objectAnchored as VariableObjeto;

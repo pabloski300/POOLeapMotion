@@ -90,6 +90,10 @@ public class SimpleInteractionGlow : MonoBehaviour {
         targetColor = pressedColor;
       }
 
+      if (_intObj is CustomButton && (_intObj as CustomButton).Locked) {
+        targetColor = pressedColor;
+      }
+
       // Lerp actual material color to the target color.
       _material.color = Color.Lerp(_material.color, targetColor, 30F * Time.deltaTime);
     }

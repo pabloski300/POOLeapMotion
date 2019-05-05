@@ -13,6 +13,7 @@ public abstract class Variable<T> : CustomAnchorable
 	public abstract string WriteFile();
 	public virtual void Init(ObjetoBase objeto, CustomAnchor main){
 		base.Init(main);
+		Interaction.OnGraspEnd += (()=>GraspEnd());
 		this.objeto = objeto;
 	}
 }

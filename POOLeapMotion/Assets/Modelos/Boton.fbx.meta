@@ -1,0 +1,164 @@
+fileFormatVersion: 2
+guid: 1d59473d203c17e4c91f4683e68e5a7d
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: Cuerpo
+    100004: EsquinaIInfDrch
+    100006: EsquinaInfIzq
+    100008: EsquinaSupDrch
+    100010: EsquinaSupIzq
+    100012: LadoDerecho
+    100014: LadoInf
+    100016: LadoIzquierdo
+    100018: LadoSup
+    100020: EsqinaInfIzquierda
+    100022: EsquinaInfDerecha
+    100024: EsquinaSupDerecha
+    100026: EsquinaSupIzquierda
+    100028: LadoIzquiedo
+    400000: //RootNode
+    400002: Cuerpo
+    400004: EsquinaIInfDrch
+    400006: EsquinaInfIzq
+    400008: EsquinaSupDrch
+    400010: EsquinaSupIzq
+    400012: LadoDerecho
+    400014: LadoInf
+    400016: LadoIzquierdo
+    400018: LadoSup
+    400020: EsqinaInfIzquierda
+    400022: EsquinaInfDerecha
+    400024: EsquinaSupDerecha
+    400026: EsquinaSupIzquierda
+    400028: LadoIzquiedo
+    2100000: No Name
+    2300000: Cuerpo
+    2300002: EsquinaIInfDrch
+    2300004: EsquinaInfIzq
+    2300006: EsquinaSupDrch
+    2300008: EsquinaSupIzq
+    2300010: LadoDerecho
+    2300012: LadoInf
+    2300014: LadoIzquierdo
+    2300016: LadoSup
+    2300018: EsqinaInfIzquierda
+    2300020: EsquinaInfDerecha
+    2300022: EsquinaSupDerecha
+    2300024: EsquinaSupIzquierda
+    2300026: LadoIzquiedo
+    3300000: Cuerpo
+    3300002: EsquinaIInfDrch
+    3300004: EsquinaInfIzq
+    3300006: EsquinaSupDrch
+    3300008: EsquinaSupIzq
+    3300010: LadoDerecho
+    3300012: LadoInf
+    3300014: LadoIzquierdo
+    3300016: LadoSup
+    3300018: EsqinaInfIzquierda
+    3300020: EsquinaInfDerecha
+    3300022: EsquinaSupDerecha
+    3300024: EsquinaSupIzquierda
+    3300026: LadoIzquiedo
+    4300000: Cuerpo
+    4300002: EsquinaSupDrch
+    4300004: LadoDerecho
+    4300006: EsquinaSupIzq
+    4300008: EsquinaInfIzq
+    4300010: EsquinaIInfDrch
+    4300012: LadoIzquierdo
+    4300014: LadoSup
+    4300016: LadoInf
+    4300018: EsquinaSupDerecha
+    4300020: EsquinaSupIzquierda
+    4300022: EsquinaInfDerecha
+    4300024: EsqinaInfIzquierda
+    4300026: LadoIzquiedo
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

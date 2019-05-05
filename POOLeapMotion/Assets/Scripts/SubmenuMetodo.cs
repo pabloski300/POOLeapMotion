@@ -55,12 +55,12 @@ public class SubmenuMetodo : MonoBehaviour
 
     public void TrimString(int i){
         if(inputs[i].text.Trim() == ""){
-            ExploracionMetodo.Instance.buttons[0].gameObject.SetActive(false);
+            ExploracionMetodo.Instance.GetButton("Ejecutar").gameObject.SetActive(false);
             return;
         }
 
         if(!midExecution){
-            ExploracionMetodo.Instance.buttons[0].gameObject.SetActive(true);
+            ExploracionMetodo.Instance.GetButton("Ejecutar").gameObject.SetActive(true);
         }
 
 

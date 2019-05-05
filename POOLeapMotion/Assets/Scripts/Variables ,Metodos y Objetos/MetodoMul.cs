@@ -11,7 +11,7 @@ public class MetodoMul : MetodoBase
         int x = int.Parse(inputs[0].text);
         int y = int.Parse(inputs[1].text);
         output.text = (x*y).ToString();
-        ExploracionMetodo.Instance.buttons[0].gameObject.SetActive(true);
+        ExploracionMetodo.Instance.GetButton("Ejecutar").gameObject.SetActive(true);
     }
 
     public override string WriteFile()

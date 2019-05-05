@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -19,7 +20,7 @@ public class CreadorObjetos : CustomMenu
     public List<FloatVariable> variablesFloat;
     [HideInInspector]
     public List<BoolVariable> variablesBoolean;
-
+    [HideInInspector]
     public Dictionary<string, MetodoBase> metodos = new Dictionary<string, MetodoBase>();
 
     public static CreadorObjetos Instance;
@@ -34,11 +35,15 @@ public class CreadorObjetos : CustomMenu
 
             if (numberVariables > 2)
             {
-                buttons[0].gameObject.SetActive(false);
+                GetButton("AñadirVariable").gameObject.SetActive(false);
             }
             else
             {
-                buttons[0].gameObject.SetActive(true);
+                UnlockButtonsDelayed(0.5f);
+                GetButton("AñadirVariable").transform.parent.position = new Vector3(GetButton("AñadirVariable").transform.position.x,
+                                                                            panel.lineasVariables[numberVariables].transform.position.y,
+                                                                            GetButton("AñadirVariable").transform.position.z);
+                GetButton("AñadirVariable").gameObject.SetActive(true);
             }
         }
     }
@@ -53,29 +58,42 @@ public class CreadorObjetos : CustomMenu
 
             if (numberMethods > 2)
             {
-                buttons[1].gameObject.SetActive(false);
+                GetButton("AñadirMetodo").gameObject.SetActive(false);
             }
             else
             {
-                buttons[1].gameObject.SetActive(true);
+                UnlockButtonsDelayed(0.5f);
+                GetButton("AñadirMetodo").transform.parent.position = new Vector3(GetButton("AñadirMetodo").transform.position.x,
+                                                                            panel.lineasMetodos[numberMethods].transform.position.y,
+                                                                            GetButton("AñadirMetodo").transform.position.z);
+                GetButton("AñadirMetodo").gameObject.SetActive(true);
             }
 
         }
     }
 
-    AssetBundle bundle;
-
-    ObjetoBase objectToModify;
+    public ObjetoBase objectToModify;
     int indiceLinea;
 
+    public Material colorRep;
+    Color finalColor;
+    Color FinalColor
+    {
+        set
+        {
+            finalColor = value;
+            colorRep.color = finalColor;
+        }
+    }
+
     bool modify;
+
+    public PanelIzquierdo panel;
 
     #region Inicializacion
     private new void Awake()
     {
         base.Awake();
-
-        bundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, "objeto"));
 
         numberVariables = 0;
         numberMethods = 0;
@@ -90,6 +108,8 @@ public class CreadorObjetos : CustomMenu
         {
             Destroy(this.gameObject);
         }
+
+        GetButton("Finalizar").OnPress += (()=>End());
     }
 
     public void Restart()
@@ -99,7 +119,7 @@ public class CreadorObjetos : CustomMenu
         variablesBoolean.Clear();
         metodos.Clear();
         nombreInput.text = "";
-        buttons[3].gameObject.SetActive(false);
+        GetButton("Finalizar").gameObject.SetActive(false);
         numberVariables = 0;
         numberMethods = 0;
         objectToModify = null;
@@ -114,6 +134,7 @@ public class CreadorObjetos : CustomMenu
     {
         Open();
         Restart();
+        GenerateColor();
     }
 
     public void OpenModify(ObjetoBase objeto)
@@ -122,23 +143,27 @@ public class CreadorObjetos : CustomMenu
         Open();
         PanelIzquierdo.Instance.OpenNew();
         objectToModify = objeto;
-        for(int i=0; i<objectToModify.variablesInt.Count; i++){
+        for (int i = 0; i < objectToModify.variablesInt.Count; i++)
+        {
             variablesInt.Add(objectToModify.variablesInt[i]);
             PanelIzquierdo.Instance.AddVariable("int");
             numberVariables++;
         }
-        for(int i=0; i<objectToModify.variablesFloat.Count; i++){
+        for (int i = 0; i < objectToModify.variablesFloat.Count; i++)
+        {
             variablesFloat.Add(objectToModify.variablesFloat[i]);
             PanelIzquierdo.Instance.AddVariable("float");
             numberVariables++;
         }
-        for(int i=0; i<objectToModify.variablesBool.Count; i++){
+        for (int i = 0; i < objectToModify.variablesBool.Count; i++)
+        {
             variablesBoolean.Add(objectToModify.variablesBool[i]);
             PanelIzquierdo.Instance.AddVariable("bool");
             numberVariables++;
         }
-        for(int i=0; i<objectToModify.metodos.Count; i++){
-            metodos.Add(objectToModify.metodos[i].nombre,objectToModify.metodos[i]);
+        for (int i = 0; i < objectToModify.metodos.Count; i++)
+        {
+            metodos.Add(objectToModify.metodos[i].nombre, objectToModify.metodos[i]);
             PanelIzquierdo.Instance.AddMetodo(objectToModify.metodos[i].nombre);
             numberMethods++;
         }
@@ -146,6 +171,7 @@ public class CreadorObjetos : CustomMenu
         nombreInput.Select();
         nombreInput.stringPosition = nombreInput.text.Length;
         modify = true;
+        FinalColor = objectToModify.Material.color;
         TrimString();
     }
 
@@ -174,47 +200,15 @@ public class CreadorObjetos : CustomMenu
     public void TrimString()
     {
         textoError.gameObject.SetActive(false);
-        buttons[3].gameObject.SetActive(true);
+        GetButton("Finalizar").gameObject.SetActive(true);
         nombreInput.text = nombreInput.text.Trim();
         cabecera.text = "public class " + nombreInput.text;
 
-        bool repeat = false;
-
-        if (!repeat)
-        {
-            textoError.text = "Este nombre esta en uso por una variable";
-        }
-
-        for (int i = 0; i < variablesInt.Count && !repeat; i++)
-        {
-            repeat = nombreInput.text.Equals(variablesInt[i].nombre, StringComparison.InvariantCultureIgnoreCase);
-        }
-        for (int i = 0; i < variablesFloat.Count && !repeat; i++)
-        {
-            repeat = nombreInput.text.Equals(variablesFloat[i].nombre, StringComparison.InvariantCultureIgnoreCase);
-        }
-        for (int i = 0; i < variablesBoolean.Count && !repeat; i++)
-        {
-            repeat = nombreInput.text.Equals(variablesBoolean[i].nombre, StringComparison.InvariantCultureIgnoreCase);
-        }
-
-        if (!repeat)
-        {
-            textoError.text = "Este nombre esta en uso por otra clase";
-        }
-
-        for (int i = 0; i < MenuGrid.Instance.anchorablePrefs.Count && !repeat; i++)
-        {
-            repeat = nombreInput.text.Equals(MenuGrid.Instance.anchorablePrefs[i].nombre, StringComparison.InvariantCultureIgnoreCase);
-        }
-
-        if(modify && repeat){
-            repeat = !(nombreInput.text == objectToModify.nombre);
-        }
+        bool repeat = nombreInput.text.Compare(this, modify);
 
         if (repeat)
         {
-            buttons[3].gameObject.SetActive(false);
+            GetButton("Finalizar").gameObject.SetActive(false);
             textoError.gameObject.SetActive(true);
         }
 
@@ -225,22 +219,21 @@ public class CreadorObjetos : CustomMenu
 
         if (nombreInput.text.Length == 0)
         {
-            buttons[3].gameObject.SetActive(false);
+            GetButton("Finalizar").gameObject.SetActive(false);
         }
     }
 
     public void Create()
     {
 
-        if(modify)
+        if (modify)
         {
             MenuGrid.Instance.anchorablePrefs.Remove(objectToModify);
             MenuGrid.Instance.RemoveOfTypeObject(objectToModify);
             Destroy(objectToModify.gameObject);
         }
 
-        GameObject objeto = Instantiate(bundle.LoadAsset<GameObject>("ObjetoBasico"), new Vector3(999,999,999), Quaternion.identity);
-        ObjetoBase objetoScript = objeto.GetComponent<ObjetoBase>();
+        ObjetoBase objetoScript = Instantiate(Manager.Instance.objetoBasePrefab, new Vector3(999, 999, 999), Quaternion.identity);
 
         objetoScript.nombre = nombreInput.text;
 
@@ -281,38 +274,20 @@ public class CreadorObjetos : CustomMenu
 
         objetoScript.codigo += s;
 
-        bool colorRepeat;
-
-        float r;
-        float g;
-        float b;
-
-        do{
-            colorRepeat = false;
-            System.Random random = new System.Random();
-            
-            r = UnityEngine.Random.Range(0f,1f);
-            g = UnityEngine.Random.Range(0f,1f);
-            b = UnityEngine.Random.Range(0f,1f);
-
-            for(int i=0; i<MenuGrid.Instance.anchorablePrefs.Count && !colorRepeat; i++){
-                colorRepeat = MenuGrid.Instance.anchorablePrefs[i].Material.color.r == r && 
-                MenuGrid.Instance.anchorablePrefs[i].Material.color.g == g &&
-                MenuGrid.Instance.anchorablePrefs[i].Material.color.b == b;
-            }
-
-            for(int i=0; i<MenuGrid.Instance.variables.Count && !colorRepeat; i++){
-                colorRepeat = MenuGrid.Instance.variables[i].ColorVariable.color.r == r && 
-                MenuGrid.Instance.variables[i].ColorVariable.color.g == g &&
-                MenuGrid.Instance.variables[i].ColorVariable.color.b == b;
-            }
-
-        } while(colorRepeat);
-
         objetoScript.Material = new Material(Shader.Find("Standard"));
-        objetoScript.Material.color = new Color(r,g,b);
+        objetoScript.Material.color = finalColor;
 
-        MenuGrid.Instance.anchorablePrefs.Add(objeto.GetComponent<ObjetoBase>());
+        MenuGrid.Instance.anchorablePrefs.Add(objetoScript.gameObject.GetComponent<ObjetoBase>());
+    }
+
+    public void GenerateColor()
+    {
+        FinalColor = Manager.Instance.GenerateColor();
+    }
+
+    public void ReGenerateColor()
+    {
+        FinalColor = Manager.Instance.GenerateColor((finalColor.r + finalColor.g + finalColor.b).ToString());
     }
     #endregion
 

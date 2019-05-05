@@ -12,7 +12,7 @@ public class MetodoDiv : MetodoBase
         float y = float.Parse(inputs[1].text);
         float z = x/y;
         output.text = string.Format("{0}",z);
-        ExploracionMetodo.Instance.buttons[0].gameObject.SetActive(true);
+        ExploracionMetodo.Instance.GetButton("Ejecutar").gameObject.SetActive(true);
     }
 
     public override string WriteFile()

@@ -10,28 +10,26 @@ public class CreadorVariable : CustomMenu
 {
     public enum TipoVar
     {
-        INT,
-        FLOAT,
-        BOOLEAN,
+        Int,
+        Float,
+        Boolean,
     }
 
     public enum ProteccionVar
     {
-        PUBLIC,
-        PRIVATE,
-        PROTECTED
+        Public,
+        Private,
+        Protected
     }
 
-    [Header("Strings")]
+    [Header("UI")]
     public TMP_InputField nombreInput;
     public TextMeshPro cabecera;
     public TextMeshPro textoError;
+    public ToggleGroup tipoGroup;
+    public ToggleGroup proteccionGroup;
 
-    [Header("Buttons2")]
-    public CustomButton[] botonesProteccion;
-    public CustomButton[] botonesTipo;
-
-    ProteccionVar nivelDeProteccion = ProteccionVar.PUBLIC;
+    ProteccionVar nivelDeProteccion = ProteccionVar.Public;
     string proteccionString = "";
     ProteccionVar NivelDeProteccion
     {
@@ -41,13 +39,13 @@ public class CreadorVariable : CustomMenu
             nivelDeProteccion = value;
             switch (value)
             {
-                case ProteccionVar.PUBLIC:
+                case ProteccionVar.Public:
                     proteccionString = "public";
                     break;
-                case ProteccionVar.PRIVATE:
+                case ProteccionVar.Private:
                     proteccionString = "private";
                     break;
-                case ProteccionVar.PROTECTED:
+                case ProteccionVar.Protected:
                     proteccionString = "protected";
                     break;
             }
@@ -55,7 +53,7 @@ public class CreadorVariable : CustomMenu
         }
     }
 
-    TipoVar tipo = TipoVar.INT;
+    TipoVar tipo = TipoVar.Int;
     string tipoString;
     TipoVar Tipo
     {
@@ -65,42 +63,50 @@ public class CreadorVariable : CustomMenu
             tipo = value;
             switch (value)
             {
-                case TipoVar.INT:
+                case TipoVar.Int:
                     tipoString = "int";
                     break;
-                case TipoVar.FLOAT:
+                case TipoVar.Float:
                     tipoString = "float";
                     break;
-                case TipoVar.BOOLEAN:
+                case TipoVar.Boolean:
                     tipoString = "boolean";
                     break;
             }
             TrimString();
         }
     }
-    AssetBundle bundle;
+
 
     public static CreadorVariable Instance;
 
     bool modify = false;
 
-    IntVariable intVarToModify;
-    FloatVariable floatVarToModify;
-    BoolVariable boolVarToModify;
+    [HideInInspector]
+    public IntVariable intVarToModify;
+    [HideInInspector]
+    public FloatVariable floatVarToModify;
+    [HideInInspector]
+    public BoolVariable boolVarToModify;
 
     int indiceLinea = 0;
+
+    string tipoToggle;
+    string proteccionToggle;
 
     #region Inicializacion
     private new void Awake()
     {
         base.Awake();
-        bundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, "variables"));
-        botonesProteccion[0].OnPress += (() => { NivelDeProteccion = ProteccionVar.PUBLIC; });
-        botonesProteccion[1].OnPress += (() => { NivelDeProteccion = ProteccionVar.PRIVATE; });
-        botonesProteccion[2].OnPress += (() => { NivelDeProteccion = ProteccionVar.PROTECTED; });
-        botonesTipo[0].OnPress += (() => { Tipo = TipoVar.INT; });
-        botonesTipo[1].OnPress += (() => { Tipo = TipoVar.FLOAT; });
-        botonesTipo[2].OnPress += (() => { Tipo = TipoVar.BOOLEAN; });
+        
+        GetButton("Public").OnPress += (() => { NivelDeProteccion = ProteccionVar.Public; });
+        GetButton("Private").OnPress += (() => { NivelDeProteccion = ProteccionVar.Private; });
+        GetButton("Protected").OnPress += (() => { NivelDeProteccion = ProteccionVar.Protected; });
+        GetButton("Int").OnPress += (() => { Tipo = TipoVar.Int; });
+        GetButton("Float").OnPress += (() => { Tipo = TipoVar.Float; });
+        GetButton("Bool").OnPress += (() => { Tipo = TipoVar.Boolean; });
+
+        GetButton("Finalizar").OnPress += (()=>End());
 
         nombreInput.gameObject.SetActive(false);
 
@@ -116,9 +122,8 @@ public class CreadorVariable : CustomMenu
 
     public void Restart()
     {
-        buttons[7].gameObject.SetActive(false);
-        tipo = TipoVar.INT;
-        nivelDeProteccion = ProteccionVar.PUBLIC;
+        tipo = TipoVar.Int;
+        nivelDeProteccion = ProteccionVar.Public;
         cabecera.text = "";
         nombreInput.text = "";
         proteccionString = "public";
@@ -126,7 +131,6 @@ public class CreadorVariable : CustomMenu
         intVarToModify = null;
         floatVarToModify = null;
         boolVarToModify = null;
-        TrimString();
         modify = false;
     }
     #endregion
@@ -141,6 +145,8 @@ public class CreadorVariable : CustomMenu
     {
         Open();
         Restart();
+        proteccionToggle = "Public";
+        tipoToggle = "Int";
     }
 
     public void OpenModifyInt(IntVariable var, int i)
@@ -148,13 +154,14 @@ public class CreadorVariable : CustomMenu
         Open();
         Restart();
         intVarToModify = var;
-        tipo = TipoVar.INT;
+        tipo = TipoVar.Int;
         nivelDeProteccion = var.proteccion;
+        proteccionToggle = nivelDeProteccion.ToString();
+        tipoToggle = "Int";
         nombreInput.text = var.nombre;
         nombreInput.stringPosition = nombreInput.text.Length;
         indiceLinea = i;
         modify = true;
-        TrimString();
     }
 
     public void OpenModifyBool(BoolVariable var, int i)
@@ -162,13 +169,14 @@ public class CreadorVariable : CustomMenu
         Open();
         Restart();
         boolVarToModify = var;
-        tipo = TipoVar.BOOLEAN;
+        tipo = TipoVar.Boolean;
         nivelDeProteccion = var.proteccion;
+        proteccionToggle = nivelDeProteccion.ToString();
+        tipoToggle = "Boolean";
         nombreInput.text = var.nombre;
         nombreInput.stringPosition = nombreInput.text.Length;
         indiceLinea = i;
         modify = true;
-        TrimString();
     }
 
     public void OpenModifyFloat(FloatVariable var, int i)
@@ -176,12 +184,19 @@ public class CreadorVariable : CustomMenu
         Open();
         Restart();
         floatVarToModify = var;
-        tipo = TipoVar.FLOAT;
+        tipo = TipoVar.Float;
         nivelDeProteccion = var.proteccion;
+        proteccionToggle = nivelDeProteccion.ToString();
+        tipoToggle = "Float";
         nombreInput.text = var.nombre;
         nombreInput.stringPosition = nombreInput.text.Length;
         indiceLinea = i;
         modify = true;
+    }
+
+    public override void Callback(){
+        proteccionGroup.Reset(GetButton(proteccionToggle));
+        tipoGroup.Reset(GetButton(tipoToggle));
         TrimString();
     }
 
@@ -204,56 +219,23 @@ public class CreadorVariable : CustomMenu
     {
 
         nombreInput.text = nombreInput.text.Trim();
-        buttons[7].gameObject.SetActive(true);
-        textoError.gameObject.SetActive(false);
+        if (nombreInput.text.Length == 0)
+        {
+            GetButton("Finalizar").Locked = true;
+            textoError.gameObject.SetActive(true);
+            textoError.text = "Introduce un nombre por favor";
+            return;
+        }
+
         cabecera.text = proteccionString + " " + tipoString + " " + nombreInput.text;
 
-        bool repeat = false;
-
-        if (!repeat)
-        {
-            textoError.text = "Este nombre esta en uso por otra variable";
-        }
-
-        for (int i = 0; i < CreadorObjetos.Instance.variablesInt.Count && !repeat; i++)
-        {
-            repeat = nombreInput.text.Equals(CreadorObjetos.Instance.variablesInt[i].nombre, StringComparison.InvariantCultureIgnoreCase);
-        }
-        for (int i = 0; i < CreadorObjetos.Instance.variablesFloat.Count && !repeat; i++)
-        {
-            repeat = nombreInput.text.Equals(CreadorObjetos.Instance.variablesFloat[i].nombre, StringComparison.InvariantCultureIgnoreCase);
-        }
-        for (int i = 0; i < CreadorObjetos.Instance.variablesBoolean.Count && !repeat; i++)
-        {
-            repeat = nombreInput.text.Equals(CreadorObjetos.Instance.variablesBoolean[i].nombre, StringComparison.InvariantCultureIgnoreCase);
-        }
-
-        if(modify && repeat && intVarToModify != null){
-            repeat = !(nombreInput.text == intVarToModify.nombre);
-        }
-
-        if(modify && repeat && floatVarToModify != null){
-            repeat = !(nombreInput.text == floatVarToModify.nombre);
-        }
-
-        if(modify && repeat && boolVarToModify != null){
-            repeat = !(nombreInput.text == boolVarToModify.nombre);
-        }
-
-        if (!repeat)
-        {
-            textoError.text = "Este nombre esta en uso por la clase";
-        }
-
-        if (!repeat)
-        {
-            repeat = nombreInput.text.Equals(CreadorObjetos.Instance.nombreInput.text, StringComparison.InvariantCultureIgnoreCase);
-        }
+        bool repeat = nombreInput.text.Compare(this,modify);
 
         if (repeat)
         {
-            buttons[7].gameObject.SetActive(false);
+            GetButton("Finalizar").Locked = true;
             textoError.gameObject.SetActive(true);
+            return;
         }
 
         if (nombreInput.text.Length > nombreInput.characterLimit)
@@ -261,11 +243,8 @@ public class CreadorVariable : CustomMenu
             nombreInput.text = nombreInput.text.Remove(nombreInput.characterLimit, 1);
         }
 
-        if (nombreInput.text.Length == 0)
-        {
-            buttons[7].gameObject.SetActive(false);
-        }
-
+        GetButton("Finalizar").Locked = false;
+        textoError.gameObject.SetActive(false);
     }
 
     public void Create()
@@ -281,28 +260,25 @@ public class CreadorVariable : CustomMenu
     }
 
     public void CreateNew()
-    {
+    {  
         switch (tipo)
         {
-            case TipoVar.INT:
-                GameObject intObject = Instantiate(bundle.LoadAsset<GameObject>("IntVariable"), Vector3.zero, Quaternion.identity);
-                IntVariable intVar = intObject.GetComponent<IntVariable>();
+            case TipoVar.Int:
+                IntVariable intVar = Instantiate(Manager.Instance.intVariablePrefab, Vector3.zero, Quaternion.identity);
                 intVar.nombre = nombreInput.text;
                 intVar.proteccion = NivelDeProteccion;
                 CreadorObjetos.Instance.variablesInt.Add(intVar);
                 PanelIzquierdo.Instance.AddVariable("int");
                 break;
-            case TipoVar.FLOAT:
-                GameObject floatObject = Instantiate(bundle.LoadAsset<GameObject>("FloatVariable"), Vector3.zero, Quaternion.identity);
-                FloatVariable floatVar = floatObject.GetComponent<FloatVariable>();
+            case TipoVar.Float:
+                FloatVariable floatVar = Instantiate(Manager.Instance.floatVariablePrefab, Vector3.zero, Quaternion.identity);
                 floatVar.nombre = nombreInput.text;
                 floatVar.proteccion = NivelDeProteccion;
                 CreadorObjetos.Instance.variablesFloat.Add(floatVar);
                 PanelIzquierdo.Instance.AddVariable("float");
                 break;
-            case TipoVar.BOOLEAN:
-                GameObject booleanObject = Instantiate(bundle.LoadAsset<GameObject>("BoolVariable"), Vector3.zero, Quaternion.identity);
-                BoolVariable booleanVar = booleanObject.GetComponent<BoolVariable>();
+            case TipoVar.Boolean:
+                BoolVariable booleanVar = Instantiate(Manager.Instance.boolVariablePrefab, Vector3.zero, Quaternion.identity);
                 booleanVar.nombre = nombreInput.text;
                 booleanVar.proteccion = NivelDeProteccion;
                 CreadorObjetos.Instance.variablesBoolean.Add(booleanVar);
@@ -335,25 +311,22 @@ public class CreadorVariable : CustomMenu
 
         switch (tipo)
         {
-            case TipoVar.INT:
-                GameObject intObject = Instantiate(bundle.LoadAsset<GameObject>("IntVariable"), Vector3.zero, Quaternion.identity);
-                IntVariable intVar = intObject.GetComponent<IntVariable>();
+            case TipoVar.Int:
+                IntVariable intVar = Instantiate(Manager.Instance.intVariablePrefab, Vector3.zero, Quaternion.identity);
                 intVar.nombre = nombreInput.text;
                 intVar.proteccion = NivelDeProteccion;
                 CreadorObjetos.Instance.variablesInt.Add(intVar);
                 PanelIzquierdo.Instance.AddVariable(indiceLinea, "int");
                 break;
-            case TipoVar.FLOAT:
-                GameObject floatObject = Instantiate(bundle.LoadAsset<GameObject>("FloatVariable"), Vector3.zero, Quaternion.identity);
-                FloatVariable floatVar = floatObject.GetComponent<FloatVariable>();
+            case TipoVar.Float:
+                FloatVariable floatVar = Instantiate(Manager.Instance.floatVariablePrefab, Vector3.zero, Quaternion.identity);
                 floatVar.nombre = nombreInput.text;
                 floatVar.proteccion = NivelDeProteccion;
                 CreadorObjetos.Instance.variablesFloat.Add(floatVar);
                 PanelIzquierdo.Instance.AddVariable(indiceLinea, "float");
                 break;
-            case TipoVar.BOOLEAN:
-                GameObject booleanObject = Instantiate(bundle.LoadAsset<GameObject>("BoolVariable"), Vector3.zero, Quaternion.identity);
-                BoolVariable booleanVar = booleanObject.GetComponent<BoolVariable>();
+            case TipoVar.Boolean:
+                BoolVariable booleanVar = Instantiate(Manager.Instance.boolVariablePrefab, Vector3.zero, Quaternion.identity);
                 booleanVar.nombre = nombreInput.text;
                 booleanVar.proteccion = NivelDeProteccion;
                 CreadorObjetos.Instance.variablesBoolean.Add(booleanVar);

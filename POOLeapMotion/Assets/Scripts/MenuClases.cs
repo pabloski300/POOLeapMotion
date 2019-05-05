@@ -13,9 +13,9 @@ public class MenuClases : CustomMenu
 
     public int NumberClases{get{return numberClases;}set{numberClases = value;
         if(numberClases > 2){
-            buttons[16].gameObject.SetActive(false);
+            GetButton("Crear").gameObject.SetActive(false);
         }else{
-            buttons[16].gameObject.SetActive(true);
+            GetButton("Crear").gameObject.SetActive(true);
         }
     }}
 
@@ -23,13 +23,13 @@ public class MenuClases : CustomMenu
 
     public int NumberObjetos{get{return numberObjetos;}set{numberObjetos = value;
         if(numberObjetos > MenuGrid.Instance.gridObjeto.Count-1){
-            buttons[1].gameObject.SetActive(false);
-            buttons[2].gameObject.SetActive(false);
-            buttons[3].gameObject.SetActive(false);
+            GetButton("CrearObjeto1").gameObject.SetActive(false);
+            GetButton("CrearObjeto2").gameObject.SetActive(false);
+            GetButton("CrearObjeto3").gameObject.SetActive(false);
         }else{
-            buttons[1].gameObject.SetActive(true);
-            buttons[2].gameObject.SetActive(true);
-            buttons[3].gameObject.SetActive(true);
+            GetButton("CrearObjeto1").gameObject.SetActive(true);
+            GetButton("CrearObjeto2").gameObject.SetActive(true);
+            GetButton("CrearObjeto3").gameObject.SetActive(true);
         }
     }}
 
@@ -37,13 +37,13 @@ public class MenuClases : CustomMenu
 
     public int NumberVariables{get{return numberVariables;}set{numberVariables = value;
         if(numberVariables > MenuGrid.Instance.gridVariable.Count-1){
-            buttons[7].gameObject.SetActive(false);
-            buttons[8].gameObject.SetActive(false);
-            buttons[9].gameObject.SetActive(false);
+            GetButton("CrearVariable1").gameObject.SetActive(false);
+            GetButton("CrearVariable2").gameObject.SetActive(false);
+            GetButton("CrearVariable3").gameObject.SetActive(false);
         }else{
-            buttons[7].gameObject.SetActive(true);
-            buttons[8].gameObject.SetActive(true);
-            buttons[9].gameObject.SetActive(true);
+            GetButton("CrearVariable1").gameObject.SetActive(true);
+            GetButton("CrearVariable2").gameObject.SetActive(true);
+            GetButton("CrearVariable3").gameObject.SetActive(true);
         }
     }}
 

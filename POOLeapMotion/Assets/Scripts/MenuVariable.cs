@@ -14,8 +14,19 @@ public class MenuVariable : CustomMenu
 
     public static MenuVariable Instance;
 
-    public MeshRenderer representacionClase;
-    public MeshRenderer representacionVariable;
+    public Material representacionClase;
+    public Material representacionVariable;
+    Material materialClase;
+
+    Color finalColor;
+    Color FinalColor
+    {
+        set
+        {
+            finalColor = value;
+            representacionVariable.color = finalColor;
+        }
+    }
 
     // Start is called before the first frame update
     new void Awake()
@@ -33,6 +44,7 @@ public class MenuVariable : CustomMenu
         {
             Destroy(this.gameObject);
         }
+        GetButton("Crear").OnPress += (()=>Crear());
     }
 
     public void Restart()
@@ -46,45 +58,12 @@ public class MenuVariable : CustomMenu
         this.clase = clase;
         Restart();
         TrimString();
-        nombreInput.gameObject.SetActive(true);  
+        nombreInput.gameObject.SetActive(true);
 
-        representacionClase.material = colorClase;
-        
-        GenerateRandomColor();
-    }
+        representacionClase.color = colorClase.color;
+        materialClase = colorClase;
 
-    void GenerateRandomColor(){
-        bool repeatColor;
-        float r;
-        float g;
-        float b;
-
-        do{
-            repeatColor = false;
-            System.Random random = new System.Random();
-            
-            r = UnityEngine.Random.Range(0f,1f);
-            g = UnityEngine.Random.Range(0f,1f);
-            b = UnityEngine.Random.Range(0f,1f);
-
-            for(int i=0; i<MenuGrid.Instance.anchorablePrefs.Count && !repeatColor; i++){
-                repeatColor = MenuGrid.Instance.anchorablePrefs[i].Material.color.r == r && 
-                MenuGrid.Instance.anchorablePrefs[i].Material.color.g == g &&
-                MenuGrid.Instance.anchorablePrefs[i].Material.color.b == b;
-            }
-
-            for(int i=0; i<MenuGrid.Instance.variables.Count && !repeatColor; i++){
-                repeatColor = MenuGrid.Instance.variables[i].ColorVariable.color.r == r && 
-                MenuGrid.Instance.variables[i].ColorVariable.color.g == g &&
-                MenuGrid.Instance.variables[i].ColorVariable.color.b == b;
-            }
-
-        } while(repeatColor);
-
-        Material colorVariable = new Material(Shader.Find("Standard"));
-        colorVariable.color = new Color(r,g,b);
-
-        representacionVariable.material = colorVariable;
+        GenerateColor();
     }
 
     public new void Close()
@@ -96,48 +75,35 @@ public class MenuVariable : CustomMenu
 
     public void TrimString()
     {
-        bool repeat = false;
+
         textoError.gameObject.SetActive(false);
-        buttons[0].gameObject.SetActive(true);
+        GetButton("Crear").gameObject.SetActive(true);
         nombreInput.text = nombreInput.text.Trim();
-        cabecera.text = clase +" "+ nombreInput.text;
+        cabecera.text = clase + " " + nombreInput.text;
+        if(nombreInput.text.Length == 0){
+            GetButton("Crear").gameObject.SetActive(false);
+        }
 
         if (nombreInput.text.Length > nombreInput.characterLimit)
         {
             nombreInput.text = nombreInput.text.Remove(nombreInput.characterLimit, 1);
         }
 
-        if (!repeat)
-        {
-            textoError.text = "Este nombre esta en uso por una clase";
-        }
-
-        for (int i = 0; i < MenuGrid.Instance.anchorablePrefs.Count && !repeat; i++)
-        {
-            repeat = nombreInput.text.Equals(MenuGrid.Instance.anchorablePrefs[i].nombre, StringComparison.InvariantCultureIgnoreCase);
-        }
-
-        if (!repeat)
-        {
-            textoError.text = "Este nombre esta en uso por otra variable";
-        }
-
-        for (int i = 0; i < MenuGrid.Instance.variables.Count && !repeat; i++)
-        {
-            repeat = nombreInput.text.Equals(MenuGrid.Instance.variables[i].nombre, StringComparison.InvariantCultureIgnoreCase);
-        }
+        bool repeat = nombreInput.text.Compare(this);
 
         if (repeat)
         {
-            buttons[0].gameObject.SetActive(false);
+            GetButton("Crear").gameObject.SetActive(false);
             textoError.gameObject.SetActive(true);
         }
     }
 
     public void Crear()
     {
-        MenuGrid.Instance.SpawnVariable(clase, nombreInput.text, representacionVariable.material, representacionClase.material);
-        MenuClases.Instance.NumberVariables ++;
+        Material colorVariable = new Material(Shader.Find("Standard"));
+        colorVariable.color = finalColor;
+        MenuGrid.Instance.SpawnVariable(clase, nombreInput.text, colorVariable, materialClase);
+        MenuClases.Instance.NumberVariables++;
         if (MenuClases.Instance.NumberVariables == MenuGrid.Instance.gridVariable.Count)
         {
             Close();
@@ -146,7 +112,16 @@ public class MenuVariable : CustomMenu
         TrimString();
         nombreInput.Select();
         nombreInput.text = "";
-        GenerateRandomColor();
-        
+        GenerateColor();
+    }
+
+    public void GenerateColor()
+    {
+        FinalColor = Manager.Instance.GenerateColor();
+    }
+
+    public void RegenerateColor()
+    {
+        FinalColor = Manager.Instance.GenerateColor((finalColor.r+finalColor.g+finalColor.b).ToString());
     }
 }

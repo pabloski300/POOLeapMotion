@@ -21,12 +21,15 @@ public class ExploracionMetodo : CustomMenu
         {
             Destroy(this.gameObject);
         }
+        foreach(SubmenuMetodo m in menus){
+            m.gameObject.SetActive(true);
+        }
     }
 
     public void OpenNew(MetodoBase metodo)
     {
         base.Open();
-        buttons[0].gameObject.SetActive(true);
+        GetButton("Ejecutar").gameObject.SetActive(true);
         foreach (SubmenuMetodo s in menus)
         {
             s.gameObject.SetActive(false);
@@ -49,7 +52,7 @@ public class ExploracionMetodo : CustomMenu
 
     public void Execute()
     {
-        buttons[0].gameObject.SetActive(false);
+        GetButton("Ejecutar").gameObject.SetActive(false);
         metodoActual.Execute(menuActual.inputs,menuActual.output);
     }
 }

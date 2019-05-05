@@ -8,16 +8,14 @@ using UnityEngine;
 
 public class CreadorMetodos : CustomMenu
 {
-    [Header("Strings")]
+    [Header("UI")]
     public TextMeshPro cabecera;
 
     public GameObject textoError;
+    public ToggleGroup metodosGroup;
+    string metodosToggle;
 
     string method;
-
-    AssetBundle bundle;
-
-    public Dictionary<string, MetodoBase> metodos = new Dictionary<string, MetodoBase>();
 
     bool valid;
 
@@ -32,15 +30,6 @@ public class CreadorMetodos : CustomMenu
     #region Inicializacion
     private new void Awake()
     {
-        base.Awake();
-        bundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, "metodos"));
-        List<GameObject> m = bundle.LoadAllAssets<GameObject>().ToList();
-        foreach (GameObject x in m)
-        {
-            MetodoBase mb = x.GetComponent<MetodoBase>();
-            metodos.Add(mb.nombre, mb);
-        }
-        bundle.Unload(false);
         if (Instance == null)
         {
             Instance = this;
@@ -49,6 +38,9 @@ public class CreadorMetodos : CustomMenu
         {
             Destroy(this.gameObject);
         }
+        base.Awake();
+
+        GetButton("Finalizar").OnPress += (()=>End());
     }
 
     public void Restart()
@@ -77,6 +69,10 @@ public class CreadorMetodos : CustomMenu
         ChangeMethod(var.nombre);
     }
 
+    public override void Callback(){
+        metodosGroup.Reset(GetButton(metodosToggle));
+    }
+
     public void End()
     {
         Create();
@@ -88,20 +84,21 @@ public class CreadorMetodos : CustomMenu
     public void ChangeMethod(string name)
     {
         method = name;
-        cabecera.text = metodos[method].cabecera;
+        cabecera.text = Manager.Instance.metodosPrefab[method].cabecera;
         valid = !CreadorObjetos.Instance.metodos.ContainsKey(method);
         if(modify && !valid){
             valid = method == methodToModify.nombre;
         }
         textoError.SetActive(!valid);
-        buttons[7].gameObject.SetActive(valid);
+        GetButton("Finalizar").gameObject.SetActive(valid);
+        metodosToggle = name;
     }
 
     public void Create()
     {
         if (!modify)
         {
-            MetodoBase metodo = Instantiate(metodos[method], Vector3.zero, Quaternion.identity);
+            MetodoBase metodo = Instantiate(Manager.Instance.metodosPrefab[method], Vector3.zero, Quaternion.identity);
             CreadorObjetos.Instance.metodos.Add(metodo.nombre, metodo);
             PanelIzquierdo.Instance.AddMetodo(metodo.nombre);
             CreadorObjetos.Instance.NumberMethods ++;
@@ -111,7 +108,7 @@ public class CreadorMetodos : CustomMenu
             CreadorObjetos.Instance.metodos.Remove(methodToModify.nombre);
             
             Destroy(methodToModify.gameObject);
-            MetodoBase metodo = Instantiate(metodos[method], Vector3.zero, Quaternion.identity);
+            MetodoBase metodo = Instantiate(Manager.Instance.metodosPrefab[method], Vector3.zero, Quaternion.identity);
             CreadorObjetos.Instance.metodos.Add(metodo.nombre, metodo);
             PanelIzquierdo.Instance.AddMetodo(indiceLinea, metodo.nombre);
         }
