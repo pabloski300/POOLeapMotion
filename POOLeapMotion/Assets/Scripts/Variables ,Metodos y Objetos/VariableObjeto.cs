@@ -5,37 +5,40 @@ using UnityEngine;
 
 public class VariableObjeto : CustomAnchorable
 {
-
     public string nombre;
-
     public string clase;
-
     public ObjetoBase objetoReferenciado;
-
     public LineRenderer referencia;
-
     public MeshRenderer meshClase;
     public MeshRenderer meshVariable;
+
     Material colorClase;
     public Material ColorClase { get { return colorClase; } set { colorClase = value; meshClase.material = colorClase; } }
-
     Material colorVariable;
     public Material ColorVariable { get { return colorVariable; } set { colorVariable = value; meshVariable.material = colorVariable; } }
 
-    // Start is called before the first frame update
+    ExploracionObjeto eo;
+    MenuGrid mg;
+    Consola c;
+
+
     public void Init(string nombre, string clase, CustomAnchor main, Material colorVariable, Material colorClase)
     {
         base.Init(main);
+
+        eo = (ExploracionObjeto)Manager.Instance.GetMenu("ExploracionObjeto");
+        mg = (MenuGrid)Manager.Instance.GetMenu("MenuGrid");
+        c = (Consola)Manager.Instance.GetMenu("Consola");
+
         this.nombre = nombre;
         this.clase = clase;
         this.colorVariable = colorVariable;
         this.colorClase = colorClase;
         objetoReferenciado = null;
         Interaction.OnGraspEnd += (() => Release());
-        textoPanelSuperior.text = "<#"+ColorUtility.ToHtmlStringRGB(colorClase.color)+">"+clase +"</color>"+" " + "<#"+ColorUtility.ToHtmlStringRGB(colorVariable.color)+">"+nombre +"</color>"+ ";";
+        textoPanelSuperior.text = "<#" + ColorUtility.ToHtmlStringRGB(colorClase.color) + ">" + clase + "</color>" + " " + "<#" + ColorUtility.ToHtmlStringRGB(colorVariable.color) + ">" + nombre + "</color>" + ";";
     }
 
-    // Update is called once per frame
     new void Update()
     {
 
@@ -49,7 +52,7 @@ public class VariableObjeto : CustomAnchorable
             Interaction.OnGraspEnd();
         }
 
-        if (objetoReferenciado != null && !Interaction.ignoreGrasping)
+        if (objetoReferenciado != null && !objetoReferenciado.expandido)
         {
             referencia.SetPosition(0, transform.position);
             referencia.SetPosition(1, objetoReferenciado.transform.position);
@@ -63,16 +66,42 @@ public class VariableObjeto : CustomAnchorable
 
     void Release()
     {
-        if(Anchorable.anchor == null || Anchorable.anchor == MainAnchor){
+        StartCoroutine(ReleaseDelay());
+    }
+
+    public IEnumerator ReleaseDelay()
+    {
+        yield return null;
+
+        if (Anchorable.anchor == Manager.Instance.inspeccionarVariable)
+        {
+            if (objetoReferenciado != null)
+            {
+                selected = false;
+                eo.Open(this);
+                mg.Close();
+            }
+            else
+            {
+                selected = false;
+                Anchorable.anchor = MainAnchor as Anchor;
+                Anchorable.anchorLerpCoeffPerSec = MainAnchor.LerpCoeficient;
+                Anchorable.isAttached = true;
+                Anchorable.anchor.NotifyAttached(Anchorable);
+                mg.ShowText("Por favor asigna un objeto a la variable");
+            }
+        }
+        else if (Anchorable.anchor == Manager.Instance.papeleraExploradorObjetos)
+        {
+            mg.RemoveOneVariable(this);
+        }
+        else
+        {
             selected = false;
             Anchorable.anchor = MainAnchor as Anchor;
             Anchorable.anchorLerpCoeffPerSec = MainAnchor.LerpCoeficient;
             Anchorable.isAttached = true;
             Anchorable.anchor.NotifyAttached(Anchorable);
-        }else{
-            selected = false;
-            ExploracionObjeto.Instance.Open(this);
-            MenuGrid.Instance.Close();
         }
     }
 
@@ -88,7 +117,7 @@ public class VariableObjeto : CustomAnchorable
         if (o != null && o.nombre == clase)
         {
             objetoReferenciado = o;
-            Consola.Instance.Write("<#"+ColorUtility.ToHtmlStringRGB(colorClase.color)+">"+clase +"</color>"+" " + "<#"+ColorUtility.ToHtmlStringRGB(colorVariable.color)+">"+nombre +"</color> = new <#"+ColorUtility.ToHtmlStringRGB(colorClase.color)+">"+clase +"</color>" + "();");
+            c.Write("<#" + ColorUtility.ToHtmlStringRGB(colorClase.color) + ">" + clase + "</color>" + " " + "<#" + ColorUtility.ToHtmlStringRGB(colorVariable.color) + ">" + nombre + "</color> = new <#" + ColorUtility.ToHtmlStringRGB(colorClase.color) + ">" + clase + "</color>" + "();");
         }
     }
 }

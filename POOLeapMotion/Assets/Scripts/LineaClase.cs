@@ -22,41 +22,76 @@ public class LineaClase : MonoBehaviour
     [HideInInspector]
     public int indice;
 
-    public void Start(){
-        modificar.OnPress += (()=>Modificar());
-        crearObjeto.OnPress += (()=>CrearObjeto());
-        crearVariable.OnPress += (()=>CrearVariable());
-        eliminar.OnPress += (()=>Eliminar());
-        explorar.OnPress += (()=>Explorar());
+    MenuGrid mg;
+    MenuClases mc;
+    CreadorObjetos co;
+    MenuExplorar me;
+    CreadorVariables cv;
+    ConfirmacionEliminarClase ce;
+
+    public RepresentacionClase cube;
+    public CustomAnchor mainAnchor;
+
+    public void Init()
+    {
+        mg = (MenuGrid)Manager.Instance.GetMenu("MenuGrid");
+        mc = (MenuClases)Manager.Instance.GetMenu("MenuClases");
+        co = (CreadorObjetos)Manager.Instance.GetMenu("CreadorObjetos");
+        me = (MenuExplorar)Manager.Instance.GetMenu("MenuExplorar");
+        cv = (CreadorVariables)Manager.Instance.GetMenu("CreadorVariables");
+        ce = (ConfirmacionEliminarClase)Manager.Instance.GetMenu("ConfirmacionEliminarClase");
+
+        modificar.OnPress += (() => Modificar());
+        crearObjeto.OnPress += (() => CrearObjeto());
+        crearVariable.OnPress += (() => CrearVariable());
+        explorar.OnPress += (() => Explorar());
         this.gameObject.SetActive(false);
 
+        cube.Init(mainAnchor, this);
+    }
+
+    public void ConfirmarEliminar()
+    {
+        ce.Open();
+        mc.Close();
     }
 
     public void Eliminar()
     {
-        MenuGrid.Instance.RemoveOfTypeObject(objeto);
-        MenuGrid.Instance.RemoveOfTypeVariable(objeto);
-        MenuGrid.Instance.anchorablePrefs.Remove(objeto);
+        mg.RemoveOfTypeObject(objeto);
+        mg.RemoveOfTypeVariable(objeto);
+        mg.anchorablePrefs.Remove(objeto);
         Destroy(objeto.gameObject);
         objeto = null;
-        MenuClases.Instance.Init();
-        MenuClases.Instance.NumberClases--;
+        mc.ReOrder();
+        mc.NumberClases--;
     }
 
-    public void Modificar(){
-        CreadorObjetos.Instance.OpenModify(objeto);
+    public void Modificar()
+    {
+        co.OpenModify(objeto);
     }
 
-    public void CrearObjeto(){
-        MenuGrid.Instance.SpawnObject(indice);
-        MenuClases.Instance.NumberObjetos++;
+    public void CrearObjeto()
+    {
+        mg.SpawnObject(indice);
+        mc.NumberObjetos++;
+        mc.ShowText("ObjetoCreado");
     }
 
-    public void Explorar(){
-        MenuExplorar.Instance.Open(objeto);
+    public void Explorar()
+    {
+        me.Open(objeto);
     }
 
-    public void CrearVariable(){
-        MenuVariable.Instance.OpenNew(nombre.text, objeto.Material);
+    public void CrearVariable()
+    {
+        cv.OpenNew(nombre.text, objeto.Material);
+    }
+
+    public void AbrirConfirmacion()
+    {
+        ConfirmacionEliminarClase.Instance.Open(this);
+        mc.Close();
     }
 }

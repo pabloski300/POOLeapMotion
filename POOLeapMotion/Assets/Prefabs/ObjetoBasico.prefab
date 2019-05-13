@@ -270,8 +270,8 @@ MonoBehaviour:
   tweenLocalPosition: 1
   tweenLocalRotation: 1
   tweenLocalScale: 1
-  tweenDuration: 0.5
-  tweenSmoothType: 2
+  tweenDuration: 0.001
+  tweenSmoothType: 1
   _eventTable:
     _entries:
     - enumValue: 120
@@ -1171,6 +1171,7 @@ MonoBehaviour:
   - {fileID: 8229367222044006288}
   - {fileID: 4794170683597852482}
   - {fileID: 4551291632093512428}
+  expandido: 0
   cuerpo: {fileID: -3585095289099811124}
 --- !u!1 &4305713894953748182
 GameObject:

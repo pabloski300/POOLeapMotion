@@ -17,32 +17,43 @@ public class LineaVariable : MonoBehaviour
     public BoolVariable boolVariable;
 
     public InteractionButton modificar;
-    public InteractionButton eliminar;
     public TextMeshPro nombre;
 
     [HideInInspector]
     public int indice;
 
-    public void Start(){
+    public RepresentacionAtributo cube;
+    public CustomAnchor mainAnchor;
+
+    PanelIzquierdo pi;
+    CreadorAtributos ca;
+    CreadorObjetos co;
+
+    public void Init(){
+        pi = (PanelIzquierdo)Manager.Instance.GetMenu("PanelIzquierdo");
+        ca = (CreadorAtributos)Manager.Instance.GetMenu("CreadorAtributos");
+        co = (CreadorObjetos)Manager.Instance.GetMenu("CreadorObjetos");
+
         modificar.OnPress += (()=>Modificar());
-        eliminar.OnPress += (()=>Eliminar());
         this.gameObject.SetActive(false);
+        
+        cube.Init(mainAnchor,this);
     }
 
     public void Modificar(){
-        PanelIzquierdo.Instance.HideButtons();
+        pi.HideButtons();
         switch(type){
             case "int":
-                CreadorVariable.Instance.OpenModifyInt(intVariable,indice);
-                CreadorObjetos.Instance.Close();
+                ca.OpenModifyInt(intVariable,indice);
+                co.Close();
             break;
             case "float":
-                CreadorVariable.Instance.OpenModifyFloat(floatVariable,indice);
-                CreadorObjetos.Instance.Close();
+                ca.OpenModifyFloat(floatVariable,indice);
+                co.Close();
             break;
             case "bool":
-                CreadorVariable.Instance.OpenModifyBool(boolVariable,indice);
-                CreadorObjetos.Instance.Close();
+                ca.OpenModifyBool(boolVariable,indice);
+                co.Close();
             break;
         }
     }
@@ -50,20 +61,20 @@ public class LineaVariable : MonoBehaviour
     public void Eliminar(){
         switch(type){
             case "int":
-                CreadorObjetos.Instance.variablesInt.Remove(intVariable);
+                co.variablesInt.Remove(intVariable);
                 Destroy(intVariable.gameObject);
             break;
             case "float":
-                CreadorObjetos.Instance.variablesFloat.Remove(floatVariable);
+                co.variablesFloat.Remove(floatVariable);
                 Destroy(floatVariable.gameObject);
             break;
             case "bool":
-                CreadorObjetos.Instance.variablesBoolean.Remove(boolVariable);
+                co.variablesBoolean.Remove(boolVariable);
                 Destroy(boolVariable.gameObject);
             break;
         }
 
-        CreadorObjetos.Instance.NumberVariables --;
-        PanelIzquierdo.Instance.ReOrderVariable(indice);
+        co.NumberVariables --;
+        pi.ReOrderVariable(indice);
     }
 }

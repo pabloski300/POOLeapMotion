@@ -7,7 +7,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CustomAnchorable : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler
+public class CustomAnchorable : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
 
     InteractionBehaviour interaction;
@@ -41,8 +41,19 @@ public class CustomAnchorable : MonoBehaviour, IPointerEnterHandler, IPointerExi
     {
         if (selected)
         {
-            Vector3 pos = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, cam.transform.position.z * 1.25f));
-            transform.position = new Vector3(pos.x * -1, (pos.y * -1) + (cam.transform.position.y * 2), transform.position.z);
+            RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out hit, 100.0f,LayerMask.GetMask("Escenario")))
+            {
+                //suppose i have two objects here named obj1 and obj2.. how do i select obj1 to be transformed 
+                if (hit.transform != null)
+                {
+                    transform.position = new Vector3(hit.point.x ,hit.point.y, hit.point.z);
+                }
+            }
+
+            //Vector3 pos = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, cam.transform.position.z * 1.25f));
+            //transform.position = new Vector3(pos.x * -1, (pos.y * -1) + (cam.transform.position.y * 2), transform.position.z);
             //transform.position += new
         }
 
@@ -110,19 +121,11 @@ public class CustomAnchorable : MonoBehaviour, IPointerEnterHandler, IPointerExi
         }
     }
 
-    public void OnPointerUp(PointerEventData eventData)
-    {
-        //selected = false;
-        //anchorable.anchor = gridAnchor as Anchor;
-        //anchorable.anchorLerpCoeffPerSec = gridAnchor.LerpCoeficient;
-        //anchorable.isAttached = true;
-        //anchorable.anchor.NotifyAttached(anchorable);
-        //Debug.Log("click end");
-        //MenuGrid.Instance.ReturnToAnchor(this as ObjetoBase ,centralAnchor);
-    }
-
     public void LookAtCamera()
     {
-        panelSuperior.transform.forward = -(cam.transform.position - panelSuperior.transform.position);
+        if (!Interaction.ignoreGrasping && panelSuperior)
+        {
+            panelSuperior.transform.forward = -(cam.transform.position - panelSuperior.transform.position);
+        }
     }
 }

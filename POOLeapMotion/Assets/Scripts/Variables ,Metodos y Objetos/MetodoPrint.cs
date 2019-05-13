@@ -9,7 +9,7 @@ public class MetodoPrint : MetodoBase
     {
         string x = inputs[0].text;
         output.text = x;
-        ExploracionMetodo.Instance.GetButton("Ejecutar").gameObject.SetActive(true);
+        em.GetButton("Ejecutar").gameObject.SetActive(true);
     }
 
     public override string WriteFile()

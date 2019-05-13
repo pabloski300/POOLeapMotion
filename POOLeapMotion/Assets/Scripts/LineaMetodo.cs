@@ -11,28 +11,40 @@ public class LineaMetodo : MonoBehaviour
     public MetodoBase metodo;
 
     public InteractionButton modificar;
-    public InteractionButton eliminar;
     public TextMeshPro nombre;
+    
 
     [HideInInspector]
     public int indice;
 
-    public void Start(){
+    public RepresentacionMetodo cube;
+    public CustomAnchor mainAnchor;
+
+    PanelIzquierdo pi;
+    CreadorMetodos cm;
+    CreadorObjetos co;
+
+
+    public void Init(){
+        pi = (PanelIzquierdo)Manager.Instance.GetMenu("PanelIzquierdo");
+        cm = (CreadorMetodos)Manager.Instance.GetMenu("CreadorMetodos");
+        co = (CreadorObjetos)Manager.Instance.GetMenu("CreadorObjetos");
+
         modificar.OnPress += (()=>Modificar());
-        eliminar.OnPress += (()=>Eliminar());
         this.gameObject.SetActive(false);
+        cube.Init(mainAnchor,this);
     }
 
     public void Modificar(){
-        PanelIzquierdo.Instance.HideButtons();
-        CreadorMetodos.Instance.OpenModify(metodo,indice);
-        CreadorObjetos.Instance.Close();
+        pi.HideButtons();
+        cm.OpenModify(metodo,indice);
+        co.Close();
     }
 
     public void Eliminar(){
-        CreadorObjetos.Instance.metodos.Remove(metodo.nombre);
+        co.metodos.Remove(metodo.nombre);
         Destroy(metodo.gameObject);
-        PanelIzquierdo.Instance.ReOrderMetodo(indice);
-        CreadorObjetos.Instance.NumberMethods --;
+        pi.ReOrderMetodo(indice);
+        co.NumberMethods --;
     }
 }

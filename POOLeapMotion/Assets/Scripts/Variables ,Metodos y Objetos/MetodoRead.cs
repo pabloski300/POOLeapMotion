@@ -17,7 +17,7 @@ public class MetodoRead : MetodoBase
         }
         output.text = inputs[0].text;
         inputs[0].gameObject.SetActive(false);
-        ExploracionMetodo.Instance.GetButton("Ejecutar").gameObject.SetActive(true);
+        em.GetButton("Ejecutar").gameObject.SetActive(true);
         inputsReady = false;
     }
 

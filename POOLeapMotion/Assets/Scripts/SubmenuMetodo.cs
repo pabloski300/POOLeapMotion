@@ -22,18 +22,23 @@ public class SubmenuMetodo : MonoBehaviour
 
     public bool midExecution;
 
+    ExploracionMetodo e;
+
 
     // Start is called before the first frame update
-    void Start()
+    public void Init()
     {
-        Clear();
-        if (name == "MenuDiv")
+        e = (ExploracionMetodo)Manager.Instance.GetMenu("ExploracionMetodo");
+
+        if (name == "MenuRead")
         {
             foreach (TMP_InputField t in inputs)
             {
                 t.gameObject.SetActive(false);
             }
         }
+        
+        Clear();
     }
 
     public void Clear()
@@ -64,13 +69,13 @@ public class SubmenuMetodo : MonoBehaviour
     {
         if (inputs[i].text.Trim() == "")
         {
-            ExploracionMetodo.Instance.GetButton("Ejecutar").gameObject.SetActive(false);
+            e.GetButton("Ejecutar").gameObject.SetActive(false);
             return;
         }
 
         if (!midExecution)
         {
-            ExploracionMetodo.Instance.GetButton("Ejecutar").gameObject.SetActive(true);
+            e.GetButton("Ejecutar").gameObject.SetActive(true);
         }
 
 
@@ -91,7 +96,7 @@ public class SubmenuMetodo : MonoBehaviour
         Debug.Log(inputs[0].text);
         if (inputs[0].text != "")
         {
-            ExploracionMetodo.Instance.metodoActual.inputsReady = true;
+            e.metodoActual.inputsReady = true;
         }
     }
 }

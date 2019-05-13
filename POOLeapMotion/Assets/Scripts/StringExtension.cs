@@ -5,6 +5,13 @@ using UnityEngine;
 
 public static class StringExtension
 {
+    static MenuGrid mg;
+    static CreadorObjetos c;
+
+    public static void Init(){
+        mg = (MenuGrid)Manager.Instance.GetMenu("MenuGrid");
+        c = (CreadorObjetos)Manager.Instance.GetMenu("CreadorObjetos");
+    }
     public static bool Compare(this string s, CreadorObjetos c, bool modify){
         bool repeat = false;
 
@@ -31,9 +38,9 @@ public static class StringExtension
             c.textoError.text = "Este nombre esta en uso por otra clase";
         }
 
-        for (int i = 0; i < MenuGrid.Instance.anchorablePrefs.Count && !repeat; i++)
+        for (int i = 0; i < mg.anchorablePrefs.Count && !repeat; i++)
         {
-            repeat = s.Equals(MenuGrid.Instance.anchorablePrefs[i].nombre, StringComparison.InvariantCultureIgnoreCase);
+            repeat = s.Equals(mg.anchorablePrefs[i].nombre, StringComparison.InvariantCultureIgnoreCase);
         }
 
         if(modify && repeat){
@@ -43,7 +50,7 @@ public static class StringExtension
         return repeat;
     }
 
-    public static bool Compare(this string s, CreadorVariable v, bool modify){
+    public static bool Compare(this string s, CreadorAtributos v, bool modify){
         bool repeat = false;
 
         if (!repeat)
@@ -51,17 +58,17 @@ public static class StringExtension
             v.textoError.text = "Este nombre esta en uso por otra variable";
         }
 
-        for (int i = 0; i < CreadorObjetos.Instance.variablesInt.Count && !repeat; i++)
+        for (int i = 0; i < c.variablesInt.Count && !repeat; i++)
         {
-            repeat = s.Equals(CreadorObjetos.Instance.variablesInt[i].nombre, StringComparison.InvariantCultureIgnoreCase);
+            repeat = s.Equals(c.variablesInt[i].nombre, StringComparison.InvariantCultureIgnoreCase);
         }
-        for (int i = 0; i < CreadorObjetos.Instance.variablesFloat.Count && !repeat; i++)
+        for (int i = 0; i < c.variablesFloat.Count && !repeat; i++)
         {
-            repeat = s.Equals(CreadorObjetos.Instance.variablesFloat[i].nombre, StringComparison.InvariantCultureIgnoreCase);
+            repeat = s.Equals(c.variablesFloat[i].nombre, StringComparison.InvariantCultureIgnoreCase);
         }
-        for (int i = 0; i < CreadorObjetos.Instance.variablesBoolean.Count && !repeat; i++)
+        for (int i = 0; i < c.variablesBoolean.Count && !repeat; i++)
         {
-            repeat = s.Equals(CreadorObjetos.Instance.variablesBoolean[i].nombre, StringComparison.InvariantCultureIgnoreCase);
+            repeat = s.Equals(c.variablesBoolean[i].nombre, StringComparison.InvariantCultureIgnoreCase);
         }
 
         if(modify && repeat && v.intVarToModify != null){
@@ -83,13 +90,13 @@ public static class StringExtension
 
         if (!repeat)
         {
-            repeat = s.Equals(CreadorObjetos.Instance.nombreInput.text, StringComparison.InvariantCultureIgnoreCase);
+            repeat = s.Equals(c.nombreInput.text, StringComparison.InvariantCultureIgnoreCase);
         }
         
         return repeat;
     }
 
-    public static bool Compare(this string s,MenuVariable v){
+    public static bool Compare(this string s,CreadorVariables v){
         bool repeat = false;
 
         if (!repeat)
@@ -97,9 +104,9 @@ public static class StringExtension
             v.textoError.text = "Este nombre esta en uso por una clase";
         }
 
-        for (int i = 0; i < MenuGrid.Instance.anchorablePrefs.Count && !repeat; i++)
+        for (int i = 0; i < mg.anchorablePrefs.Count && !repeat; i++)
         {
-            repeat = s.Equals(MenuGrid.Instance.anchorablePrefs[i].nombre, StringComparison.InvariantCultureIgnoreCase);
+            repeat = s.Equals(mg.anchorablePrefs[i].nombre, StringComparison.InvariantCultureIgnoreCase);
         }
 
         if (!repeat)
@@ -107,9 +114,9 @@ public static class StringExtension
             v.textoError.text = "Este nombre esta en uso por otra variable";
         }
 
-        for (int i = 0; i < MenuGrid.Instance.variables.Count && !repeat; i++)
+        for (int i = 0; i < mg.variables.Count && !repeat; i++)
         {
-            repeat = s.Equals(MenuGrid.Instance.variables[i].nombre, StringComparison.InvariantCultureIgnoreCase);
+            repeat = s.Equals(mg.variables[i].nombre, StringComparison.InvariantCultureIgnoreCase);
         }
 
         return repeat;

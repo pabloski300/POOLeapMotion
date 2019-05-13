@@ -14,9 +14,6 @@ using UnityEngine;
 
 namespace Leap.Unity.Examples
 {
-
-    [RequireComponent(typeof(Anchor))]
-    [AddComponentMenu("")]
     public class SimpleAnchorFeedback : MonoBehaviour
     {
 

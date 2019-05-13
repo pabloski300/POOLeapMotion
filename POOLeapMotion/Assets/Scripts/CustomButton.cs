@@ -20,18 +20,34 @@ public class CustomButton : InteractionButton, IPointerUpHandler, IPointerDownHa
             {
                 rb = GetComponent<Rigidbody>();
             }
-            locked = value; /* ignoreContact = value;*/ rb.isKinematic = value;
+            if (!blocked)
+            {
+                locked = value; /* ignoreContact = value;*/ rb.isKinematic = value;
+            }
+            else
+            {
+                locked = true; rb.isKinematic = true;
+            }
         }
     }
 
     [HideInInspector]
     public bool toggleButton;
+    bool blocked;
+    public bool Blocked
+    {
+        get
+        {
+            return blocked;
+        }
+        set
+        {
+            blocked = value; /* ignoreContact = value;*/
+            Locked = value;
+        }
+    }
 
     Rigidbody rb;
-
-    public List<AudioClip> clips;
-
-    AudioSource audioSource;
 
     public bool lockUpdate;
 
@@ -40,15 +56,7 @@ public class CustomButton : InteractionButton, IPointerUpHandler, IPointerDownHa
         rb = GetComponent<Rigidbody>();
         base.Start();
         OnPress += (() => LockPress());
-        audioSource = GetComponent<AudioSource>();
-        OnPress += (() =>
-        {
-            if(audioSource == null){
-                GetComponent<AudioSource>();
-            }
-            audioSource.clip = clips[1];
-            audioSource.Play();
-        });
+        OnPress += (() => Manager.Instance.PlaySound(1));
         ButtonScaler b = GetComponent<ButtonScaler>();
         if (b != null)
         {
@@ -60,8 +68,7 @@ public class CustomButton : InteractionButton, IPointerUpHandler, IPointerDownHa
     {
         if (!locked)
         {
-            audioSource.clip = clips[0];
-            audioSource.Play();
+            Manager.Instance.PlaySound(0);
             _isPressed = true;
         }
     }
@@ -78,13 +85,11 @@ public class CustomButton : InteractionButton, IPointerUpHandler, IPointerDownHa
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        Debug.Log(Locked);
         if (!locked && _hoveringMouse)
         {
             OnPress();
         }
         _isPressed = false;
-        Debug.Log(Locked);
     }
 
     private new void OnDisable()
@@ -112,6 +117,7 @@ public class CustomButton : InteractionButton, IPointerUpHandler, IPointerDownHa
 
     void LockPress()
     {
+
         this.Locked = true;
         if (gameObject.activeSelf && !toggleButton)
         {
