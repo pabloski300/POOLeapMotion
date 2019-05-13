@@ -672,16 +672,16 @@ MonoBehaviour:
     - {fileID: 114757773444407778}
     - {fileID: 114496958894766280}
   hoverActivationRadius: 0.2
-  touchActivationRadius: 0.075
+  touchActivationRadius: 0.1
   _autoGenerateLayers: 1
   _templateLayer:
     layerIndex: 0
   _interactionLayer:
-    layerIndex: 11
-  _interactionNoContactLayer:
     layerIndex: 12
-  _contactBoneLayer:
+  _interactionNoContactLayer:
     layerIndex: 13
+  _contactBoneLayer:
+    layerIndex: 14
   _drawControllerRuntimeGizmos: 0
 --- !u!1 &1313335212711114
 GameObject:

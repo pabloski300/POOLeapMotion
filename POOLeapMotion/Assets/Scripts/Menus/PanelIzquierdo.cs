@@ -15,6 +15,10 @@ public class PanelIzquierdo : CustomMenu
     public TextMeshPro[] lineasVariablesText;
     public TextMeshPro[] lineasMetodosText;
 
+    public TextMeshPro title;
+
+    public GameObject panelIzquierdoParent;
+
     CreadorObjetos c;
 
     public override void Init()
@@ -35,7 +39,7 @@ public class PanelIzquierdo : CustomMenu
             lineasMetodos[i].Init();
         }
 
-        for (int i = 0; i < lineasVariablesText.Length; i++)
+        /*for (int i = 0; i < lineasVariablesText.Length; i++)
         {
             lineasVariablesText[i].gameObject.SetActive(false);
         }
@@ -43,7 +47,9 @@ public class PanelIzquierdo : CustomMenu
         for (int i = 0; i < lineasMetodosText.Length; i++)
         {
             lineasMetodosText[i].gameObject.SetActive(false);
-        }
+        }*/
+
+        panelIzquierdoParent.SetActive(false);
     }
 
     public void AddVariable(string type)
@@ -193,14 +199,16 @@ public class PanelIzquierdo : CustomMenu
         {
             b.gameObject.SetActive(false);
         }
-        foreach (TextMeshPro t in lineasMetodosText)
+        /*foreach (TextMeshPro t in lineasMetodosText)
         {
             t.gameObject.SetActive(true);
         }
         foreach (TextMeshPro t in lineasVariablesText)
         {
             t.gameObject.SetActive(true);
-        }
+        }*/
+        panelIzquierdoParent.SetActive(true);
+
         lineasMetodosParent.SetActive(false);
         lineasVariablesParent.gameObject.SetActive(false);
 
@@ -212,14 +220,15 @@ public class PanelIzquierdo : CustomMenu
         {
             b.gameObject.SetActive(true);
         }
-        foreach (TextMeshPro t in lineasMetodosText)
+        /*foreach (TextMeshPro t in lineasMetodosText)
         {
             t.gameObject.SetActive(false);
         }
         foreach (TextMeshPro t in lineasVariablesText)
         {
             t.gameObject.SetActive(false);
-        }
+        }*/
+        panelIzquierdoParent.SetActive(false);
         lineasMetodosParent.SetActive(true);
         lineasVariablesParent.gameObject.SetActive(true);
         UnlockButtonsDelayed(0.3f);

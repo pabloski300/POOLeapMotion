@@ -8,6 +8,8 @@ TagManager:
   - GridParent
   - CentralAnchor
   - ObjectsPivot
+  - VariablesPivot
+  - PrefabPivot
   layers:
   - Default
   - TransparentFX

@@ -54,9 +54,10 @@ public class Manager : MonoBehaviour
     [HideInInspector]
     public MenuInicio ini;
 
-
     AudioSource aud;
     public AudioClip[] sounds;
+
+    Transform prefabsPivot;
 
 
     // Start is called before the first frame update
@@ -71,22 +72,20 @@ public class Manager : MonoBehaviour
             Destroy(this.gameObject);
         }
 
+        prefabsPivot = GameObject.FindGameObjectWithTag("PrefabPivot").transform;
+
         AssetBundle bundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, "objeto"));
-        objetoBasePrefab = Instantiate(bundle.LoadAsset<GameObject>("ObjetoBasico"), new Vector3(400, 400, 400), Quaternion.identity).GetComponent<ObjetoBase>();
+        objetoBasePrefab = Instantiate(bundle.LoadAsset<GameObject>("ObjetoBasico"), new Vector3(400, 400, 400), Quaternion.Euler(0,0,0), prefabsPivot).GetComponent<ObjetoBase>();
         bundle.Unload(false);
 
         bundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, "variable_objeto"));
-        variableObjetoPrefab = Instantiate(bundle.LoadAsset<GameObject>("VariableObjeto"), new Vector3(500, 500, 500), Quaternion.identity).GetComponent<VariableObjeto>();
-        bundle.Unload(false);
-
-        bundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, "variable_objeto"));
-        variableObjetoPrefab = Instantiate(bundle.LoadAsset<GameObject>("VariableObjeto"), new Vector3(600, 600, 600), Quaternion.identity).GetComponent<VariableObjeto>();
+        variableObjetoPrefab = Instantiate(bundle.LoadAsset<GameObject>("VariableObjeto"), new Vector3(500, 500, 500), Quaternion.Euler(0,0,0), prefabsPivot).GetComponent<VariableObjeto>();
         bundle.Unload(false);
 
         bundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, "variables"));
-        intVariablePrefab = Instantiate(bundle.LoadAsset<GameObject>("IntVariable"), new Vector3(700, 700, 700), Quaternion.identity).GetComponent<IntVariable>();
-        floatVariablePrefab = Instantiate(bundle.LoadAsset<GameObject>("FloatVariable"), new Vector3(700, 700, 700), Quaternion.identity).GetComponent<FloatVariable>();
-        boolVariablePrefab = Instantiate(bundle.LoadAsset<GameObject>("BoolVariable"), new Vector3(700, 700, 700), Quaternion.identity).GetComponent<BoolVariable>();
+        intVariablePrefab = Instantiate(bundle.LoadAsset<GameObject>("IntVariable"), new Vector3(700, 700, 700), Quaternion.Euler(0,0,0), prefabsPivot).GetComponent<IntVariable>();
+        floatVariablePrefab = Instantiate(bundle.LoadAsset<GameObject>("FloatVariable"), new Vector3(700, 700, 700), Quaternion.Euler(0,0,0), prefabsPivot).GetComponent<FloatVariable>();
+        boolVariablePrefab = Instantiate(bundle.LoadAsset<GameObject>("BoolVariable"), new Vector3(700, 700, 700), Quaternion.Euler(0,0,0), prefabsPivot).GetComponent<BoolVariable>();
         bundle.Unload(false);
 
         bundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, "metodos"));
@@ -94,7 +93,7 @@ public class Manager : MonoBehaviour
 
         foreach (GameObject g in metodos)
         {
-            MetodoBase m = Instantiate(g, new Vector3(800, 800, 800), Quaternion.identity).GetComponent<MetodoBase>();
+            MetodoBase m = Instantiate(g, new Vector3(800, 800, 800), Quaternion.Euler(0,0,0), prefabsPivot).GetComponent<MetodoBase>();
             metodosPrefab.Add(m.nombre, m);
         }
         bundle.Unload(false);

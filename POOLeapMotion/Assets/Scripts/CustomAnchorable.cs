@@ -51,10 +51,6 @@ public class CustomAnchorable : MonoBehaviour, IPointerEnterHandler, IPointerExi
                     transform.position = new Vector3(hit.point.x ,hit.point.y, hit.point.z);
                 }
             }
-
-            //Vector3 pos = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, cam.transform.position.z * 1.25f));
-            //transform.position = new Vector3(pos.x * -1, (pos.y * -1) + (cam.transform.position.y * 2), transform.position.z);
-            //transform.position += new
         }
 
 
@@ -65,7 +61,6 @@ public class CustomAnchorable : MonoBehaviour, IPointerEnterHandler, IPointerExi
             anchorable.isAttached = false;
             anchorable.anchor.NotifyDetached(anchorable);
             anchorable.anchor = null;
-            //Debug.Log("clicked");
         }
 
         if (selected && isOver && Input.GetMouseButtonUp(0))
@@ -92,15 +87,6 @@ public class CustomAnchorable : MonoBehaviour, IPointerEnterHandler, IPointerExi
     {
         this.transform.localScale = new Vector3(1, 1, 1);
     }
-
-    /*public void OnPointerClick(PointerEventData eventData)
-    {
-            Interaction.OnHoverEnd();
-            anchorable.isAttached = false;
-            anchorable.anchor.NotifyDetached(anchorable);
-            selected = true;
-            Debug.Log("click begin");  
-    }*/
 
     public void OnPointerEnter(PointerEventData eventData)
     {

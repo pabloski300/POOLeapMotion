@@ -135,6 +135,7 @@ public class CreadorObjetos : CustomMenu
     {
         Open();
         Restart();
+        p.title.text = nombreInput.text;
         SetColor = Manager.Instance.GenerateColor();
         NumberVariables = 0;
         NumberMethods = 0;
@@ -230,6 +231,8 @@ public class CreadorObjetos : CustomMenu
             textoError.gameObject.SetActive(true);
             return;
         }
+
+        p.title.text = nombreInput.text;
 
         GetButton("Finalizar").Locked = false;
     }

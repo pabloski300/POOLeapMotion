@@ -31,6 +31,7 @@ public class MenuGrid : CustomMenu
     CustomAnchor centralAnchor;
 
     Transform objectsPivot;
+    Transform variablesPivot;
 
     int activeObjectAnchors;
     int activeVariableAnchors;
@@ -47,10 +48,11 @@ public class MenuGrid : CustomMenu
         c = (Consola)Manager.Instance.GetMenu("Consola");
 
         objectsPivot = GameObject.FindGameObjectWithTag("ObjectsPivot").transform;
+        variablesPivot = GameObject.FindGameObjectWithTag("VariablesPivot").transform;
         objects = new List<ObjetoBase>();
         gridObjeto = gridObjectParent.GetComponentsInChildren<CustomAnchor>().ToList();
         gridVariable = gridVariableParent.GetComponentsInChildren<CustomAnchor>().ToList();
-        centralAnchor = GameObject.FindGameObjectWithTag("CentralAnchor").GetComponent<CustomAnchor>();
+
         gridObjeto.Sort();
 
         for (int i = 0; i < gridObjeto.Count; i++)
@@ -91,7 +93,7 @@ public class MenuGrid : CustomMenu
         if (activeVariableAnchors < gridVariable.Count)
         {
             CustomAnchor anchor = gridVariable.FirstOrDefault(x => !x.gameObject.activeSelf);
-            VariableObjeto variable = Instantiate(Manager.Instance.variableObjetoPrefab, anchor.transform.position, anchor.transform.rotation);
+            VariableObjeto variable = Instantiate(Manager.Instance.variableObjetoPrefab, anchor.transform.position, anchor.transform.rotation, variablesPivot);
             anchor.gameObject.SetActive(true);
             anchor.objectAnchored = variable;
             variables.Add(variable);
