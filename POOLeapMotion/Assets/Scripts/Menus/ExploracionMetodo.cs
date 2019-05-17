@@ -52,6 +52,19 @@ public class ExploracionMetodo : CustomMenu
     {
         GetButton("Ejecutar").gameObject.SetActive(false);
         metodoActual.Execute(menuActual.inputs, menuActual.output);
-        c.Write(e.variable.nombre + "." + metodoActual.nombre + "();");
+        if (menuActual.name != "MenuRead")
+        {
+            string s = e.variable.nombre + "." + metodoActual.nombre + "(";
+            for (int i = 0; i < menuActual.inputs.Count; i++)
+            {
+                s += menuActual.inputs[i] + ", ";
+            }
+            s += ");";
+            c.Write(s);
+        }
+        else
+        {
+            c.Write(e.variable.nombre + "." + metodoActual.nombre + "();");
+        }
     }
 }

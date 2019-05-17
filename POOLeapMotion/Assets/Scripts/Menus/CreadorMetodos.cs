@@ -41,7 +41,7 @@ public class CreadorMetodos : CustomMenu
 
     public void Restart()
     {
-        ChangeMethod("MetodoPrint");
+        ChangeMethod("Print");
         indiceLinea = 0;
         methodToModify = null;
         modify = false;

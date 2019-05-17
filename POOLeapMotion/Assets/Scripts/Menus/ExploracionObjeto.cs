@@ -57,7 +57,7 @@ public class ExploracionObjeto : CustomMenu
         objeto.Anchorable.isAttached = true;
         objeto.Anchorable.anchor.NotifyAttached(objeto.Anchorable);
         anchorMetodo.gameObject.SetActive(false);
-        info.text = "Para poder ejecutar metodos asigna el objeto a una variable";
+        info.text = "Para poder ejecutar metodos inspeccione una variable con un objeto asignado";
         title.text = "Inspeccionando Objeto " + objeto.nombre;
         Expandir();
     }

@@ -11,16 +11,19 @@ public class ConfirmacionEliminarClase : CustomMenu
     {
         base.Init();
         Instance = this;
-        GetButton("Confirmar").OnPress += (()=>Confirmar());
+        GetButton("Confirmar").OnPress += (() => Confirmar());
     }
 
-    public void Open(LineaClase c){
+    public void Open(LineaClase c)
+    {
         base.Open();
         linea = c;
     }
 
-    public void Confirmar(){
-        if(linea != null){
+    public void Confirmar()
+    {
+        if (linea != null)
+        {
             linea.Eliminar();
         }
     }
