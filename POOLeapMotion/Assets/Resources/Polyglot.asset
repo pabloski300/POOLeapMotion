@@ -1,0 +1,569 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebf40cddbb5791046a8d7b9d98607b4f, type: 3}
+  m_Name: Polyglot
+  m_EditorClassIdentifier: 
+  selectedLanguage: 0
+  selectedLanguageCategories: 0
+  translations:
+  - indexLanguage: 0
+    nameID: Load
+    translation: Load Session
+    idUniqueElements: 0
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 1
+    nameID: Load
+    translation: Cargar Sesion
+    idUniqueElements: 0
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 0
+    nameID: New
+    translation: New Session
+    idUniqueElements: 1
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 1
+    nameID: New
+    translation: Nueva Sesion
+    idUniqueElements: 1
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 0
+    nameID: Show
+    translation: Show Code
+    idUniqueElements: 2
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 1
+    nameID: Show
+    translation: Mostrar Codigo
+    idUniqueElements: 2
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 0
+    nameID: Exit
+    translation: Exit
+    idUniqueElements: 3
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 1
+    nameID: Exit
+    translation: Salir
+    idUniqueElements: 3
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 0
+    nameID: Objects
+    translation: Objects
+    idUniqueElements: 4
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 1
+    nameID: Objects
+    translation: Objetos
+    idUniqueElements: 4
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 0
+    nameID: Variables
+    translation: Variables
+    idUniqueElements: 5
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 1
+    nameID: Variables
+    translation: Variables
+    idUniqueElements: 5
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 0
+    nameID: Title Trash
+    translation: Drag cubes here to destroy
+    idUniqueElements: 6
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 1
+    nameID: Title Trash
+    translation: Arrastra cubos aqui para eliminar
+    idUniqueElements: 6
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 0
+    nameID: Name
+    translation: 'Name:'
+    idUniqueElements: 7
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 1
+    nameID: Name
+    translation: 'Nombre:'
+    idUniqueElements: 7
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 0
+    nameID: Title Open
+    translation: Drag an Object or Variable here to inspect its content
+    idUniqueElements: 8
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 1
+    nameID: Title Open
+    translation: Arrastra una variable u objeto aqui para inspeccionarlo
+    idUniqueElements: 8
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 0
+    nameID: Title Open Method
+    translation: Drag a method here to run it
+    idUniqueElements: 9
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 1
+    nameID: Title Open Method
+    translation: Arrastra un metodo aqui para ejecutarlo
+    idUniqueElements: 9
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 0
+    nameID: Modify
+    translation: Modify
+    idUniqueElements: 10
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 1
+    nameID: Modify
+    translation: Modificar
+    idUniqueElements: 10
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 0
+    nameID: Crear Variable
+    translation: Create Variable
+    idUniqueElements: 11
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 1
+    nameID: Crear Variable
+    translation: Crear Variable
+    idUniqueElements: 11
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 0
+    nameID: Crear Objeto
+    translation: Create Object
+    idUniqueElements: 12
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 1
+    nameID: Crear Objeto
+    translation: Crear Objeto
+    idUniqueElements: 12
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 0
+    nameID: Warning Class
+    translation: Deleting the Class will delete all Objects and Variable created from
+      this class
+    idUniqueElements: 13
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 1
+    nameID: Warning Class
+    translation: Eliminar la Clase eliminara todos los Objetos y Variables creados
+      de esta clase.
+    idUniqueElements: 13
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 0
+    nameID: Title Variable
+    translation: New Variable
+    idUniqueElements: 14
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 1
+    nameID: Title Variable
+    translation: Nueva Variable
+    idUniqueElements: 14
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 0
+    nameID: Title Class
+    translation: New Class
+    idUniqueElements: 15
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 1
+    nameID: Title Class
+    translation: Nueva Clase
+    idUniqueElements: 15
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 0
+    nameID: Warning Creation
+    translation: You will lose the changes made.
+    idUniqueElements: 16
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 1
+    nameID: Warning Creation
+    translation: "Se perder\xE1n los cambios realizados."
+    idUniqueElements: 16
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 0
+    nameID: Panel Title Atribute
+    translation: Attributes
+    idUniqueElements: 17
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 1
+    nameID: Panel Title Atribute
+    translation: Atributos
+    idUniqueElements: 17
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 0
+    nameID: Panel Title Method
+    translation: Methods
+    idUniqueElements: 18
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 1
+    nameID: Panel Title Method
+    translation: Metodos
+    idUniqueElements: 18
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 0
+    nameID: Question
+    translation: Are you sure?
+    idUniqueElements: 19
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 1
+    nameID: Question
+    translation: "\xBFEst\xE1s seguro?"
+    idUniqueElements: 19
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 0
+    nameID: Run
+    translation: Run Method
+    idUniqueElements: 20
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 1
+    nameID: Run
+    translation: Ejecutar
+    idUniqueElements: 20
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 0
+    nameID: Send
+    translation: Confirm Input
+    idUniqueElements: 21
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 1
+    nameID: Send
+    translation: Confirmar Entrada
+    idUniqueElements: 21
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 0
+    nameID: Result
+    translation: 'Result:'
+    idUniqueElements: 22
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 1
+    nameID: Result
+    translation: 'Resultado:'
+    idUniqueElements: 22
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 0
+    nameID: Input
+    translation: 'Input:'
+    idUniqueElements: 23
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 1
+    nameID: Input
+    translation: 'Entrada:'
+    idUniqueElements: 23
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 0
+    nameID: Title Attribute
+    translation: New Attribute
+    idUniqueElements: 24
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 1
+    nameID: Title Attribute
+    translation: Nuevo Atributo
+    idUniqueElements: 24
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 0
+    nameID: Title Method
+    translation: New Method
+    idUniqueElements: 25
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 1
+    nameID: Title Method
+    translation: Nuevo Metodo
+    idUniqueElements: 25
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 0
+    nameID: Access
+    translation: 'Access:'
+    idUniqueElements: 26
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 1
+    nameID: Access
+    translation: 'Acceso:'
+    idUniqueElements: 26
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 0
+    nameID: Type
+    translation: 'Type:'
+    idUniqueElements: 27
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 1
+    nameID: Type
+    translation: 'Tipo:'
+    idUniqueElements: 27
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 0
+    nameID: Classes
+    translation: Classes
+    idUniqueElements: 28
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 1
+    nameID: Classes
+    translation: Clases
+    idUniqueElements: 28
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 0
+    nameID: Show Objects
+    translation: Show Objects and Variables
+    idUniqueElements: 29
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 1
+    nameID: Show Objects
+    translation: Mostrar Objetos y Variables
+    idUniqueElements: 29
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 0
+    nameID: Input Placeholder
+    translation: Enter text...
+    idUniqueElements: 30
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 1
+    nameID: Input Placeholder
+    translation: Escribe algo...
+    idUniqueElements: 30
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 0
+    nameID: Methods
+    translation: 'Methods:'
+    idUniqueElements: 31
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 1
+    nameID: Methods
+    translation: 'Metodos:'
+    idUniqueElements: 31
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 0
+    nameID: Language
+    translation: English
+    idUniqueElements: 32
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 1
+    nameID: Language
+    translation: "Espa\xF1ol"
+    idUniqueElements: 32
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 0
+    nameID: Guide
+    translation: User Guide
+    idUniqueElements: 33
+    categories:
+      index: 0
+      name: Menus
+  - indexLanguage: 1
+    nameID: Guide
+    translation: Guia de Uso
+    idUniqueElements: 33
+    categories:
+      index: 0
+      name: Menus
+  languages:
+  - English
+  - Spanish
+  languagesCategories:
+  - Menus
+  idElements:
+  - inUse: 1
+    id: 0
+  - inUse: 1
+    id: 1
+  - inUse: 1
+    id: 2
+  - inUse: 1
+    id: 3
+  - inUse: 1
+    id: 4
+  - inUse: 1
+    id: 5
+  - inUse: 1
+    id: 6
+  - inUse: 1
+    id: 7
+  - inUse: 1
+    id: 8
+  - inUse: 1
+    id: 9
+  - inUse: 1
+    id: 10
+  - inUse: 1
+    id: 11
+  - inUse: 1
+    id: 12
+  - inUse: 1
+    id: 13
+  - inUse: 1
+    id: 14
+  - inUse: 1
+    id: 15
+  - inUse: 1
+    id: 16
+  - inUse: 1
+    id: 17
+  - inUse: 1
+    id: 18
+  - inUse: 1
+    id: 19
+  - inUse: 1
+    id: 20
+  - inUse: 1
+    id: 21
+  - inUse: 1
+    id: 22
+  - inUse: 1
+    id: 23
+  - inUse: 1
+    id: 24
+  - inUse: 1
+    id: 25
+  - inUse: 1
+    id: 26
+  - inUse: 1
+    id: 27
+  - inUse: 1
+    id: 28
+  - inUse: 1
+    id: 29
+  - inUse: 1
+    id: 30
+  - inUse: 1
+    id: 31
+  - inUse: 1
+    id: 32
+  - inUse: 1
+    id: 33

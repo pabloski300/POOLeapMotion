@@ -106,7 +106,7 @@ public class CreadorObjetos : CustomMenu
         numberVariables = 0;
         numberMethods = 0;
 
-        nombreInput.gameObject.SetActive(true);
+        nombreInput.gameObject.SetActive(false);
 
         GetButton("Finalizar").OnPress += (()=>End());
 
@@ -151,25 +151,25 @@ public class CreadorObjetos : CustomMenu
         {
             variablesInt.Add(objectToModify.variablesInt[i]);
             p.AddVariable("int");
-            numberVariables++;
+            NumberVariables++;
         }
         for (int i = 0; i < objectToModify.variablesFloat.Count; i++)
         {
             variablesFloat.Add(objectToModify.variablesFloat[i]);
             p.AddVariable("float");
-            numberVariables++;
+            NumberVariables++;
         }
         for (int i = 0; i < objectToModify.variablesBool.Count; i++)
         {
             variablesBoolean.Add(objectToModify.variablesBool[i]);
             p.AddVariable("bool");
-            numberVariables++;
+            NumberVariables++;
         }
         for (int i = 0; i < objectToModify.metodos.Count; i++)
         {
             metodos.Add(objectToModify.metodos[i].nombre, objectToModify.metodos[i]);
             p.AddMetodo(objectToModify.metodos[i].nombre);
-            numberMethods++;
+            NumberMethods++;
         }
         nombreInput.text = objectToModify.nombre;
         nombreInput.Select();
@@ -194,6 +194,7 @@ public class CreadorObjetos : CustomMenu
     {
         Create();
         Close();
+        mc.Open();
     }
 
     public new void Close()
@@ -220,6 +221,12 @@ public class CreadorObjetos : CustomMenu
         if (nombreInput.text.Length == 0)
         {
             GetButton("Finalizar").Locked = true;
+            if(Manager.Instance.english){
+                textoError.text = "Please, write a name";
+            }else{
+                textoError.text = "Por favor, introduce un nombre";
+            }
+            textoError.gameObject.SetActive(true);
             return;
         }
 
@@ -288,7 +295,10 @@ public class CreadorObjetos : CustomMenu
 
         objetoScript.Material = matClase;
 
-        mc.NumberClases ++;
+        if (!modify)
+        {
+            mc.NumberClases ++;
+        }
 
         m.anchorablePrefs.Add(objetoScript.gameObject.GetComponent<ObjetoBase>());
         

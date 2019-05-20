@@ -66,5 +66,6 @@ public class ExploracionMetodo : CustomMenu
         {
             c.Write(e.variable.nombre + "." + metodoActual.nombre + "();");
         }
+        UnlockButtonsDelayed(0.5f);
     }
 }

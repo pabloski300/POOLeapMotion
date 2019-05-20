@@ -220,7 +220,14 @@ public class CreadorAtributos : CustomMenu
         {
             GetButton("Finalizar").Locked = true;
             textoError.gameObject.SetActive(true);
-            textoError.text = "Introduce un nombre por favor";
+            if (Manager.Instance.english)
+            {
+                textoError.text = "Please, write a name";
+            }
+            else
+            {
+                textoError.text = "Por favor, introduce un nombre";
+            }
             return;
         }
 
@@ -230,7 +237,7 @@ public class CreadorAtributos : CustomMenu
 
         if (repeat)
         {
-            GetButton("Finalizar").Locked = true;
+            GetButton("Finalizar").Blocked = true;
             textoError.gameObject.SetActive(true);
             return;
         }
@@ -240,7 +247,7 @@ public class CreadorAtributos : CustomMenu
             nombreInput.text = nombreInput.text.Remove(nombreInput.characterLimit, 1);
         }
 
-        GetButton("Finalizar").Locked = false;
+        GetButton("Finalizar").Blocked = false;
         textoError.gameObject.SetActive(false);
     }
 

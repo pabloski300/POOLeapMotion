@@ -39,16 +39,6 @@ public class PanelIzquierdo : CustomMenu
             lineasMetodos[i].Init();
         }
 
-        /*for (int i = 0; i < lineasVariablesText.Length; i++)
-        {
-            lineasVariablesText[i].gameObject.SetActive(false);
-        }
-
-        for (int i = 0; i < lineasMetodosText.Length; i++)
-        {
-            lineasMetodosText[i].gameObject.SetActive(false);
-        }*/
-
         panelIzquierdoParent.SetActive(false);
     }
 
@@ -89,7 +79,9 @@ public class PanelIzquierdo : CustomMenu
                 lineasMetodos[i].metodo = c.metodos[key];
                 lineasMetodos[i].nombre.text = key;
                 lineasMetodos[i].gameObject.SetActive(true);
+                lineasMetodos[i].cube.textoPanelSuperior.text = "public " + lineasMetodos[i].metodo.nombre;
                 lineasMetodosText[i].text = "public " + lineasMetodos[i].metodo.nombre;
+                
             }
         }
     }
@@ -115,6 +107,7 @@ public class PanelIzquierdo : CustomMenu
         lineasMetodos[i].metodo = c.metodos[key];
         lineasMetodos[i].nombre.text = "public " + lineasMetodos[i].metodo.nombre;
         lineasMetodos[i].gameObject.SetActive(true);
+        lineasMetodos[i].cube.textoPanelSuperior.text = "public " + lineasMetodos[i].metodo.nombre;
         lineasMetodosText[i].text = "public " + lineasMetodos[i].metodo.nombre;
     }
 
@@ -125,6 +118,7 @@ public class PanelIzquierdo : CustomMenu
         lineasVariables[index].floatVariable = null;
         lineasVariables[index].boolVariable = null;
         lineasVariables[index].nombre.text = lineasVariables[index].intVariable.proteccion.ToString().ToLower() + " int " + lineasVariables[index].intVariable.nombre;
+        lineasVariables[index].cube.textoPanelSuperior.text = lineasVariables[index].intVariable.proteccion.ToString().ToLower() + " int " + lineasVariables[index].intVariable.nombre;
         lineasVariablesText[index].text = lineasVariables[index].intVariable.proteccion.ToString().ToLower() + " int " + lineasVariables[index].intVariable.nombre;
     }
 
@@ -135,6 +129,7 @@ public class PanelIzquierdo : CustomMenu
         lineasVariables[index].floatVariable = c.variablesFloat[c.variablesFloat.Count - 1];
         lineasVariables[index].boolVariable = null;
         lineasVariables[index].nombre.text = lineasVariables[index].floatVariable.proteccion.ToString().ToLower() + " float " + lineasVariables[index].floatVariable.nombre;
+        lineasVariables[index].cube.textoPanelSuperior.text = lineasVariables[index].floatVariable.proteccion.ToString().ToLower() + " float " + lineasVariables[index].floatVariable.nombre;
         lineasVariablesText[index].text = lineasVariables[index].floatVariable.proteccion.ToString().ToLower() + " float " + lineasVariables[index].floatVariable.nombre;
     }
 
@@ -145,6 +140,7 @@ public class PanelIzquierdo : CustomMenu
         lineasVariables[index].floatVariable = null;
         lineasVariables[index].boolVariable = c.variablesBoolean[c.variablesBoolean.Count - 1];
         lineasVariables[index].nombre.text = lineasVariables[index].boolVariable.proteccion.ToString().ToLower() + " boolean " + lineasVariables[index].boolVariable.nombre;
+        lineasVariables[index].cube.textoPanelSuperior.text = lineasVariables[index].boolVariable.proteccion.ToString().ToLower() + " boolean " + lineasVariables[index].boolVariable.nombre;
         lineasVariablesText[index].text = lineasVariables[index].boolVariable.proteccion.ToString().ToLower() + " boolean " + lineasVariables[index].boolVariable.nombre;
     }
 
@@ -159,6 +155,7 @@ public class PanelIzquierdo : CustomMenu
                 lineasVariables[i].floatVariable = lineasVariables[i + 1].floatVariable;
                 lineasVariables[i].boolVariable = lineasVariables[i + 1].boolVariable;
                 lineasVariables[i].nombre.text = lineasVariables[i + 1].nombre.text;
+                lineasVariables[i].cube.textoPanelSuperior.text = lineasVariables[i + 1].cube.textoPanelSuperior.text;
                 lineasVariablesText[i].text = lineasVariables[i + 1].nombre.text;
             }
             else
@@ -180,6 +177,7 @@ public class PanelIzquierdo : CustomMenu
             {
                 lineasMetodos[i].metodo = lineasMetodos[i + 1].metodo;
                 lineasMetodos[i].nombre.text = lineasMetodos[i + 1].nombre.text;
+                lineasMetodos[i].cube.textoPanelSuperior.text = lineasMetodos[i + 1].cube.textoPanelSuperior.text;
                 lineasMetodosText[i].text = lineasMetodos[i + 1].nombre.text;
             }
             else
@@ -199,14 +197,7 @@ public class PanelIzquierdo : CustomMenu
         {
             b.gameObject.SetActive(false);
         }
-        /*foreach (TextMeshPro t in lineasMetodosText)
-        {
-            t.gameObject.SetActive(true);
-        }
-        foreach (TextMeshPro t in lineasVariablesText)
-        {
-            t.gameObject.SetActive(true);
-        }*/
+
         panelIzquierdoParent.SetActive(true);
 
         lineasMetodosParent.SetActive(false);
@@ -220,14 +211,7 @@ public class PanelIzquierdo : CustomMenu
         {
             b.gameObject.SetActive(true);
         }
-        /*foreach (TextMeshPro t in lineasMetodosText)
-        {
-            t.gameObject.SetActive(false);
-        }
-        foreach (TextMeshPro t in lineasVariablesText)
-        {
-            t.gameObject.SetActive(false);
-        }*/
+
         panelIzquierdoParent.SetActive(false);
         lineasMetodosParent.SetActive(true);
         lineasVariablesParent.gameObject.SetActive(true);

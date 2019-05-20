@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 
 [ExecuteInEditMode]
-public class ConolaScaler : MonoBehaviour
+public class ConsolaScaler : MonoBehaviour
 {
     public Vector2 escala = new Vector2(1, 1);
     Vector2 lastEscala;

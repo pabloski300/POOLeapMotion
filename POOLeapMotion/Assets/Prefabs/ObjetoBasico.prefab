@@ -859,7 +859,6 @@ MonoBehaviour:
   m_fontSizeMax: 100
   m_fontStyle: 1
   m_textAlignment: 514
-  m_isAlignmentEnumConverted: 1
   m_characterSpacing: 0
   m_wordSpacing: 0
   m_lineSpacing: 0
@@ -886,6 +885,7 @@ MonoBehaviour:
   m_verticalMapping: 0
   m_uvLineOffset: 0
   m_geometrySortingOrder: 0
+  m_VertexBufferAutoSizeReduction: 1
   m_firstVisibleCharacter: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
@@ -900,12 +900,9 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 1
-  m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: -3381405468740116374}
   m_subTextObjects:
@@ -1053,8 +1050,8 @@ MonoBehaviour:
       callback:
         m_PersistentCalls:
           m_Calls:
-          - m_Target: {fileID: 1821547885919151319}
-            m_MethodName: PlayForward
+          - m_Target: {fileID: -1134698570257507798}
+            m_MethodName: LookAtCamera
             m_Mode: 1
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
@@ -1154,6 +1151,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panelSuperior: {fileID: -1438151720332361206}
   textoPanelSuperior: {fileID: 6995493957857469797}
+  tweenPanelSuperior: {fileID: 1821547885919151319}
   nombre: 
   codigo: 
   variablesInt: []
@@ -1315,7 +1313,7 @@ MonoBehaviour:
   tweenLocalPosition: 1
   tweenLocalRotation: 1
   tweenLocalScale: 1
-  tweenDuration: 0.25
+  tweenDuration: 0.15
   tweenSmoothType: 2
   _eventTable:
     _entries:

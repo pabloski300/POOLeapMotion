@@ -96,6 +96,15 @@ public class CreadorVariables : CustomMenu
         if (nombreInput.text.Length == 0)
         {
             GetButton("Crear").Blocked = true;
+            if (Manager.Instance.english)
+            {
+                textoError.text = "Please, write a name";
+            }
+            else
+            {
+                textoError.text = "Por favor, introduce un nombre";
+            }
+            textoError.gameObject.SetActive(true);
             return;
         }
 
@@ -122,14 +131,28 @@ public class CreadorVariables : CustomMenu
         {
             maxVars = true;
             info.gameObject.SetActive(false);
-            info.text = "Maximas Variables Creadas";
+            if (Manager.Instance.english)
+            {
+                info.text = "Max Variables Created";
+            }
+            else
+            {
+                info.text = "Maximas Variables Creadas";
+            }
             info.gameObject.SetActive(true);
             nombreInput.text = "";
             TrimString();
             return;
         }
         info.gameObject.SetActive(false);
-        info.text = "Variable Creada";
+        if (Manager.Instance.english)
+        {
+            info.text = "Variable Created";
+        }
+        else
+        {
+            info.text = "Variable Creada";
+        }
         info.gameObject.SetActive(true);
         nombreInput.Select();
         nombreInput.text = "";

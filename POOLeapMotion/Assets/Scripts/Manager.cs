@@ -59,9 +59,13 @@ public class Manager : MonoBehaviour
 
     Transform prefabsPivot;
 
+    [SerializeField]
+    LanguageControl languageControl;
+    [HideInInspector]
+    public bool english;
 
     // Start is called before the first frame update
-    void Awake()
+    void Start()
     {
         if (Instance == null)
         {
@@ -72,20 +76,23 @@ public class Manager : MonoBehaviour
             Destroy(this.gameObject);
         }
 
+        languageControl.selectedLanguage = 1;
+        languageControl.UpdateTextTranslation();
+
         prefabsPivot = GameObject.FindGameObjectWithTag("PrefabPivot").transform;
 
         AssetBundle bundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, "objeto"));
-        objetoBasePrefab = Instantiate(bundle.LoadAsset<GameObject>("ObjetoBasico"), new Vector3(400, 400, 400), Quaternion.Euler(0,0,0), prefabsPivot).GetComponent<ObjetoBase>();
+        objetoBasePrefab = Instantiate(bundle.LoadAsset<GameObject>("ObjetoBasico"), new Vector3(400, 400, 400), Quaternion.Euler(0, 0, 0), prefabsPivot).GetComponent<ObjetoBase>();
         bundle.Unload(false);
 
         bundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, "variable_objeto"));
-        variableObjetoPrefab = Instantiate(bundle.LoadAsset<GameObject>("VariableObjeto"), new Vector3(500, 500, 500), Quaternion.Euler(0,0,0), prefabsPivot).GetComponent<VariableObjeto>();
+        variableObjetoPrefab = Instantiate(bundle.LoadAsset<GameObject>("VariableObjeto"), new Vector3(500, 500, 500), Quaternion.Euler(0, 0, 0), prefabsPivot).GetComponent<VariableObjeto>();
         bundle.Unload(false);
 
         bundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, "variables"));
-        intVariablePrefab = Instantiate(bundle.LoadAsset<GameObject>("IntVariable"), new Vector3(700, 700, 700), Quaternion.Euler(0,0,0), prefabsPivot).GetComponent<IntVariable>();
-        floatVariablePrefab = Instantiate(bundle.LoadAsset<GameObject>("FloatVariable"), new Vector3(700, 700, 700), Quaternion.Euler(0,0,0), prefabsPivot).GetComponent<FloatVariable>();
-        boolVariablePrefab = Instantiate(bundle.LoadAsset<GameObject>("BoolVariable"), new Vector3(700, 700, 700), Quaternion.Euler(0,0,0), prefabsPivot).GetComponent<BoolVariable>();
+        intVariablePrefab = Instantiate(bundle.LoadAsset<GameObject>("IntVariable"), new Vector3(700, 700, 700), Quaternion.Euler(0, 0, 0), prefabsPivot).GetComponent<IntVariable>();
+        floatVariablePrefab = Instantiate(bundle.LoadAsset<GameObject>("FloatVariable"), new Vector3(700, 700, 700), Quaternion.Euler(0, 0, 0), prefabsPivot).GetComponent<FloatVariable>();
+        boolVariablePrefab = Instantiate(bundle.LoadAsset<GameObject>("BoolVariable"), new Vector3(700, 700, 700), Quaternion.Euler(0, 0, 0), prefabsPivot).GetComponent<BoolVariable>();
         bundle.Unload(false);
 
         bundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, "metodos"));
@@ -93,7 +100,7 @@ public class Manager : MonoBehaviour
 
         foreach (GameObject g in metodos)
         {
-            MetodoBase m = Instantiate(g, new Vector3(800, 800, 800), Quaternion.Euler(0,0,0), prefabsPivot).GetComponent<MetodoBase>();
+            MetodoBase m = Instantiate(g, new Vector3(800, 800, 800), Quaternion.Euler(0, 0, 0), prefabsPivot).GetComponent<MetodoBase>();
             metodosPrefab.Add(m.nombre, m);
         }
         bundle.Unload(false);
@@ -231,6 +238,17 @@ public class Manager : MonoBehaviour
             save.objetos.Add(x);
         }
 
+        for (int i = 0; i < mg.variables.Count; i++)
+        {
+            int index = mg.objects.IndexOf(mg.objects.FirstOrDefault(x => mg.variables[i].objetoReferenciado == x));
+            save.referencias.Add(index);
+        }
+
+        for (int i = 0; i < c.lineas.Count; i++)
+        {
+            save.consola.Add(c.lineas[i]);
+        }
+
         binaryFormatter.Serialize(stream, save);
         stream.Close();
 
@@ -263,7 +281,14 @@ public class Manager : MonoBehaviour
         }
         catch
         {
-            mc.ShowText("No ha sido posible leer el archivo, se creara uno nuevo al volver al menu de inicio");
+            if (english)
+            {
+                mc.ShowText("Error reading the file, a new one will be created when returning to the main menu");
+            }
+            else
+            {
+                mc.ShowText("Error leyendo el archivo, se creara uno nuevo al volver al menu de inicio");
+            }
         }
 
 
@@ -319,6 +344,17 @@ public class Manager : MonoBehaviour
             mg.SpawnObject(save.objetos[i]);
         }
 
+        for (int i = 0; i < save.referencias.Count; i++)
+        {
+            if (save.referencias[i] >= 0)
+            {
+                mg.variables[i].objetoReferenciado = mg.objects[save.referencias[i]];
+            }
+        }
+
+        c.Load(save.consola);
+
+
         stream.Close();
 
 
@@ -341,8 +377,23 @@ public class Manager : MonoBehaviour
         }
     }
 
-    public void PlaySound(int i){
+    public void PlaySound(int i)
+    {
         aud.clip = sounds[i];
         aud.Play();
+    }
+
+    public void ChangeLanguage()
+    {
+        if (english)
+        {
+            languageControl.selectedLanguage = 1;
+            english = false;
+        }
+        else
+        {
+            languageControl.selectedLanguage = 0;
+            english = true;
+        }
     }
 }

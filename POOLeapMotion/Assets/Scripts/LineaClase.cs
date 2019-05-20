@@ -76,7 +76,14 @@ public class LineaClase : MonoBehaviour
     {
         mg.SpawnObject(indice);
         mc.NumberObjetos++;
-        mc.ShowText("ObjetoCreado");
+        if (Manager.Instance.english)
+        {
+            mc.ShowText("Object Created");
+        }
+        else
+        {
+            mc.ShowText("Objeto Creado");
+        }
     }
 
     public void Explorar()

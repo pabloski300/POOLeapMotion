@@ -11,7 +11,7 @@ public class CreadorMetodos : CustomMenu
     [Header("UI")]
     public TextMeshPro cabecera;
 
-    public GameObject textoError;
+    public TextMeshPro textoError;
     public ToggleGroup metodosGroup;
     string metodosToggle;
 
@@ -87,14 +87,22 @@ public class CreadorMetodos : CustomMenu
         {
             valid = method == methodToModify.nombre;
         }
-        textoError.SetActive(!valid);
+        if (Manager.Instance.english)
+        {
+            textoError.text = "This method is already in the class";
+        }
+        else
+        {
+            textoError.text = "Este metodo ya existe en la clase";
+        }
+        textoError.gameObject.SetActive(!valid);
         GetButton("Finalizar").gameObject.SetActive(valid);
         metodosToggle = name;
     }
 
     public void Create()
     {
-        
+
         MetodoBase metodo = Instantiate(Manager.Instance.metodosPrefab[method], new Vector3(999, 999, 999), Quaternion.identity);
         if (!modify)
         {

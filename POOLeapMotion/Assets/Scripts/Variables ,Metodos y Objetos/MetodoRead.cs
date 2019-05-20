@@ -18,6 +18,7 @@ public class MetodoRead : MetodoBase
         output.text = inputs[0].text;
         inputs[0].gameObject.SetActive(false);
         em.GetButton("Ejecutar").gameObject.SetActive(true);
+        em.UnlockButtonsDelayed(0.5f);
         inputsReady = false;
     }
 

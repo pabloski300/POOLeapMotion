@@ -29,7 +29,14 @@ public class ExploracionObjeto : CustomMenu
         variable.Anchorable.isAttached = true;
         variable.Anchorable.anchor.NotifyAttached(variable.Anchorable);
         anchorMetodo.gameObject.SetActive(false);
-        info.text = "Para poder ejecutar metodos asigna un objeto a la variable";
+        if (Manager.Instance.english)
+        {
+            info.text = "To run methods, asign an object to the variable";
+        }
+        else
+        {
+            info.text = "Para poder ejecutar metodos, asigna un objeto a la variable";
+        }
         if (variable.objetoReferenciado != null)
         {
             objeto = variable.objetoReferenciado;
@@ -41,7 +48,7 @@ public class ExploracionObjeto : CustomMenu
             objeto.Anchorable.anchor.NotifyAttached(objeto.Anchorable);
             anchorMetodo.gameObject.SetActive(true);
             info.text = "";
-            title.text = "Inspeccionando Variable " + variable.nombre;
+            title.text = "Variable: " + variable.nombre;
             Expandir();
         }
     }
@@ -57,8 +64,15 @@ public class ExploracionObjeto : CustomMenu
         objeto.Anchorable.isAttached = true;
         objeto.Anchorable.anchor.NotifyAttached(objeto.Anchorable);
         anchorMetodo.gameObject.SetActive(false);
-        info.text = "Para poder ejecutar metodos inspeccione una variable con un objeto asignado";
-        title.text = "Inspeccionando Objeto " + objeto.nombre;
+        if (Manager.Instance.english)
+        {
+            info.text = "To run methods, inspect a variable with a reference to an object";
+        }
+        else
+        {
+            info.text = "Para poder ejecutar metodos, inspecciona una variable con un objeto asignado";
+        }
+        title.text = "Object: " + objeto.nombre;
         Expandir();
     }
 

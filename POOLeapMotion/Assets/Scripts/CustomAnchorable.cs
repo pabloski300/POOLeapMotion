@@ -21,6 +21,7 @@ public class CustomAnchorable : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
     public GameObject panelSuperior;
     public TextMeshPro textoPanelSuperior;
+    public TransformTweenBehaviour tweenPanelSuperior;
 
     protected bool selected = false;
     protected bool isOver = false;
@@ -111,7 +112,8 @@ public class CustomAnchorable : MonoBehaviour, IPointerEnterHandler, IPointerExi
     {
         if (!Interaction.ignoreGrasping && panelSuperior)
         {
-            panelSuperior.transform.forward = -(cam.transform.position - panelSuperior.transform.position);
+            tweenPanelSuperior.PlayForward();
+            //panelSuperior.transform.forward = -(cam.transform.position - panelSuperior.transform.position);
         }
     }
 }

@@ -11,7 +11,8 @@ public class Consola : CustomMenu
 
     public TextMeshPro text;
     
-    List<string> lineas = new List<string>();
+    [HideInInspector]
+    public List<string> lineas = new List<string>();
 
     public void Write(string s)
     {
@@ -43,5 +44,11 @@ public class Consola : CustomMenu
         currentLines = 0;
         text.text = "";
         lineas.Clear();
+    }
+
+    public void Load(List<string> lineasGuardadas){
+        for(int i=0; i< lineasGuardadas.Count; i++){
+            Write(lineasGuardadas[i]);
+        }
     }
 }

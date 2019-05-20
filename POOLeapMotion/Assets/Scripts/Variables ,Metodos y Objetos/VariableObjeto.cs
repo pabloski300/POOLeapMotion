@@ -88,7 +88,14 @@ public class VariableObjeto : CustomAnchorable
                 Anchorable.anchorLerpCoeffPerSec = MainAnchor.LerpCoeficient;
                 Anchorable.isAttached = true;
                 Anchorable.anchor.NotifyAttached(Anchorable);
-                mg.ShowText("Por favor asigna un objeto a la variable");
+                if (Manager.Instance.english)
+                {
+                    mg.ShowText("Please asign an object to the variable");
+                }
+                else
+                {
+                    mg.ShowText("Por favor asigna un objeto a la variable");
+                }
             }
         }
         else if (Anchorable.anchor == Manager.Instance.papeleraExploradorObjetos)

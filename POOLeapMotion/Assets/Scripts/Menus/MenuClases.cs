@@ -112,6 +112,7 @@ public class MenuClases : CustomMenu
                 lines[i].objeto = m.anchorablePrefs[i];
                 lines[i].nombre.text = lines[i].objeto.nombre;
                 lines[i].color.material = lines[i].objeto.Material;
+                lines[i].cube.textoPanelSuperior.text = "class " + lines[i].objeto.nombre;
             }
             lines[i].gameObject.SetActive(active);
         }
