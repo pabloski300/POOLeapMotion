@@ -49,7 +49,7 @@ public class CustomAnchorable : MonoBehaviour, IPointerEnterHandler, IPointerExi
                 //suppose i have two objects here named obj1 and obj2.. how do i select obj1 to be transformed 
                 if (hit.transform != null)
                 {
-                    transform.position = new Vector3(hit.point.x ,hit.point.y, hit.point.z);
+                    transform.position = new Vector3(hit.point.x ,hit.point.y, hit.point.z) + hit.normal*1f*0.038f;
                 }
             }
         }

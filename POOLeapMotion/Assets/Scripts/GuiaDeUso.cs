@@ -24,10 +24,16 @@ public class GuiaDeUso : CustomMenu
         currentPage = 0;
         maxPages = paginas.Count - 1;
         openPage = paginas[0];
-        GetButton("Next").OnPress += ()=>ChangePage(1);    
-        GetButton("Previous").OnPress += ()=>ChangePage(-1);  
+        GetButton("Next").OnPress += () => ChangePage(1);
+        GetButton("Previous").OnPress += () => ChangePage(-1);
         ChangePage(0);
-        }
+    }
+
+    public new void Open()
+    {
+        base.Open();
+        ChangeLanguage();
+    }
 
     public new void Close()
     {
@@ -50,7 +56,13 @@ public class GuiaDeUso : CustomMenu
         {
             GetButton("Previous").Blocked = true;
         }
-        else if (currentPage == maxPages)
+        else
+        if (GetButton("Previous").Blocked)
+        {
+            GetButton("Previous").Blocked = false;
+        } 
+
+        if (currentPage == maxPages)
         {
             GetButton("Next").Blocked = true;
         }
@@ -58,10 +70,7 @@ public class GuiaDeUso : CustomMenu
         {
             GetButton("Next").Blocked = false;
         }
-        else if (GetButton("Previous").Blocked)
-        {
-            GetButton("Previous").Blocked = false;
-        }
+        
         openPage.gameObject.SetActive(false);
         openPage = paginas[currentPage];
         openPage.gameObject.SetActive(true);

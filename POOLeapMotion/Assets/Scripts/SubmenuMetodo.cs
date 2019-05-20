@@ -78,7 +78,6 @@ public class SubmenuMetodo : MonoBehaviour
             e.GetButton("Ejecutar").gameObject.SetActive(true);
         }
 
-
         if (defaultType != DefaultType.String)
         {
             inputs[i].text = inputs[i].text.Trim();
