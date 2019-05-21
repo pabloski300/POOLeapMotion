@@ -85,6 +85,7 @@ public class MenuClases : CustomMenu
     }
 
     MenuGrid m;
+    bool showedText;
 
     // Start is called before the first frame update
     public override void Init()
@@ -121,6 +122,11 @@ public class MenuClases : CustomMenu
     public new void Open()
     {
         base.Open();
+        if(!showedText){
+            info.gameObject.SetActive(false);
+        }else{
+            showedText = false;
+        }
         ReOrder();
     }
 
@@ -135,5 +141,6 @@ public class MenuClases : CustomMenu
         info.gameObject.SetActive(false);
         info.text = text;
         info.gameObject.SetActive(true);
+        showedText = true;
     }
 }

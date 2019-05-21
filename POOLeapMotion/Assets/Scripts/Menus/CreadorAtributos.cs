@@ -167,7 +167,7 @@ public class CreadorAtributos : CustomMenu
         tipo = TipoVar.Boolean;
         nivelDeProteccion = var.proteccion;
         proteccionToggle = nivelDeProteccion.ToString();
-        tipoToggle = "Boolean";
+        tipoToggle = "Bool";
         nombreInput.text = var.nombre;
         nombreInput.stringPosition = nombreInput.text.Length;
         indiceLinea = i;

@@ -46,6 +46,7 @@ public class CreadorVariables : CustomMenu
     public void Restart()
     {
         nombreInput.text = "";
+        info.gameObject.SetActive(false);
     }
 
     public void OpenNew(string clase, Material matClase)

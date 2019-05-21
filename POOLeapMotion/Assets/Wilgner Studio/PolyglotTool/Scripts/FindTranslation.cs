@@ -46,11 +46,13 @@ public class FindTranslation : MonoBehaviour {
     public void SetText()
     {
         Translation t = polyglot.GetTranslationByName(nameId, lc.selectedLanguage);
+        
         if (t != null)
         {
 #if TMP
             if(textP != null)
                 this.textP.text = t.translation;
+            
 #endif
 
             if (text != null)

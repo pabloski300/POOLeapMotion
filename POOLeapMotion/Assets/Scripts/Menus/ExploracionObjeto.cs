@@ -37,6 +37,7 @@ public class ExploracionObjeto : CustomMenu
         {
             info.text = "Para poder ejecutar metodos, asigna un objeto a la variable";
         }
+        
         if (variable.objetoReferenciado != null)
         {
             objeto = variable.objetoReferenciado;
@@ -67,12 +68,13 @@ public class ExploracionObjeto : CustomMenu
         if (Manager.Instance.english)
         {
             info.text = "To run methods, inspect a variable with a reference to an object";
+            title.text = "Object: " + objeto.nombre;
         }
         else
         {
             info.text = "Para poder ejecutar metodos, inspecciona una variable con un objeto asignado";
+            title.text = "Objeto: " + objeto.nombre;
         }
-        title.text = "Object: " + objeto.nombre;
         Expandir();
     }
 
