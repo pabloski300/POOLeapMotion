@@ -6,6 +6,8 @@ using UnityEngine;
 public class VariableObjeto : CustomAnchorable
 {
     public string nombre;
+    public string nombreColor;
+    string nombreColorClase;
     public string clase;
     public ObjetoBase objetoReferenciado;
     public LineRenderer referencia;
@@ -34,9 +36,11 @@ public class VariableObjeto : CustomAnchorable
         this.clase = clase;
         this.colorVariable = colorVariable;
         this.colorClase = colorClase;
+        this.nombreColor = "<#" + ColorUtility.ToHtmlStringRGB(colorVariable.color) + ">" + nombre + "</color>";
+        this.nombreColorClase = "<#" + ColorUtility.ToHtmlStringRGB(colorClase.color) + ">" + clase + "</color>";
         objetoReferenciado = null;
         Interaction.OnGraspEnd += (() => Release());
-        textoPanelSuperior.text = "<#" + ColorUtility.ToHtmlStringRGB(colorClase.color) + ">" + clase + "</color>" + " " + "<#" + ColorUtility.ToHtmlStringRGB(colorVariable.color) + ">" + nombre + "</color>" + ";";
+        textoPanelSuperior.text = nombreColorClase + " " + nombreColor + ";";
     }
 
     new void Update()
@@ -88,6 +92,7 @@ public class VariableObjeto : CustomAnchorable
                 Anchorable.anchorLerpCoeffPerSec = MainAnchor.LerpCoeficient;
                 Anchorable.isAttached = true;
                 Anchorable.anchor.NotifyAttached(Anchorable);
+                transform.position = Anchorable.anchor.transform.position;
                 if (Manager.Instance.english)
                 {
                     mg.ShowText("Please asign an object to the variable");
@@ -124,7 +129,7 @@ public class VariableObjeto : CustomAnchorable
         if (o != null && o.nombre == clase)
         {
             objetoReferenciado = o;
-            c.Write("<#" + ColorUtility.ToHtmlStringRGB(colorClase.color) + ">" + clase + "</color>" + " " + "<#" + ColorUtility.ToHtmlStringRGB(colorVariable.color) + ">" + nombre + "</color> = new <#" + ColorUtility.ToHtmlStringRGB(colorClase.color) + ">" + clase + "</color>" + "();");
+            c.Write(nombreColor+" = new "+nombreColorClase + "();");
         }
     }
 }

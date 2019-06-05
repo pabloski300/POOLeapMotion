@@ -257,7 +257,7 @@ public class Manager : MonoBehaviour
         c.Clear();
         mg.RemoveAllObjects();
         mg.RemoveAllVariables();
-        mg.anchorablePrefs.Clear();
+        mg.RemoveClases();
         mc.NumberClases = 0;
         mc.NumberObjetos = 0;
         mc.NumberVariables = 0;

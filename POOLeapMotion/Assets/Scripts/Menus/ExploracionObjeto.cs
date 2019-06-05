@@ -37,7 +37,7 @@ public class ExploracionObjeto : CustomMenu
         {
             info.text = "Para poder ejecutar metodos, asigna un objeto a la variable";
         }
-        
+
         if (variable.objetoReferenciado != null)
         {
             objeto = variable.objetoReferenciado;

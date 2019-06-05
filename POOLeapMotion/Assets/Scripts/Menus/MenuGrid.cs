@@ -216,6 +216,15 @@ public class MenuGrid : CustomMenu
         }
     }
 
+    public void RemoveClases(){
+        while(anchorablePrefs.Count > 0){
+            ObjetoBase b = anchorablePrefs[0];
+            anchorablePrefs.Remove(b);
+            Destroy(b.gameObject);
+            m.NumberClases--;
+        }
+    }
+
     public void ShowText(string text)
     {
         info.gameObject.SetActive(false);

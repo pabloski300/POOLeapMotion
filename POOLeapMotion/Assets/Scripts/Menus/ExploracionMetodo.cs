@@ -54,17 +54,18 @@ public class ExploracionMetodo : CustomMenu
         metodoActual.Execute(menuActual.inputs, menuActual.output);
         if (menuActual.name != "MenuRead")
         {
-            string s = e.variable.nombre + "." + metodoActual.nombre + "(";
-            for (int i = 0; i < menuActual.inputs.Count; i++)
+            string s = e.variable.nombreColor + "." + metodoActual.nombre + "(";
+            for (int i = 0; i < menuActual.inputs.Count-1; i++)
             {
-                s += menuActual.inputs[i] + ", ";
+                s += menuActual.inputs[i].text + ", ";
             }
+            s += menuActual.inputs[menuActual.inputs.Count-1].text;
             s += ");";
             c.Write(s);
         }
         else
         {
-            c.Write(e.variable.nombre + "." + metodoActual.nombre + "();");
+            c.Write(e.variable.nombreColor + "." + metodoActual.nombre + "();");
         }
         UnlockButtonsDelayed(0.5f);
     }
